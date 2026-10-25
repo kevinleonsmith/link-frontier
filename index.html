@@ -1,0 +1,1442 @@
+<title>Link Frontier</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a strategic command-console — sticky ledger bar over a dark navy field,
+   tabbed working panes (Empire grid / Market / Staking / Contracts), event ticker below.
+   Single committed dark theme (crypto terminal). */
+:root{
+  color-scheme: dark;
+  --bg:#0a0e1e;
+  --bg-glow:#131a38;
+  --panel:#111830;
+  --card:#162143;
+  --card-2:#1b2a54;
+  --line:#28376b;
+  --line-soft:#1e2a52;
+  --fg:#eaeefc;
+  --muted:#8792c2;
+  --dim:#5e6aa0;
+  --gold:#f4b740;      /* empire / resources accent */
+  --ton:#5a7dff;       /* LINK currency accent (Chainlink-blue) */
+  --wood:#6fc08a;
+  --stone:#9fb0d4;
+  --oregold:#f4b740;
+  --good:#44d896;
+  --bad:#ff6b7d;
+  --r:14px;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --disp:'Chakra Petch',system-ui,sans-serif;
+  --body:'Inter',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:
+    radial-gradient(1100px 620px at 78% -8%, rgba(90,125,255,.12), transparent 60%),
+    radial-gradient(900px 560px at 8% 2%, rgba(244,183,64,.08), transparent 55%),
+    var(--bg);
+  color:var(--fg);
+  font-family:var(--body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  min-height:100%;
+}
+.wrap{max-width:1080px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 48px;}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---- header ---- */
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:22px 14px}
+.brand{display:flex;flex-direction:column;gap:2px;min-width:0}
+.eyebrow{font-family:var(--disp);letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:var(--ton);font-weight:600}
+#nameInput{
+  font-family:var(--disp);font-weight:700;font-size:clamp(26px,5.4vw,40px);
+  background:transparent;border:none;border-bottom:2px solid transparent;color:var(--fg);
+  padding:0 2px 2px;max-width:100%;width:auto;min-width:0;letter-spacing:.01em;
+}
+#nameInput:hover{border-bottom-color:var(--line)}
+#nameInput:focus{outline:none;border-bottom-color:var(--gold)}
+.hdr-right{display:flex;align-items:center;gap:10px}
+#saveStatus{font-size:12px;color:var(--dim);font-family:var(--mono);min-width:64px;text-align:right;transition:color .3s}
+
+/* ---- ledger bar ---- */
+.ledger{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  display:flex;flex-wrap:wrap;gap:8px;padding:10px;margin:0 -2px 6px;
+  background:rgba(13,18,40,.86);backdrop-filter:blur(10px);
+  border:1px solid var(--line-soft);border-radius:var(--r);
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:19;background:var(--bg)}
+.chip{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:11px;background:var(--card);
+  border:1px solid var(--line-soft);flex:1 1 130px;min-width:0}
+.chip .ico{font-size:17px;line-height:1;filter:saturate(1.1)}
+.chip .meta{display:flex;flex-direction:column;min-width:0}
+.chip .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.chip .val{font-family:var(--mono);font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip.ton{border-color:rgba(90,125,255,.5);background:linear-gradient(160deg,rgba(90,125,255,.14),var(--card))}
+.chip.ton .val{color:var(--ton)}
+.chip.w .val{color:var(--wood)} .chip.s .val{color:var(--stone)} .chip.g .val{color:var(--oregold)}
+.capbar{height:3px;border-radius:2px;background:var(--line);margin-top:4px;overflow:hidden}
+.capbar>i{display:block;height:100%;border-radius:2px;transition:width .4s}
+
+/* ---- tabs ---- */
+nav.tabs{display:flex;gap:6px;margin:14px 0 16px;flex-wrap:wrap}
+.tab{font-family:var(--disp);font-weight:600;letter-spacing:.04em;font-size:14px;
+  padding:9px 16px;border-radius:10px;border:1px solid var(--line-soft);background:transparent;color:var(--muted);cursor:pointer;transition:.15s}
+.tab:hover{color:var(--fg);border-color:var(--line)}
+.tab[aria-selected="true"]{background:var(--gold);color:#201604;border-color:var(--gold)}
+.tab .badge{display:inline-block;min-width:16px;padding:0 5px;margin-left:6px;border-radius:9px;background:var(--bad);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;line-height:16px;text-align:center;vertical-align:1px}
+.tab[aria-selected="true"] .badge{background:#201604;color:var(--gold)}
+
+/* ---- generic ---- */
+.panel{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r);padding:16px}
+.panel + .panel{margin-top:14px}
+.pane-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.pane-head h2{font-family:var(--disp);font-size:18px;font-weight:700;margin:0;letter-spacing:.01em}
+.pane-head .sub{font-size:12.5px;color:var(--muted)}
+.btn{font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.02em;border:1px solid var(--line);
+  background:var(--card-2);color:var(--fg);padding:9px 13px;border-radius:10px;cursor:pointer;transition:.14s;white-space:nowrap}
+.btn:hover:not(:disabled){border-color:var(--gold);transform:translateY(-1px)}
+.btn:active:not(:disabled){transform:translateY(0)}
+.btn:disabled{opacity:.38;cursor:not-allowed}
+.btn.primary{background:var(--gold);color:#201604;border-color:var(--gold)}
+.btn.ton{background:linear-gradient(160deg,#5a7dff,#375bd2);color:#f3f6ff;border-color:var(--ton)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:6px 10px;font-size:12px}
+.btn.danger:hover:not(:disabled){border-color:var(--bad);color:var(--bad)}
+.cost{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;display:inline-flex;gap:8px;flex-wrap:wrap}
+.cost .short{color:var(--bad)}
+.cost .ok{color:var(--muted)}
+
+/* ---- empire grid ---- */
+.prodbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.prodbar .p{font-family:var(--mono);font-size:12px;background:var(--card);border:1px solid var(--line-soft);
+  border-radius:9px;padding:6px 10px;color:var(--muted)}
+.prodbar .p b{color:var(--good);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px}
+.plot{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.plot.empty{border-style:dashed;border-color:var(--line);align-items:center;justify-content:center;text-align:center;min-height:148px;color:var(--dim);cursor:pointer;transition:.15s}
+.plot.empty:hover{border-color:var(--gold);color:var(--gold);background:var(--card-2)}
+.plot.empty .plus{font-size:26px;font-family:var(--disp)}
+.plot .top{display:flex;align-items:center;gap:9px}
+.plot .bico{font-size:24px;line-height:1}
+.plot .bname{font-family:var(--disp);font-weight:600;font-size:14px;line-height:1.15}
+.plot .lv{font-family:var(--mono);font-size:11px;color:var(--gold);font-weight:700}
+.plot .out{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.plot .out b{color:var(--wood)}
+.plot .spacer{flex:1}
+.plot .row{display:flex;gap:6px;align-items:center}
+.plot .up{flex:1}
+.xbtn{border:1px solid var(--line);background:transparent;color:var(--dim);border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;flex:none}
+.xbtn:hover{color:var(--bad);border-color:var(--bad)}
+.confirm-rm{display:flex;flex-direction:column;gap:7px;background:var(--card-2);border-radius:10px;padding:10px;font-size:12px;color:var(--muted)}
+.confirm-rm .row{gap:7px}
+
+/* ---- market ---- */
+.mrow{display:grid;grid-template-columns:1.3fr 1fr auto;gap:14px;align-items:center;padding:13px 0;border-top:1px solid var(--line-soft)}
+.mrow:first-of-type{border-top:none}
+.mrow .asset{display:flex;align-items:center;gap:11px;min-width:0}
+.mrow .asset .ico{font-size:22px}
+.mrow .asset .nm{font-family:var(--disp);font-weight:600;font-size:14px}
+.mrow .asset .held{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.price{display:flex;flex-direction:column;gap:3px;min-width:0}
+.price .big{font-family:var(--mono);font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+.price .big small{color:var(--dim);font-weight:500}
+.trend{font-family:var(--mono);font-size:11px;font-weight:700}
+.trend.up{color:var(--good)} .trend.dn{color:var(--bad)} .trend.flat{color:var(--dim)}
+.mactions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.mnote{font-size:12.5px;color:var(--muted);background:var(--card);border:1px solid var(--line-soft);border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.mnote b{color:var(--ton)}
+
+/* ---- staking ---- */
+.stat-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.stat{flex:1 1 150px;background:var(--card);border:1px solid var(--line-soft);border-radius:12px;padding:14px}
+.stat .k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.stat .v{font-family:var(--mono);font-weight:700;font-size:22px;margin-top:4px;font-variant-numeric:tabular-nums}
+.stat.accent .v{color:var(--ton)} .stat.yield .v{color:var(--good)}
+.stake-form{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:4px}
+#stakeInput{font-family:var(--mono);font-size:15px;font-weight:600;background:var(--card);border:1px solid var(--line);
+  color:var(--fg);border-radius:10px;padding:9px 12px;width:130px;max-width:100%}
+#stakeInput:focus{outline:none;border-color:var(--ton)}
+.locked{text-align:center;padding:30px 16px;color:var(--muted)}
+.locked .big{font-size:34px}
+
+/* ---- quests ---- */
+.quest{display:flex;gap:13px;align-items:center;padding:13px 0;border-top:1px solid var(--line-soft)}
+.quest:first-of-type{border-top:none}
+.quest .qi{font-size:22px;width:30px;text-align:center;flex:none}
+.quest .qbody{flex:1;min-width:0}
+.quest .qn{font-family:var(--disp);font-weight:600;font-size:14px}
+.quest .qd{font-size:12.5px;color:var(--muted)}
+.quest .rew{font-family:var(--mono);font-size:11.5px;color:var(--gold);margin-top:2px}
+.qprog{height:5px;border-radius:3px;background:var(--line);margin-top:7px;overflow:hidden;max-width:260px}
+.qprog>i{display:block;height:100%;background:linear-gradient(90deg,var(--ton),var(--gold));border-radius:3px;transition:width .4s}
+.quest .qstate{flex:none}
+.done-tag{font-family:var(--mono);font-size:12px;color:var(--good);font-weight:700}
+
+/* ---- intro ---- */
+.intro{background:linear-gradient(150deg,rgba(90,125,255,.14),rgba(244,183,64,.08));border:1px solid var(--line);
+  border-radius:var(--r);padding:16px 18px;margin-bottom:14px;position:relative}
+.intro h3{font-family:var(--disp);margin:0 0 6px;font-size:16px}
+.intro ol{margin:8px 0 10px;padding-left:20px;font-size:13px;color:var(--muted)}
+.intro li{margin:3px 0}
+.intro li b{color:var(--fg)}
+
+/* ---- log ticker ---- */
+.log{margin-top:16px}
+.log h2{font-family:var(--disp);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+.log ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;max-height:220px;overflow-y:auto}
+.log li{display:flex;gap:10px;font-size:13px;color:var(--muted);align-items:baseline}
+.log li .t{font-family:var(--mono);font-size:11px;color:var(--dim);flex:none;min-width:42px}
+.log li.hl{color:var(--fg)}
+
+footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-top:1px solid var(--line-soft);padding-top:14px}
+
+/* ---- modal ---- */
+.overlay{position:fixed;inset:0;z-index:40;background:rgba(5,8,18,.72);backdrop-filter:blur(3px);
+  display:flex;align-items:flex-start;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px 40px;overflow-y:auto}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:18px;max-width:640px;width:100%;margin-top:6vh;padding:20px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.modal-head h2{font-family:var(--disp);margin:0;font-size:19px}
+.blist{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:11px}
+.bcard{background:var(--card);border:1px solid var(--line-soft);border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:8px}
+.bcard .top{display:flex;gap:9px;align-items:center}
+.bcard .bico{font-size:22px}
+.bcard .bn{font-family:var(--disp);font-weight:600;font-size:14px}
+.bcard .bdesc{font-size:12px;color:var(--muted);flex:1}
+
+/* ---- toast ---- */
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:60;
+  display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:min(440px,calc(100% - 32px))}
+.toast{background:var(--card-2);border:1px solid var(--gold);color:var(--fg);padding:11px 15px;border-radius:12px;
+  font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:tin .3s ease;max-width:100%}
+.toast.ton{border-color:var(--ton)}
+@keyframes tin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- multiplayer / alliance ---- */
+.mp-status{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.mp-status .k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.mp-status .mp-name{font-family:var(--disp);font-weight:700;font-size:20px;margin-top:2px}
+.mp-figs{display:flex;gap:22px;flex-wrap:wrap}
+.mp-figs .v{font-family:var(--mono);font-weight:700;font-size:18px;margin-top:2px;font-variant-numeric:tabular-nums}
+.mp-figs .v.buffed{color:var(--good)}
+.al-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.al-id{display:flex;align-items:center;gap:10px;min-width:0}
+.al-tag{font-family:var(--disp);font-weight:700;font-size:12px;letter-spacing:.06em;background:var(--card-2);border:1px solid var(--line);
+  color:var(--ton);padding:3px 8px;border-radius:7px;flex:none}
+.al-tag.sm{font-size:10px;padding:1px 6px;color:var(--muted)}
+.al-nm{font-family:var(--disp);font-weight:700;font-size:17px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tier{font-family:var(--disp);font-weight:700;font-size:11px;letter-spacing:.05em;padding:4px 10px;border-radius:20px;border:1px solid var(--line);color:var(--muted);flex:none;white-space:nowrap}
+.tier.t-bronze{color:#d98a4b;border-color:#8a5a33}
+.tier.t-silver{color:#c6d0e6;border-color:#6d7aa0}
+.tier.t-gold{color:var(--gold);border-color:#9a7a26;background:rgba(244,183,64,.08)}
+.tier.t-diamond{color:#49d6ff;border-color:#2b7fa0;background:rgba(90,125,255,.1)}
+.tier.mini{font-size:9px;padding:2px 7px;flex:none}
+.mstat.pow{color:var(--gold);font-weight:700}
+.treasury .trow{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px}
+.treasury .trow .num{font-family:var(--mono);color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
+.tbar{height:9px;border-radius:5px;background:var(--line);overflow:hidden}
+.tbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--ton),var(--gold));border-radius:5px;transition:width .5s}
+.tnote{font-size:12px;color:var(--muted);margin-top:7px}
+.tnote b{color:var(--fg)}
+.memlist,.al-list,.lb{display:flex;flex-direction:column}
+.member,.lb-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line-soft);font-size:13px}
+.member:first-child,.lb-row:first-child{border-top:none}
+.member.me,.lb-row.me{background:linear-gradient(90deg,rgba(244,183,64,.08),transparent);margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:8px}
+.member .spacer,.lb-row .spacer{flex:1}
+.mname{font-family:var(--disp);font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.youtag{font-family:var(--mono);font-size:10px;color:var(--gold);background:rgba(244,183,64,.12);border-radius:5px;padding:1px 5px;flex:none}
+.mstat{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;flex:none}
+.mstat.dim{color:var(--dim)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
+.dot.on{background:var(--good);box-shadow:0 0 6px rgba(68,216,150,.7)}
+.al-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line-soft)}
+.al-row:first-child{border-top:none}
+.al-row .al-id{flex:1}
+.lb-rank{font-family:var(--mono);font-weight:700;color:var(--gold);width:26px;text-align:right;flex:none;font-variant-numeric:tabular-nums}
+.create-form{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.create-form input{font-family:var(--body);font-size:14px;background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:9px 12px;min-width:0}
+.create-form #al-name{flex:1 1 180px}
+.create-form .tag-in{width:84px;font-family:var(--mono);text-transform:uppercase}
+.create-form .goal-in{width:110px;font-family:var(--mono)}
+.create-form input:focus{outline:none;border-color:var(--ton)}
+.chatlog{display:flex;flex-direction:column;gap:7px;max-height:300px;overflow-y:auto;padding:4px 2px 2px;margin-bottom:12px}
+.cmsg{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px;font-size:13px;line-height:1.45;background:var(--card);border:1px solid var(--line-soft);border-radius:10px;padding:8px 11px}
+.cmsg.me{background:linear-gradient(90deg,rgba(90,125,255,.1),var(--card));border-color:rgba(90,125,255,.35)}
+.cwho{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--gold)}
+.cmsg.me .cwho{color:var(--ton)}
+.ctext{color:var(--fg);min-width:0;overflow-wrap:anywhere;flex:1}
+.ctime{font-family:var(--mono);font-size:10px;color:var(--dim);flex:none}
+.cdel,.cmod{flex:none;border:none;background:transparent;color:var(--dim);cursor:pointer;font-size:12px;line-height:1;padding:2px 4px;border-radius:6px;opacity:.55;transition:.12s}
+.cmsg:hover .cdel,.cmsg:hover .cmod{opacity:1}
+.cdel:hover{color:var(--bad);background:rgba(255,107,125,.12)}
+.cmod:hover{color:var(--gold);background:rgba(244,183,64,.14)}
+.cdel:focus-visible,.cmod:focus-visible{outline:2px solid var(--gold);opacity:1}
+.cmsg.modhidden{opacity:.5}
+.cmsg.modhidden .ctext{text-decoration:line-through}
+.cmsg.modhidden::after{content:"hidden";font-family:var(--mono);font-size:9px;color:var(--bad);letter-spacing:.08em;flex:none}
+.foundertag{font-family:var(--mono);font-size:10px;color:var(--ton);background:rgba(90,125,255,.12);border-radius:5px;padding:1px 5px;flex:none}
+.season-banner{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(244,183,64,.12),rgba(90,125,255,.1));border-color:var(--line)}
+.sb-main{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sb-tag{font-family:var(--disp);font-weight:700;letter-spacing:.1em;font-size:14px;color:var(--gold)}
+.sb-count{font-size:13px;color:var(--muted)}
+.sb-count b{font-family:var(--mono);color:var(--fg);font-variant-numeric:tabular-nums}
+.sb-note{font-size:12.5px;color:var(--muted)}
+.season-prizes{font-size:12px;color:var(--muted);background:var(--card);border:1px solid var(--line-soft);border-radius:9px;padding:8px 11px;margin-bottom:12px}
+.season-line{font-size:12.5px;color:var(--muted);background:var(--card);border:1px solid var(--line-soft);border-radius:9px;padding:8px 11px}
+.season-line b{color:var(--gold);font-family:var(--mono)}
+.mvp-line{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.mvp-line b{color:var(--gold);font-family:var(--disp);font-weight:700}
+.cempty{color:var(--muted);font-size:13px;text-align:center;padding:22px 0}
+.chat-form{display:flex;gap:8px}
+.chat-form input{flex:1;min-width:0;font-family:var(--body);font-size:14px;background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:10px 12px}
+.chat-form input:focus{outline:none;border-color:var(--ton)}
+@media (max-width:520px){
+  .mrow{grid-template-columns:1fr auto}
+  .mrow .price{grid-column:1 / -1;order:3;flex-direction:row;gap:14px;align-items:baseline}
+  .mactions{grid-column:1 / -1;order:4;justify-content:flex-start}
+  .al-row{flex-wrap:wrap}
+  .al-row .al-id{flex:1 1 100%}
+  .mp-figs{gap:16px}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="eyebrow">Link Frontier</span>
+      <input id="nameInput" maxlength="28" spellcheck="false" aria-label="Empire name" value="New Dominion">
+    </div>
+    <div class="hdr-right">
+      <span id="saveStatus"></span>
+      <button class="btn ghost sm danger" id="resetBtn" data-action="reset">Reset</button>
+    </div>
+  </header>
+
+  <div class="ledger" id="ledger"></div>
+
+  <nav class="tabs" id="tabs" role="tablist">
+    <button class="tab" role="tab" data-action="tab" data-tab="empire">Empire</button>
+    <button class="tab" role="tab" data-action="tab" data-tab="market">Market</button>
+    <button class="tab" role="tab" data-action="tab" data-tab="stake">Staking</button>
+    <button class="tab" role="tab" data-action="tab" data-tab="alliance">Alliance</button>
+    <button class="tab" role="tab" data-action="tab" data-tab="quests">Contracts <span class="badge" id="qbadge" hidden>0</span></button>
+  </nav>
+
+  <main id="tab"></main>
+
+  <section class="log">
+    <h2>Dispatches</h2>
+    <ul id="logList"></ul>
+  </section>
+
+  <footer>
+    Simulated economy. “LINK” and all balances here are in‑game play currency only — this game involves no real cryptocurrency,
+    wallet, blockchain transaction, or money. It is an independent fan simulation, not affiliated with, sponsored by, or endorsed by
+    Chainlink or SmartContract Chainlink Limited. Progress is saved locally in your browser.
+  </footer>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toast" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ============ config ============ */
+const ICO={wood:'🪵',stone:'🪨',gold:'🪙',ton:'🔗'};
+const B={
+  lumber:   {name:'Lumber Camp',  ico:'🪵', kind:'prod',   res:'wood',  rate:0.5,  cost:{stone:20},            desc:'Harvests timber from the forest.'},
+  quarry:   {name:'Quarry',       ico:'🪨', kind:'prod',   res:'stone', rate:0.35, cost:{wood:30},             desc:'Cuts stone from the bedrock.'},
+  mine:     {name:'Gold Mine',    ico:'🪙', kind:'prod',   res:'gold',  rate:0.16, cost:{wood:40,stone:40},    desc:'Extracts gold ore from deep shafts.'},
+  warehouse:{name:'Warehouse',    ico:'🏬', kind:'cap',                 cost:{wood:50,stone:50},               desc:'Raises storage capacity for all resources.'},
+  market:   {name:'Marketplace',  ico:'🏛️', kind:'market',              cost:{wood:60,stone:40,gold:10},       desc:'Passive LINK trade income + better sell rates.'},
+  vault:    {name:'Staking Vault',ico:'🏦', kind:'vault',               cost:{gold:30,ton:2},                  desc:'Unlocks staking and raises your yield rate.'},
+};
+const BASE_PRICE={wood:0.02,stone:0.03,gold:0.11};   // LINK per unit
+const LIQ={wood:1500,stone:1200,gold:500};
+const CAPBASE={wood:250,stone:250,gold:150};
+const WH_ADD={wood:300,stone:300,gold:180};
+const START_PLOTS=6, LAND_BASE=3, LAND_GROWTH=1.35;
+const MARKET_PASSIVE=0.012;   // ton/s per market level
+const VAULT_RATE=0.004;       // fraction per minute per vault level
+const OFFLINE_MAX=8*3600;
+const BUY_SPREAD=1.2;
+
+const QUESTS=[
+  {id:'q1',ico:'🪓',name:'First Timber',  desc:'Build your first Lumber Camp.', reward:{wood:40},          done:s=>cnt('lumber')>=1,                prog:s=>[cnt('lumber'),1]},
+  {id:'q2',ico:'⛏️',name:'Stone Age',     desc:'Build a Quarry.',               reward:{ton:2},            done:s=>cnt('quarry')>=1,                prog:s=>[cnt('quarry'),1]},
+  {id:'q3',ico:'💰',name:'Gold Rush',     desc:'Accumulate 100 gold.',          reward:{ton:3},            done:s=>s.peak.gold>=100,                prog:s=>[s.peak.gold,100]},
+  {id:'q4',ico:'🗺️',name:'Expansionist',  desc:'Own 10 land plots.',            reward:{gold:30,ton:3},    done:s=>s.plots>=10,                     prog:s=>[s.plots,10]},
+  {id:'q5',ico:'🏛️',name:'Market Maker',  desc:'Build a Marketplace.',          reward:{ton:5},            done:s=>cnt('market')>=1,                prog:s=>[cnt('market'),1]},
+  {id:'q6',ico:'🌾',name:'Yield Farmer',  desc:'Stake at least 10 LINK.',       reward:{ton:3},            done:s=>s.staked>=10,                    prog:s=>[s.staked,10]},
+  {id:'q7',ico:'🏗️',name:'Industrialist', desc:'Operate 8 buildings.',          reward:{ton:8,gold:50},    done:s=>s.buildings.length>=8,           prog:s=>[s.buildings.length,8]},
+  {id:'q8',ico:'👑',name:'LINK Tycoon',   desc:'Hold 50 LINK at once.',         reward:{ton:25},           done:s=>s.peak.ton>=50,                  prog:s=>[s.peak.ton,50]},
+];
+const EVENTS=[
+  {msg:'⛏️ A rich gold vein is struck — gold demand surges.',        fx:()=>bump('gold',0.45),  hl:1},
+  {msg:'🌲 A timber surplus floods the market — wood prices sink.',   fx:()=>bump('wood',-0.3)},
+  {msg:'🏯 A building boom lifts stone prices across the realm.',     fx:()=>bump('stone',0.4),  hl:1},
+  {msg:'🔗 LINK rallies — every resource fetches more on the market.', fx:()=>{bump('wood',.2);bump('stone',.2);bump('gold',.25)}, hl:1},
+  {msg:'📉 A market correction cools prices across the board.',       fx:()=>{bump('wood',-.15);bump('stone',-.15);bump('gold',-.18)}},
+  {msg:'🤝 A trade alliance opens fresh buyers for gold.',           fx:()=>bump('gold',0.3), hl:1},
+  {msg:'🌧️ Storms slow the quarries — stone grows scarce and dear.', fx:()=>bump('stone',0.35)},
+  {msg:'🪙 Quiet trading day. Prices drift back toward fair value.',  fx:()=>{}},
+];
+
+/* ============ state ============ */
+const KEY='crypto-empire-v1';
+let state;
+let armedReset=false, armedResetT=0;
+
+function fresh(){
+  return {
+    v:1, name:'New Dominion',
+    res:{wood:60,stone:40,gold:0,ton:3},
+    plots:START_PLOTS, buildings:[],
+    market:{wood:{mult:1},stone:{mult:1},gold:{mult:1}},
+    staked:0, stakePending:0,
+    allianceId:null, allianceContributed:0,
+    seasonId:null, seasonContributed:0, lastSeason:null, claimedSeason:-1,
+    peak:{gold:0,ton:3},
+    claimed:{}, log:[],
+    ui:{tab:'empire',stakeAmt:'10',pendingRemove:-1,build:false},
+    seenIntro:false,
+    _lastTick:Date.now(), lastSave:Date.now(), _eventTimer:28, _saveT:0,
+  };
+}
+function normalize(s){
+  const f=fresh(); s=Object.assign({},f,s||{});
+  s.res=Object.assign({},f.res,s.res);
+  const m={}; for(const r of ['wood','stone','gold']){ const mm=s.market&&s.market[r]&&+s.market[r].mult; m[r]={mult:(isFinite(mm)&&mm>0)?clamp(mm,0.3,3):1}; }
+  s.market=m;
+  s.peak=Object.assign({},f.peak,s.peak);
+  s.ui=Object.assign({},f.ui,s.ui); s.ui.pendingRemove=-1; s.ui.build=false;
+  if(!['empire','market','stake','alliance','quests'].includes(s.ui.tab)) s.ui.tab='empire';
+  s.buildings=(Array.isArray(s.buildings)?s.buildings:[]).filter(b=>b&&B[b.type]).map(b=>({type:b.type,level:Math.max(1,b.level|0||1)}));
+  s.plots=Math.max(START_PLOTS,Math.max(s.plots|0,s.buildings.length));
+  s.staked=Math.max(0,+s.staked||0); s.stakePending=Math.max(0,+s.stakePending||0);
+  s.allianceId=(typeof s.allianceId==='string'&&s.allianceId)?s.allianceId:null;
+  s.allianceContributed=Math.max(0,+s.allianceContributed||0);
+  s.seasonId=(typeof s.seasonId==='number')?s.seasonId:null;
+  s.seasonContributed=Math.max(0,+s.seasonContributed||0);
+  s.lastSeason=(s.lastSeason&&typeof s.lastSeason==='object')?{id:+s.lastSeason.id,contributed:Math.max(0,+s.lastSeason.contributed||0),allianceId:s.lastSeason.allianceId||null}:null;
+  s.claimedSeason=(typeof s.claimedSeason==='number')?s.claimedSeason:-1;
+  s.claimed=s.claimed&&typeof s.claimed==='object'?s.claimed:{};
+  s.log=Array.isArray(s.log)?s.log.slice(0,25):[];
+  s._lastTick=Date.now(); s._saveT=0;
+  if(typeof s._eventTimer!=='number') s._eventTimer=28;
+  return s;
+}
+function load(){ try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null;}catch(e){return null;} }
+function save(){
+  state.lastSave=Date.now();
+  try{ localStorage.setItem(KEY,JSON.stringify(state)); flashSave(); }catch(e){}
+}
+function flashSave(){ const el=$('#saveStatus'); if(!el)return; el.textContent='saved ✓'; el.style.color='var(--good)'; clearTimeout(flashSave._t); flashSave._t=setTimeout(()=>{el.textContent='';},1400); }
+
+/* ============ helpers ============ */
+const $=s=>document.querySelector(s);
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+function abbr(n,dec){ for(const [s,v] of [['B',1e9],['M',1e6],['K',1e3]]) if(n>=v) return (n/v).toFixed(dec).replace(/\.?0+$/,'')+s; return null; }
+function fmtRes(n){ n=Math.floor(n); return abbr(n,2)||(''+n); }
+function fmtTon(n){ const a=abbr(n,2); if(a)return a; return (Math.round(n*100)/100).toFixed(2); }
+function fmtRate(n){ return n>=10?Math.round(n).toString():(Math.round(n*100)/100).toFixed(2); }
+function cnt(type){ return state.buildings.filter(b=>b.type===type).length; }
+function totalLevels(type){ return state.buildings.filter(b=>b.type===type).reduce((a,b)=>a+b.level,0); }
+function getCaps(){ const c={...CAPBASE}; for(const b of state.buildings) if(b.type==='warehouse'){c.wood+=WH_ADD.wood*b.level;c.stone+=WH_ADD.stone*b.level;c.gold+=WH_ADD.gold*b.level;} return c; }
+function sellBonus(){ return Math.min(0.4,0.04*totalLevels('market')); }
+function yieldPerMin(){ return VAULT_RATE*totalLevels('vault'); }
+function landCost(){ return Math.round(LAND_BASE*Math.pow(LAND_GROWTH,state.plots-START_PLOTS)*100)/100; }
+function sellPrice(r){ return BASE_PRICE[r]*state.market[r].mult*(1+sellBonus()); }
+function buyPrice(r){ return BASE_PRICE[r]*state.market[r].mult*BUY_SPREAD; }
+
+function getBuildCost(type){ const c=B[type].cost,m=Math.pow(1.6,cnt(type)),out={}; for(const k in c) out[k]=Math.ceil(c[k]*m); return out; }
+function getUpgradeCost(b){
+  const base=B[b.type].cost,L=b.level,out={};
+  for(const k in base){ if(k==='ton') continue; out[k]=Math.ceil(base[k]*Math.pow(1.75,L)*1.1); }
+  const t=(base.ton||0)*Math.pow(1.6,L)+L*0.6;
+  if(t>0) out.ton=Math.round(t*100)/100;
+  return out;
+}
+function canAfford(c){ for(const k in c){ const have=k==='ton'?state.res.ton:state.res[k]; if(have<c[k]-1e-9) return false; } return true; }
+function pay(c){ for(const k in c){ if(k==='ton') state.res.ton-=c[k]; else state.res[k]-=c[k]; } }
+function grant(r){ const cap=getCaps(); for(const k in r){ if(k==='ton') state.res.ton+=r[k]; else state.res[k]=Math.min(cap[k],state.res[k]+r[k]); } }
+function bump(r,d){ state.market[r].mult=clamp(state.market[r].mult*(1+d),0.3,3); }
+
+function costHTML(c){
+  return `<span class="cost">`+Object.keys(c).map(k=>{
+    const have=k==='ton'?state.res.ton:state.res[k];
+    const short=have<c[k]-1e-9;
+    const v=k==='ton'?fmtTon(c[k]):fmtRes(c[k]);
+    return `<span class="${short?'short':'ok'}">${v}${ICO[k]}</span>`;
+  }).join('')+`</span>`;
+}
+
+/* ============ sim ============ */
+function prod(dt){
+  const add={wood:0,stone:0,gold:0}; let ton=0;
+  for(const b of state.buildings){
+    const d=B[b.type];
+    if(d.kind==='prod') add[d.res]+=d.rate*b.level*dt*mpBuff;
+    else if(d.kind==='market') ton+=MARKET_PASSIVE*b.level*dt;
+  }
+  const cap=getCaps();
+  for(const r of ['wood','stone','gold']) state.res[r]=Math.min(cap[r],state.res[r]+add[r]);
+  state.res.ton+=ton;
+  state.stakePending+=state.staked*yieldPerMin()*(dt/60);
+  for(const r of ['wood','stone','gold']){ const m=state.market[r]; m.mult=1+(m.mult-1)*Math.pow(0.97,dt); }
+  return {add,ton};
+}
+function updatePeaks(){ state.peak.gold=Math.max(state.peak.gold,state.res.gold); state.peak.ton=Math.max(state.peak.ton,state.res.ton); }
+function fireEvent(){ const e=EVENTS[Math.floor(Math.random()*EVENTS.length)]; e.fx(); addLog(e.msg,e.hl); }
+function addLog(msg,hl){ state.log.unshift({t:Date.now(),msg,hl:!!hl}); if(state.log.length>25) state.log.length=25; renderLog(); }
+
+/* ============ actions ============ */
+function doBuild(type){
+  if(state.buildings.length>=state.plots){ toast('No empty plots — buy land first.'); return; }
+  const c=getBuildCost(type);
+  if(!canAfford(c)){ toast('Not enough resources for that.'); return; }
+  pay(c); state.buildings.push({type,level:1});
+  addLog(`${B[type].ico} Built a ${B[type].name}.`);
+  state.ui.build=false; closeModal(); save(); renderTab();
+}
+function doUpgrade(i){
+  const b=state.buildings[i]; if(!b) return;
+  const c=getUpgradeCost(b);
+  if(!canAfford(c)){ toast('Not enough resources to upgrade.'); return; }
+  pay(c); b.level++; save(); renderTab();
+}
+function doRemove(i){
+  const b=state.buildings[i]; if(!b) return;
+  const base=B[b.type].cost, ref={};
+  for(const k in base) ref[k]=Math.floor(base[k]*0.4);
+  state.buildings.splice(i,1); grant(ref); state.ui.pendingRemove=-1;
+  addLog(`${B[b.type].ico} Demolished a ${B[b.type].name}.`); save(); renderTab();
+}
+function buyLand(){
+  const c=landCost();
+  if(state.res.ton<c-1e-9){ toast('Not enough LINK for new land.'); return; }
+  state.res.ton-=c; state.plots++; addLog(`🗺️ Claimed a new plot for ${fmtTon(c)}🔗.`); save(); renderTab();
+}
+function doSell(r,q){
+  const held=state.res[r]; const qty=q==='all'?Math.floor(held):Math.min(q,Math.floor(held));
+  if(qty<=0){ toast('Nothing to sell.'); return; }
+  const proceeds=qty*sellPrice(r);
+  state.res[r]-=qty; state.res.ton+=proceeds;
+  state.market[r].mult=clamp(state.market[r].mult*(1-Math.min(0.4,qty/LIQ[r])),0.3,3);
+  save(); renderTab();
+  toast(`Sold ${fmtRes(qty)}${ICO[r]} for ${fmtTon(proceeds)}🔗`,'ton');
+}
+function doBuy(r,q){
+  const cap=getCaps(); const room=Math.floor(cap[r]-state.res[r]);
+  const qty=Math.min(q,room, Math.floor(state.res.ton/buyPrice(r)));
+  if(qty<=0){ toast(room<=0?'Storage is full.':'Not enough LINK to buy.'); return; }
+  const cost=qty*buyPrice(r);
+  state.res.ton-=cost; state.res[r]+=qty;
+  state.market[r].mult=clamp(state.market[r].mult*(1+Math.min(0.4,qty/LIQ[r])),0.3,3);
+  save(); renderTab();
+  toast(`Bought ${fmtRes(qty)}${ICO[r]} for ${fmtTon(cost)}🔗`);
+}
+function doStake(amt){
+  if(totalLevels('vault')<=0){ toast('Build a Staking Vault first.'); return; }
+  amt=Math.min(amt,state.res.ton);
+  if(amt<=0){ toast('Not enough LINK to stake.'); return; }
+  state.res.ton-=amt; state.staked+=amt; save(); renderTab();
+  toast(`Staked ${fmtTon(amt)}🔗`,'ton');
+}
+function doUnstake(){
+  if(state.staked<=0) return;
+  const a=state.staked; state.res.ton+=state.staked+state.stakePending;
+  const y=state.stakePending; state.staked=0; state.stakePending=0; save(); renderTab();
+  toast(`Unstaked ${fmtTon(a)}🔗`+(y>0.001?` + ${fmtTon(y)}🔗 yield`:''),'ton');
+}
+function doClaimYield(){
+  if(state.stakePending<=0.0001) return;
+  const y=state.stakePending; state.res.ton+=y; state.stakePending=0; save(); renderTab();
+  toast(`Claimed ${fmtTon(y)}🔗 yield`,'ton');
+}
+function doClaimQuest(id){
+  const q=QUESTS.find(x=>x.id===id); if(!q||state.claimed[id]||!q.done(state)) return;
+  grant(q.reward); state.claimed[id]=true;
+  addLog(`✅ Contract complete: ${q.name}.`,1); save(); renderTab(); updateBadge();
+  toast(`Contract reward: ${Object.keys(q.reward).map(k=>(k==='ton'?fmtTon(q.reward[k]):fmtRes(q.reward[k]))+ICO[k]).join(' ')}`);
+}
+function doReset(){
+  if(!armedReset){ armedReset=true; armedResetT=Date.now(); const b=$('#resetBtn'); b.textContent='Confirm wipe?'; b.style.color='var(--bad)';
+    clearTimeout(doReset._t); doReset._t=setTimeout(()=>{armedReset=false; const bb=$('#resetBtn'); if(bb){bb.textContent='Reset'; bb.style.color='';}},3500); return; }
+  armedReset=false; clearTimeout(doReset._t);
+  state=fresh(); try{localStorage.removeItem(KEY);}catch(e){}
+  $('#nameInput').value=state.name; const b=$('#resetBtn'); b.textContent='Reset'; b.style.color='';
+  renderAll(); toast('Empire reset. A fresh start.');
+}
+
+/* ============ rendering ============ */
+function renderAll(){ updateTabs(); updateLedger(); renderTab(); renderLog(); updateBadge(); }
+
+function updateLedger(){
+  const cap=getCaps();
+  const bar=(r,cls)=>{
+    const pct=Math.min(100,state.res[r]/cap[r]*100);
+    const col=pct>=99?'var(--bad)':pct>80?'var(--gold)':`var(--${r==='gold'?'oregold':r})`;
+    return `<div class="chip ${cls}"><span class="ico">${ICO[r]}</span><div class="meta">
+      <span class="lbl">${r}</span>
+      <span class="val">${fmtRes(state.res[r])} <small style="color:var(--dim);font-weight:500">/ ${fmtRes(cap[r])}</small></span>
+      <span class="capbar"><i style="width:${pct}%;background:${col}"></i></span>
+    </div></div>`;
+  };
+  $('#ledger').innerHTML =
+    bar('wood','w')+bar('stone','s')+bar('gold','g')+
+    `<div class="chip ton"><span class="ico">🔗</span><div class="meta"><span class="lbl">LINK balance</span><span class="val">${fmtTon(state.res.ton)}</span></div></div>`+
+    `<div class="chip"><span class="ico">🏦</span><div class="meta"><span class="lbl">Staked</span><span class="val">${fmtTon(state.staked)}</span></div></div>`+
+    `<div class="chip"><span class="ico">🗺️</span><div class="meta"><span class="lbl">Plots</span><span class="val">${state.buildings.length} / ${state.plots}</span></div></div>`;
+}
+function updateTabs(){ document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===state.ui.tab)); }
+function updateBadge(){
+  const n=QUESTS.filter(q=>q.done(state)&&!state.claimed[q.id]).length;
+  const b=$('#qbadge'); if(!b)return; if(n>0){b.hidden=false;b.textContent=n;} else b.hidden=true;
+}
+
+function renderTab(){
+  const t=state.ui.tab, el=$('#tab');
+  if(t==='empire') el.innerHTML=renderEmpire();
+  else if(t==='market') el.innerHTML=renderMarket();
+  else if(t==='stake') el.innerHTML=renderStake();
+  else if(t==='alliance'){ renderMPTab(); return; }
+  else el.innerHTML=renderQuests();
+  updateLedger(); updateBadge();
+}
+
+function renderEmpire(){
+  let intro='';
+  if(!state.seenIntro){
+    intro=`<div class="intro">
+      <h3>Welcome, sovereign.</h3>
+      <p style="font-size:13px;color:var(--muted);margin:0">Grow a blockchain frontier from one plot of land.</p>
+      <ol>
+        <li>Each <b>plot</b> holds one building. Start with a <b>Lumber Camp</b> and <b>Quarry</b> — they feed each other.</li>
+        <li>Build a <b>Gold Mine</b>, then sell gold on the <b>Market</b> for 🔗 LINK.</li>
+        <li>Spend LINK on <b>new land</b>, upgrades, and a <b>Staking Vault</b> for passive yield. Clear <b>Contracts</b> for bonuses.</li>
+      </ol>
+      <button class="btn sm primary" data-action="dismissintro">Got it — let's build</button>
+    </div>`;
+  }
+  const add={wood:0,stone:0,gold:0}; let tps=0;
+  for(const b of state.buildings){ const d=B[b.type]; if(d.kind==='prod')add[d.res]+=d.rate*b.level; else if(d.kind==='market')tps+=MARKET_PASSIVE*b.level; }
+  const prodbar=`<div class="prodbar">
+    <div class="p">🪵 <b>+${fmtRate(add.wood)}</b>/s</div>
+    <div class="p">🪨 <b>+${fmtRate(add.stone)}</b>/s</div>
+    <div class="p">🪙 <b>+${fmtRate(add.gold)}</b>/s</div>
+    <div class="p">🔗 <b>+${fmtRate(tps)}</b>/s <span style="color:var(--dim)">trade</span></div>
+  </div>`;
+
+  let cells='';
+  state.buildings.forEach((b,i)=>{
+    const d=B[b.type];
+    const uc=getUpgradeCost(b), can=canAfford(uc);
+    let detail='';
+    if(d.kind==='prod') detail=`<div class="out">Yields <b style="color:var(--${d.res==='gold'?'oregold':d.res})">+${fmtRate(d.rate*b.level)}${ICO[d.res]}</b>/s</div>`;
+    else if(d.kind==='cap'){ const c=WH_ADD; detail=`<div class="out">+${fmtRes(c.wood*b.level)}${ICO.wood} +${fmtRes(c.stone*b.level)}${ICO.stone} +${fmtRes(c.gold*b.level)}${ICO.gold} cap</div>`; }
+    else if(d.kind==='market') detail=`<div class="out">+${fmtRate(MARKET_PASSIVE*b.level)}🔗/s · +${Math.round(4*b.level)}% sell</div>`;
+    else if(d.kind==='vault') detail=`<div class="out">Yield +${(VAULT_RATE*b.level*100).toFixed(1)}%/min</div>`;
+
+    let footer;
+    if(state.ui.pendingRemove===i){
+      footer=`<div class="confirm-rm">Demolish this ${d.name}? <div class="row"><button class="btn sm danger" data-action="remove-yes" data-i="${i}">Demolish</button><button class="btn sm ghost" data-action="remove-no">Keep</button></div></div>`;
+    }else{
+      footer=`<div class="row">
+        <button class="btn sm up ${can?'primary':''}" data-action="upgrade" data-i="${i}" ${can?'':'disabled'}>Upgrade → L${b.level+1}</button>
+        <button class="xbtn" data-action="remove" data-i="${i}" title="Demolish">✕</button>
+      </div><div class="cost" style="justify-content:center">${costHTML(uc)}</div>`;
+    }
+    cells+=`<div class="plot">
+      <div class="top"><span class="bico">${d.ico}</span><div><div class="bname">${d.name}</div><div class="lv">Level ${b.level}</div></div></div>
+      ${detail}<div class="spacer"></div>${footer}
+    </div>`;
+  });
+  const empties=state.plots-state.buildings.length;
+  for(let i=0;i<empties;i++) cells+=`<div class="plot empty" data-action="openbuild"><div class="plus">+</div><div>Empty plot<br>Build here</div></div>`;
+
+  const lc=landCost(), canLand=state.res.ton>=lc-1e-9;
+  return `${intro}<div class="panel">
+    <div class="pane-head"><div><h2>Your Empire</h2><div class="sub">${state.buildings.length} buildings across ${state.plots} plots</div></div>
+      <button class="btn ${canLand?'ton':''}" data-action="buyland" ${canLand?'':'disabled'}>🗺️ Buy Land — ${fmtTon(lc)}🔗</button></div>
+    ${prodbar}
+    <div class="grid">${cells}</div>
+  </div>`;
+}
+
+function renderMarket(){
+  const rows=['wood','stone','gold'].map(r=>{
+    const m=state.market[r].mult, pct=(m-1)*100;
+    const tcls=pct>1?'up':pct<-1?'dn':'flat', arrow=pct>1?'▲':pct<-1?'▼':'—';
+    const held=Math.floor(state.res[r]);
+    const sp=sellPrice(r), bp=buyPrice(r);
+    const canS=n=>held>=(n==='all'?1:n);
+    const canB=n=>state.res.ton>=bp*1 && (getCaps()[r]-state.res[r])>=1;
+    return `<div class="mrow">
+      <div class="asset"><span class="ico">${ICO[r]}</span><div><div class="nm">${r[0].toUpperCase()+r.slice(1)}</div><div class="held">${fmtRes(held)} in stock</div></div></div>
+      <div class="price">
+        <div class="big">${fmtTon(sp)}<small> 🔗 sell</small></div>
+        <div class="big" style="font-size:12px;color:var(--muted)">${fmtTon(bp)}<small> buy</small></div>
+        <div class="trend ${tcls}">${arrow} ${pct>=0?'+':''}${pct.toFixed(0)}% vs fair</div>
+      </div>
+      <div class="mactions">
+        <button class="btn sm" data-action="sell" data-r="${r}" data-q="10"  ${canS(10)?'':'disabled'}>Sell 10</button>
+        <button class="btn sm" data-action="sell" data-r="${r}" data-q="100" ${canS(100)?'':'disabled'}>Sell 100</button>
+        <button class="btn sm primary" data-action="sell" data-r="${r}" data-q="all" ${canS('all')?'':'disabled'}>Sell All</button>
+        <button class="btn sm ghost" data-action="buy" data-r="${r}" data-q="10"  ${canB(10)?'':'disabled'}>Buy 10</button>
+        <button class="btn sm ghost" data-action="buy" data-r="${r}" data-q="100" ${canB(100)?'':'disabled'}>Buy 100</button>
+      </div>
+    </div>`;
+  }).join('');
+  const sb=Math.round(sellBonus()*100), passive=MARKET_PASSIVE*totalLevels('market');
+  return `<div class="panel">
+    <div class="pane-head"><div><h2>Marketplace</h2><div class="sub">Prices move with supply &amp; demand — big sells push the price down.</div></div></div>
+    <div class="mnote">${totalLevels('market')>0
+        ? `Your marketplaces add <b>+${sb}%</b> to sell prices and earn <b>+${fmtRate(passive)}🔗/s</b> passively.`
+        : `Build a <b>Marketplace</b> to boost sell prices and earn passive 🔗.`}</div>
+    ${rows}
+  </div>`;
+}
+
+function renderStake(){
+  if(totalLevels('vault')<=0){
+    return `<div class="panel"><div class="pane-head"><h2>Staking</h2></div>
+      <div class="locked"><div class="big">🏦</div><p>Build a <b>Staking Vault</b> on an empty plot to lock up LINK and earn passive yield.</p></div></div>`;
+  }
+  const rate=yieldPerMin()*100;
+  return `<div class="panel">
+    <div class="pane-head"><div><h2>Staking Vault</h2><div class="sub">Lock LINK to earn yield every second.</div></div></div>
+    <div class="stat-row">
+      <div class="stat accent"><div class="k">Staked</div><div class="v" id="stakedV">${fmtTon(state.staked)}🔗</div></div>
+      <div class="stat yield"><div class="k">Pending yield</div><div class="v" id="pendingY">${fmtTon(state.stakePending)}🔗</div></div>
+      <div class="stat"><div class="k">Yield rate</div><div class="v">${rate.toFixed(1)}<small style="font-size:13px;color:var(--dim)">%/min</small></div></div>
+    </div>
+    <div class="stake-form">
+      <input id="stakeInput" type="number" min="0" step="1" inputmode="decimal" value="${state.ui.stakeAmt}" aria-label="Amount to stake">
+      <button class="btn ton" data-action="stake-input">Stake</button>
+      <button class="btn sm ghost" data-action="stake-quick" data-amt="10">+10</button>
+      <button class="btn sm ghost" data-action="stake-quick" data-amt="50">+50</button>
+      <button class="btn sm ghost" data-action="stake-quick" data-amt="max">Max</button>
+    </div>
+    <div class="stake-form" style="margin-top:10px">
+      <button class="btn" data-action="claim" id="claimBtn" ${state.stakePending>0.0001?'':'disabled'}>Claim Yield</button>
+      <button class="btn danger ghost" data-action="unstake" ${state.staked>0?'':'disabled'}>Unstake All</button>
+    </div>
+  </div>`;
+}
+
+function renderQuests(){
+  const rows=QUESTS.map(q=>{
+    const done=q.done(state), claimed=!!state.claimed[q.id];
+    const [cur,goal]=q.prog(state); const pct=Math.min(100,cur/goal*100);
+    const rew=Object.keys(q.reward).map(k=>(k==='ton'?fmtTon(q.reward[k]):fmtRes(q.reward[k]))+ICO[k]).join(' ');
+    let right;
+    if(claimed) right=`<span class="done-tag">Claimed ✓</span>`;
+    else if(done) right=`<button class="btn sm primary" data-action="claimquest" data-id="${q.id}">Claim</button>`;
+    else right=`<span class="mono" style="font-size:12px;color:var(--dim)">${fmtRes(Math.min(cur,goal))}/${fmtRes(goal)}</span>`;
+    return `<div class="quest">
+      <div class="qi">${q.ico}</div>
+      <div class="qbody"><div class="qn">${q.name}</div><div class="qd">${q.desc}</div><div class="rew">Reward: ${rew}</div>
+        ${!claimed?`<div class="qprog"><i style="width:${pct}%"></i></div>`:''}</div>
+      <div class="qstate">${right}</div>
+    </div>`;
+  }).join('');
+  const open=QUESTS.filter(q=>!state.claimed[q.id]).length;
+  return `<div class="panel"><div class="pane-head"><div><h2>Contracts</h2><div class="sub">${open} open · one‑time rewards for milestones</div></div></div>${rows}</div>`;
+}
+
+function renderLog(){
+  const now=Date.now();
+  $('#logList').innerHTML = state.log.length? state.log.map(e=>{
+    const d=Math.max(0,(now-e.t)/1000);
+    const ago=d<5?'now':d<60?Math.floor(d)+'s':d<3600?Math.floor(d/60)+'m':Math.floor(d/3600)+'h';
+    return `<li class="${e.hl?'hl':''}"><span class="t">${ago}</span><span>${e.msg}</span></li>`;
+  }).join('') : `<li><span class="t">—</span><span>Your story begins. Build something.</span></li>`;
+}
+function updateStakeLive(){
+  const p=$('#pendingY'); if(p) p.textContent=fmtTon(state.stakePending)+'🔗';
+  const s=$('#stakedV'); if(s) s.textContent=fmtTon(state.staked)+'🔗';
+  const c=$('#claimBtn'); if(c) c.disabled=!(state.stakePending>0.0001);
+}
+
+/* ============ build modal ============ */
+function openModal(){
+  const avail=state.plots-state.buildings.length;
+  const cards=Object.keys(B).map(type=>{
+    const d=B[type], c=getBuildCost(type), can=canAfford(c)&&avail>0;
+    return `<div class="bcard">
+      <div class="top"><span class="bico">${d.ico}</span><span class="bn">${d.name}</span></div>
+      <div class="bdesc">${d.desc}</div>
+      <div class="cost">${costHTML(c)}</div>
+      <button class="btn sm ${can?'primary':''}" data-action="build" data-type="${type}" ${can?'':'disabled'}>Build</button>
+    </div>`;
+  }).join('');
+  $('#modalRoot').innerHTML=`<div class="overlay" data-action="closebuild"><div class="modal" data-stop><div class="modal-head"><h2>Choose a building</h2><button class="xbtn" data-action="closebuild">✕</button></div><div class="blist">${cards}</div></div></div>`;
+}
+function closeModal(){ $('#modalRoot').innerHTML=''; }
+
+/* ============ toast ============ */
+function toast(msg,cls){
+  const el=document.createElement('div'); el.className='toast'+(cls?' '+cls:''); el.textContent=msg;
+  $('#toast').appendChild(el);
+  setTimeout(()=>{ el.style.transition='opacity .4s'; el.style.opacity='0'; setTimeout(()=>el.remove(),400); },2600);
+}
+
+/* ============ events / loop ============ */
+function onClick(e){
+  const t=e.target.closest('[data-action]'); if(!t) return;
+  const a=t.dataset.action;
+  if(a==='closebuild'){ if(t.classList.contains('xbtn')||e.target.classList.contains('overlay')) closeModal(); return; }
+  switch(a){
+    case 'tab': state.ui.tab=t.dataset.tab; updateTabs(); renderTab(); break;
+    case 'openbuild': openModal(); break;
+    case 'build': doBuild(t.dataset.type); break;
+    case 'upgrade': doUpgrade(+t.dataset.i); break;
+    case 'remove': state.ui.pendingRemove=+t.dataset.i; renderTab(); break;
+    case 'remove-yes': doRemove(+t.dataset.i); break;
+    case 'remove-no': state.ui.pendingRemove=-1; renderTab(); break;
+    case 'buyland': buyLand(); break;
+    case 'sell': doSell(t.dataset.r, t.dataset.q==='all'?'all':+t.dataset.q); break;
+    case 'buy': doBuy(t.dataset.r, +t.dataset.q); break;
+    case 'stake-input': { const v=parseFloat($('#stakeInput').value); doStake(isFinite(v)?v:0); break; }
+    case 'stake-quick': doStake(t.dataset.amt==='max'?state.res.ton:+t.dataset.amt); break;
+    case 'unstake': doUnstake(); break;
+    case 'claim': doClaimYield(); break;
+    case 'claimquest': doClaimQuest(t.dataset.id); break;
+    case 'mp-create': mpCreate($('#al-name')?$('#al-name').value:'', $('#al-tag')?$('#al-tag').value:'', $('#al-goal')?$('#al-goal').value:'100'); break;
+    case 'mp-join': mpJoin(t.dataset.aid); break;
+    case 'mp-leave': mpLeave(); break;
+    case 'mp-contribute': { const v=$('#al-contrib')?parseFloat($('#al-contrib').value):0; mpContribute(t.dataset.amt==='max'?state.res.ton:(t.dataset.amt?+t.dataset.amt:(isFinite(v)?v:0))); break; }
+    case 'mp-chat-send': mpChatSend(); break;
+    case 'mp-chat-del': mpChatDelete(t.dataset.id); break;
+    case 'mp-mod-hide': mpModHide(t.dataset.id,true); break;
+    case 'mp-mod-unhide': mpModHide(t.dataset.id,false); break;
+    case 'mp-claim-season': claimSeasonPrize(); break;
+    case 'mp-retry': initMP(); renderMPTab(); break;
+    case 'reset': doReset(); break;
+    case 'dismissintro': state.seenIntro=true; save(); renderTab(); break;
+  }
+}
+function bindStatic(){
+  document.addEventListener('click',onClick);
+  $('#nameInput').addEventListener('input',e=>{ state.name=e.target.value||'New Dominion'; });
+  $('#nameInput').addEventListener('blur',save);
+  document.addEventListener('input',e=>{
+    const id=e.target.id;
+    if(id==='stakeInput') state.ui.stakeAmt=e.target.value;
+    else if(id==='al-name') mpUI.cname=e.target.value;
+    else if(id==='al-tag') mpUI.ctag=e.target.value;
+    else if(id==='al-goal') mpUI.cgoal=e.target.value;
+    else if(id==='al-contrib') mpUI.contrib=e.target.value;
+    else if(id==='al-chat') mpUI.chat=e.target.value;
+  });
+  document.addEventListener('keydown',e=>{ if(e.target.id==='al-chat' && e.key==='Enter' && !e.shiftKey){ e.preventDefault(); mpChatSend(); } });
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden) save(); });
+  window.addEventListener('beforeunload',save);
+}
+function tick(){
+  const now=Date.now();
+  let dt=(now-state._lastTick)/1000; state._lastTick=now;
+  if(!(dt>0)) dt=0; if(dt>OFFLINE_MAX) dt=OFFLINE_MAX;
+  prod(dt); updatePeaks();
+  state._eventTimer-=dt;
+  if(state._eventTimer<=0){ fireEvent(); state._eventTimer=24+Math.random()*26; }
+  state._saveT+=dt; if(state._saveT>=5){ save(); state._saveT=0; }
+  const rolled=checkSeason();
+  updateLedger();
+  if(state.ui.tab==='stake') updateStakeLive();
+  else if(state.ui.tab==='alliance'){ if(rolled) renderMPTab(); else updateSeasonCountdown(); }
+  else renderTab();
+  renderLog();
+}
+
+/* ============ offline ============ */
+function applyOffline(){
+  const elapsed=clamp((Date.now()-state.lastSave)/1000,0,OFFLINE_MAX);
+  if(elapsed<60) { state._lastTick=Date.now(); return; }
+  const before={wood:state.res.wood,stone:state.res.stone,gold:state.res.gold,ton:state.res.ton,pend:state.stakePending};
+  prod(elapsed); updatePeaks(); state._lastTick=Date.now();
+  const dW=state.res.wood-before.wood, dS=state.res.stone-before.stone, dG=state.res.gold-before.gold;
+  const dT=state.res.ton-before.ton, dY=state.stakePending-before.pend;
+  const h=Math.floor(elapsed/3600), m=Math.floor(elapsed%3600/60);
+  const parts=[]; if(dW>1)parts.push(`+${fmtRes(dW)}🪵`); if(dS>1)parts.push(`+${fmtRes(dS)}🪨`); if(dG>1)parts.push(`+${fmtRes(dG)}🪙`);
+  if(dT>0.01)parts.push(`+${fmtTon(dT)}🔗`); if(dY>0.01)parts.push(`+${fmtTon(dY)}🔗 yield`);
+  addLog(`🌙 Away ${h>0?h+'h ':''}${m}m — ${parts.length?parts.join('  '):'quiet while you were gone'}.`,1);
+  setTimeout(()=>toast(`While you were away (${h>0?h+'h ':''}${m}m): ${parts.length?parts.join('  '):'all quiet'}`,'ton'),400);
+}
+
+/* ============ multiplayer (alliances + leaderboard via db capability) ============ */
+let db=null, userCap=null, myId=null;
+let mpState='loading';          // loading | ready | off
+let mpReadOnly=false;           // viewer may read shared data but not write
+let mpEmpires=[], mpAlliances=[];
+let mpBuff=1;                   // alliance production multiplier (1 = none)
+let mpUnsub1=null, mpUnsub2=null, mpSyncTimer=null;
+let mpPushing=false, mpPushQueued=false, lastPushNW=-999;
+const mpUI={cname:'',ctag:'',cgoal:'100',contrib:'10',chat:''};
+let mpChat=[], myMsgs=[], mpUnsubChat=null, chatAid=null;
+let mpMod={}, myMod=[], mpUnsubMod=null;   // ownerId -> [hidden msgIds]; founder's list is the authoritative one
+const CHAT_SHOW=40, CHAT_PER_MEMBER=25, CHAT_MAXLEN=240;
+
+// Seasons run on a fixed, client-computed 7-day cadence — everyone agrees without a server clock.
+const SEASON_EPOCH=Date.UTC(2026,9,20,0,0,0);   // Mon 2026-10-20 00:00 UTC
+const SEASON_LEN=7*24*3600*1000;
+const SEASON_PRIZES=[60,30,15];                  // LINK for 1st / 2nd / 3rd alliance; participants get 5
+const MVP_PRIZE=40;                              // bonus LINK for the season's top individual contributor
+function currentSeason(){ return Math.max(0, Math.floor((Date.now()-SEASON_EPOCH)/SEASON_LEN)); }
+function seasonEnd(n){ return SEASON_EPOCH+(n+1)*SEASON_LEN; }
+function seasonLabel(n){ return n+1; }
+function fmtDur(ms){ ms=Math.max(0,ms); const d=Math.floor(ms/86400000),h=Math.floor(ms%86400000/3600000),m=Math.floor(ms%3600000/60000); return (d?d+'d ':'')+((h||d)?h+'h ':'')+m+'m'; }
+
+const TIERS=[
+  {min:0,    name:'Unranked',mult:1.00},
+  {min:50,   name:'Bronze',  mult:1.10},
+  {min:200,  name:'Silver',  mult:1.20},
+  {min:500,  name:'Gold',    mult:1.35},
+  {min:1500, name:'Diamond', mult:1.50},
+];
+function allianceTier(t){ let r=TIERS[0]; for(const x of TIERS) if(t>=x.min) r=x; return r; }
+function nextTier(t){ for(const x of TIERS) if(x.min>t) return x; return null; }
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function computeNetWorth(){
+  const rv=state.res.wood*BASE_PRICE.wood+state.res.stone*BASE_PRICE.stone+state.res.gold*BASE_PRICE.gold;
+  let bv=0; for(const b of state.buildings) bv+=b.level*4;
+  return Math.round((state.res.ton+state.staked+rv+bv+state.plots*3)*100)/100;
+}
+
+async function initMP(){
+  mpState='loading';
+  try{ db = (window.claude&&window.claude.use)? await claude.use('db') : null; }catch(e){ db=null; }
+  try{ userCap = (window.claude&&window.claude.use)? await claude.use('user') : null; }catch(e){ userCap=null; }
+  if(userCap){ try{ myId = await userCap.id(); }catch(e){ myId=null; } }
+  if(db && myId){
+    mpState='ready';
+    mpSubscribe();
+    if(state.allianceId) setupChatSub(state.allianceId);
+    pushEmpire(true);
+    reconcileClaims();
+    if(mpSyncTimer) clearInterval(mpSyncTimer);
+    mpSyncTimer=setInterval(()=>pushEmpire(false),30000);
+  } else {
+    mpState='off';
+  }
+  if(state.ui.tab==='alliance') renderMPTab();
+}
+
+function mpSubscribe(){
+  if(!db) return;
+  try{
+    if(mpUnsub1) mpUnsub1();
+    mpUnsub1 = db.collection('empires').orderBy('netWorth','desc').limit(200).onSnapshot(
+      snap=>{ mpEmpires=snap.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()})); recomputeBuff(); if(state.ui.tab==='alliance') renderMPTab(); },
+      _e=>{});
+  }catch(e){}
+  try{
+    if(mpUnsub2) mpUnsub2();
+    mpUnsub2 = db.collection('alliances').orderBy('createdAt','desc').limit(80).onSnapshot(
+      snap=>{ mpAlliances=snap.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()})); if(state.ui.tab==='alliance') renderMPTab(); },
+      _e=>{});
+  }catch(e){}
+}
+
+/* Each member owns ONE document, chatmsgs/<their id>, holding their own messages.
+   The {self} db rule makes that the only chat doc they can write or delete — hard,
+   server-side "yours only". The alliance view merges every member's doc. */
+function myChatName(){ return String(state.name||'Empire').slice(0,32); }
+
+function setupChatSub(aid){
+  if(chatAid===aid) return;
+  if(mpUnsubChat){ try{mpUnsubChat();}catch(e){} mpUnsubChat=null; }
+  if(mpUnsubMod){ try{mpUnsubMod();}catch(e){} mpUnsubMod=null; }
+  mpChat=[]; myMsgs=[]; mpMod={}; myMod=[]; chatAid=aid||null;
+  if(!db||!aid){ if(state.ui.tab==='alliance') renderChatLog(); return; }
+  try{
+    mpUnsubChat = db.collection('chatmsgs').where('allianceId','==',aid).onSnapshot(
+      snap=>{
+        const all=[];
+        for(const d of snap.docs){
+          if(!d.exists) continue;
+          const data=d.data()||{}; const arr=Array.isArray(data.msgs)?data.msgs:[];
+          if(d.id===myId) myMsgs=arr.slice();
+          for(const m of arr) all.push({id:m&&m.id, ownerId:d.id, name:data.name, text:m&&m.text, ts:+(m&&m.ts)||0});
+        }
+        all.sort((a,b)=>a.ts-b.ts);
+        mpChat=all.slice(-CHAT_SHOW);
+        if(state.ui.tab==='alliance') renderChatLog(true);
+      }, _e=>{});
+  }catch(e){}
+  try{
+    mpUnsubMod = db.collection('mod').where('allianceId','==',aid).onSnapshot(
+      snap=>{
+        const map={};
+        for(const d of snap.docs){ if(!d.exists) continue; const data=d.data()||{}; const h=Array.isArray(data.hidden)?data.hidden:[]; map[d.id]=h; if(d.id===myId) myMod=h.slice(); }
+        mpMod=map;
+        if(state.ui.tab==='alliance') renderChatLog(true);
+      }, _e=>{});
+  }catch(e){}
+}
+function teardownChatSub(){
+  if(mpUnsubChat){ try{mpUnsubChat();}catch(e){} }
+  if(mpUnsubMod){ try{mpUnsubMod();}catch(e){} }
+  mpUnsubChat=null; mpUnsubMod=null; chatAid=null; mpChat=[]; myMsgs=[]; mpMod={}; myMod=[];
+}
+
+function allianceFounderId(){ return state.allianceId||null; }   // an alliance's id IS its founder's user id
+function amIFounder(){ return !!(myId && state.allianceId && myId===state.allianceId); }
+function hiddenSet(){ const f=state.allianceId; const h=(f&&mpMod[f])||[]; return new Set(h); }
+async function mpModHide(id, hide){
+  if(!db||!myId||!state.allianceId||!amIFounder()||!id) return;
+  const next = hide ? Array.from(new Set(myMod.concat([id]))) : myMod.filter(x=>x!==id);
+  try{ await db.doc('mod/'+myId).set({ allianceId:state.allianceId, hidden:next }); myMod=next; }
+  catch(e){ mpErr(e); }
+}
+
+// Reset my own chat doc for a new alliance context (also clears my messages out of the one I left).
+async function resetMyChatDoc(aid){
+  if(!db||!myId) return;
+  myMsgs=[];
+  try{ await db.doc('chatmsgs/'+myId).set({ allianceId:aid||null, name:myChatName(), msgs:[] }); }
+  catch(e){ if(e&&e.code==='invalid_argument') mpReadOnly=true; }
+}
+
+async function writeMyMsgs(next){
+  await db.doc('chatmsgs/'+myId).set({ allianceId:state.allianceId, name:myChatName(), msgs:next });
+  myMsgs=next;
+}
+async function mpChatSend(){
+  if(mpState!=='ready'||!state.allianceId||!myId){ return; }
+  let text=(mpUI.chat||'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,CHAT_MAXLEN);
+  if(!text){ return; }
+  if(mpReadOnly){ toast('View-only access — can\'t post.'); return; }
+  mpUI.chat=''; const inp=$('#al-chat'); if(inp) inp.value='';
+  const msg={ id: myId+'_'+Date.now().toString(36)+Math.floor(Math.random()*1e5).toString(36), text, ts:Date.now() };
+  const next=myMsgs.concat([msg]).slice(-CHAT_PER_MEMBER);
+  try{ await writeMyMsgs(next); }
+  catch(e){ mpErr(e); mpUI.chat=text; if(inp) inp.value=text; }
+}
+async function mpChatDelete(id){
+  if(!db||!state.allianceId||!myId||!id) return;
+  const next=myMsgs.filter(m=>m&&m.id!==id);
+  if(next.length===myMsgs.length) return;   // not one of yours — nothing to do
+  try{ await writeMyMsgs(next); }           // rule-enforced: you can only write chatmsgs/<your id>
+  catch(e){ mpErr(e); }
+}
+function renderChatLog(autoscroll){
+  const box=$('#al-chatlog'); if(!box) return;
+  const hs=hiddenSet(), founder=amIFounder();
+  const rows=[];
+  for(const m of mpChat){
+    const isHidden=hs.has(m.id);
+    if(isHidden && !founder) continue;   // hidden messages vanish for everyone except the founder
+    const t=new Date(+m.ts||0); const hh=String(t.getHours()).padStart(2,'0'), mm=String(t.getMinutes()).padStart(2,'0');
+    const mine=m.ownerId&&m.ownerId===myId;
+    const del=mine?`<button class="cdel" data-action="mp-chat-del" data-id="${esc(m.id)}" title="Delete your message" aria-label="Delete message">✕</button>`:'';
+    let mod='';
+    if(founder) mod = isHidden
+      ? `<button class="cmod" data-action="mp-mod-unhide" data-id="${esc(m.id)}" title="Restore for members" aria-label="Un-hide message">↩</button>`
+      : `<button class="cmod" data-action="mp-mod-hide" data-id="${esc(m.id)}" title="Hide from alliance" aria-label="Hide message">🚫</button>`;
+    rows.push(`<div class="cmsg${mine?' me':''}${isHidden?' modhidden':''}"><span class="cwho">${esc(m.name||'Empire')}</span><span class="ctext">${esc(m.text)}</span><span class="ctime">${hh}:${mm}</span>${del}${mod}</div>`);
+  }
+  box.innerHTML = rows.length ? rows.join('') : `<div class="cempty">No messages yet — say hello to your alliance.</div>`;
+  if(autoscroll!==false) box.scrollTop=box.scrollHeight;
+}
+
+function allianceMembers(aid){
+  let m=mpEmpires.filter(e=>e.allianceId===aid);
+  if(aid && aid===state.allianceId && myId && !m.some(e=>e.id===myId))
+    m=m.concat([{id:myId,name:state.name,netWorth:computeNetWorth(),contributed:state.allianceContributed,plots:state.plots,buildings:state.buildings.length,lastSeen:Date.now()}]);
+  return m;
+}
+function allianceTreasury(aid){ return allianceMembers(aid).reduce((s,e)=>s+(+e.contributed||0),0); }
+function recomputeBuff(){ mpBuff = state.allianceId ? allianceTier(allianceTreasury(state.allianceId)).mult : 1; }
+
+// Aggregate every alliance that still has a metadata doc, ranked for alliance-vs-alliance standings.
+function allianceRankings(){
+  const agg={};
+  for(const e of mpEmpires){ if(!e.allianceId) continue; const a=(agg[e.allianceId]=agg[e.allianceId]||{count:0,treasury:0,power:0}); a.count++; a.treasury+=(+e.contributed||0); a.power+=(+e.netWorth||0); }
+  // make sure my own live figures count even if I'm outside the top-200 empires window
+  if(state.allianceId && myId && !mpEmpires.some(e=>e.id===myId)){
+    const a=(agg[state.allianceId]=agg[state.allianceId]||{count:0,treasury:0,power:0}); a.count++; a.treasury+=state.allianceContributed; a.power+=computeNetWorth();
+  }
+  const rows=mpAlliances.map(al=>{ const s=agg[al.id]||{count:0,treasury:0,power:0}; return {id:al.id,name:al.name,tag:al.tag,count:s.count,treasury:s.treasury,power:s.power,tier:allianceTier(s.treasury)}; });
+  rows.sort((x,y)=> (y.power-x.power) || (y.treasury-x.treasury) || (y.count-x.count));
+  return rows;
+}
+
+// Detect a season rollover: archive the ending season's figure, reset the running one.
+function checkSeason(){
+  const cur=currentSeason();
+  if(state.seasonId==null){ state.seasonId=cur; state.seasonContributed=0; return false; }
+  if(state.seasonId!==cur){
+    const ended=state.seasonId;
+    state.lastSeason={ id:ended, contributed:state.seasonContributed||0, allianceId:state.allianceId||null };
+    state.seasonId=cur; state.seasonContributed=0; save();
+    if(mpState==='ready') pushEmpire(true);
+    const canClaim=!!(state.lastSeason.contributed>0 && state.lastSeason.allianceId);
+    addLog(`📅 Season ${seasonLabel(cur)} has begun!${canClaim?` Claim your Season ${seasonLabel(ended)} reward in the Alliance tab.`:''}`,1);
+    try{ toast(`📅 Season ${seasonLabel(cur)} has begun!${canClaim?' Claim last season\'s reward in Alliance.':''}`,'ton'); }catch(e){}
+    return true;
+  }
+  return false;
+}
+// Current-season alliance treasury standings (the recurring competition).
+function seasonStandings(){
+  const cur=currentSeason(), agg={};
+  for(const e of mpEmpires){ if(e.allianceId && e.seasonId===cur){ agg[e.allianceId]=(agg[e.allianceId]||0)+(+e.seasonContributed||0); } }
+  if(state.allianceId && myId && state.seasonId===cur && !mpEmpires.some(e=>e.id===myId)) agg[state.allianceId]=(agg[state.allianceId]||0)+(state.seasonContributed||0);
+  const rows=mpAlliances.map(al=>({id:al.id,name:al.name,tag:al.tag,total:agg[al.id]||0}));
+  rows.sort((a,b)=>b.total-a.total);
+  return rows;
+}
+// Top individual contributor this season (the live "MVP race"). Deterministic tie-break by id.
+function currentMVP(){
+  const cur=currentSeason(); let best=null;
+  const consider=(id,name,c)=>{ if(!(c>0)) return; if(!best||c>best.total||(c===best.total&&id<best.id)) best={id,name,total:c}; };
+  for(const e of mpEmpires){ if(e.seasonId===cur) consider(e.id,e.name,+e.seasonContributed||0); }
+  if(myId && state.seasonId===cur && !mpEmpires.some(e=>e.id===myId)) consider(myId,state.name,state.seasonContributed||0);
+  return best;
+}
+// The top individual contributor of the just-ended season (same deterministic rule on every client).
+function prevMVPId(){
+  const prev=currentSeason()-1; if(prev<0) return null; let best=null;
+  for(const e of mpEmpires){ const l=e.lastSeason; if(l&&l.id===prev){ const c=+l.contributed||0; if(c>0 && (!best||c>best.total||(c===best.total&&e.id<best.id))) best={id:e.id,total:c}; } }
+  return best?best.id:null;
+}
+
+// What (if anything) this player can claim for the just-ended season.
+function seasonClaim(){
+  const cur=currentSeason(), prev=cur-1;
+  if(prev<0) return null;
+  if((state.claimedSeason|0)>=prev) return null;
+  const ls=state.lastSeason;
+  const iAmMVP = !!(myId && prevMVPId()===myId);
+  const contributed = (ls && ls.id===prev) ? (+ls.contributed||0) : 0;
+  if(!iAmMVP && !(contributed>0 && ls && ls.allianceId)) return null;   // nothing to claim
+  let amount=0, rank=null;
+  if(ls && ls.id===prev && ls.allianceId && contributed>0){            // alliance placement prize
+    const agg={};
+    for(const e of mpEmpires){ const l=e.lastSeason; if(l&&l.id===prev&&l.allianceId) agg[l.allianceId]=(agg[l.allianceId]||0)+(+l.contributed||0); }
+    if(!(agg[ls.allianceId]>0)) agg[ls.allianceId]=contributed;
+    const ranked=Object.keys(agg).map(id=>({id,total:agg[id]})).sort((a,b)=>b.total-a.total);
+    const idx=ranked.findIndex(r=>r.id===ls.allianceId);
+    amount = (idx>=0 && idx<SEASON_PRIZES.length) ? SEASON_PRIZES[idx] : 5;
+    rank = idx>=0?idx+1:null;
+  }
+  if(iAmMVP) amount += MVP_PRIZE;
+  return { amount, rank, season:prev, mvp:iAmMVP };
+}
+function awardToast(p){
+  addLog(`🏆 Season ${seasonLabel(p.season)} reward claimed: +${fmtTon(p.amount)}🔗${p.rank?` (alliance #${p.rank})`:''}${p.mvp?' · season MVP 🏅':''}.`,1);
+  toast(`Season ${seasonLabel(p.season)} reward: +${fmtTon(p.amount)}🔗${p.mvp?' · MVP 🏅':p.rank?` · #${p.rank}`:''}`,'ton');
+}
+// Hardened claim: a per-season record in the player's private subtree, guarded by a lease,
+// so a cleared local save or a second device can't claim the same season twice.
+async function claimSeasonPrize(){
+  const p=seasonClaim(); if(!p) return;
+  const prev=currentSeason()-1; if(prev<0) return;
+  if(!db||!myId){                                  // offline: local-only, can't be hardened
+    state.res.ton+=p.amount; state.claimedSeason=prev; save(); awardToast(p); renderMPTab(); return;
+  }
+  const ref=db.doc('data/users/'+myId+'/seasonclaims');
+  try{
+    const lease=await ref.acquire({holder:myId, ttlMs:8000});
+    if(!lease.acquired){ toast('Claim already processing — try again in a moment.'); return; }
+    const snap=await ref.get();
+    const body=(snap.exists && snap.data())||{};
+    const seasons=(body.seasons && typeof body.seasons==='object')?Object.assign({},body.seasons):{};
+    if(seasons[prev]){                             // already recorded on some device
+      state.claimedSeason=Math.max(state.claimedSeason|0,prev); save(); renderMPTab();
+      toast('You already claimed that season\'s reward.'); return;
+    }
+    seasons[prev]={amount:p.amount, mvp:!!p.mvp, ts:Date.now()};
+    await ref.set({seasons});                      // commit the claim record first
+    state.res.ton+=p.amount; state.claimedSeason=prev; save(); pushEmpire(true);
+    awardToast(p); renderMPTab();
+  }catch(e){ mpErr(e); }
+}
+// On load, trust the db record over local state so an already-claimed season isn't re-offered.
+async function reconcileClaims(){
+  if(!db||!myId) return;
+  try{
+    const s=await db.doc('data/users/'+myId+'/seasonclaims').get();
+    const seasons=(s.exists && s.data() && s.data().seasons)||null;
+    if(seasons){
+      const ks=Object.keys(seasons).map(Number).filter(n=>!isNaN(n));
+      if(ks.length){ const mx=Math.max.apply(null,ks); if(mx>(state.claimedSeason|0)){ state.claimedSeason=mx; save(); if(state.ui.tab==='alliance') renderMPTab(); } }
+    }
+  }catch(e){}
+}
+function updateSeasonCountdown(){ const el=$('#season-countdown'); if(el) el.textContent=fmtDur(seasonEnd(currentSeason())-Date.now()); }
+
+async function pushEmpire(force){
+  if(!db||!myId) return;
+  if(mpPushing){ mpPushQueued=true; return; }
+  const nw=computeNetWorth();
+  if(!force && Math.abs(nw-lastPushNW)<2) return;
+  mpPushing=true; lastPushNW=nw;
+  try{
+    await db.doc('empires/'+myId).set({
+      ownerId:myId, name:String(state.name||'Empire').slice(0,32),
+      netWorth:nw, ton:Math.round(state.res.ton*100)/100,
+      buildings:state.buildings.length, plots:state.plots,
+      allianceId:state.allianceId||null, contributed:Math.round(state.allianceContributed*100)/100,
+      seasonId:(state.seasonId==null?currentSeason():state.seasonId),
+      seasonContributed:Math.round((state.seasonContributed||0)*100)/100,
+      lastSeason:state.lastSeason||null,
+      lastSeen:Date.now(),
+    });
+    mpReadOnly=false;
+  }catch(e){ if(e&&e.code==='invalid_argument') mpReadOnly=true; }
+  finally{ mpPushing=false; if(mpPushQueued){ mpPushQueued=false; pushEmpire(true); } }
+}
+
+async function mpCreate(name,tag,goal){
+  if(mpState!=='ready'){ toast('Multiplayer unavailable.'); return; }
+  name=(name||'').trim().slice(0,24)||'Unnamed Alliance';
+  tag=(tag||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4)||'CLAN';
+  goal=Math.max(50,Math.round(+goal||100));
+  try{
+    // The alliance doc id IS the founder's user id, so the {self} rule makes it
+    // writable only by the founder — name, tag, goal and founder can't be reassigned.
+    const ref=db.collection('alliances').doc(myId);
+    await ref.set({name, tag, founderId:myId, goalTon:goal, createdAt:Date.now()});
+    state.allianceId=myId; state.allianceContributed=0; save();
+    mpUI.cname=''; mpUI.ctag='';
+    setupChatSub(ref.id); resetMyChatDoc(ref.id);
+    await pushEmpire(true); recomputeBuff();
+    toast(`Founded ${name} [${tag}]!`);
+  }catch(e){ mpErr(e); }
+  renderMPTab();
+}
+async function mpJoin(aid){
+  if(mpState!=='ready'||!aid) return;
+  state.allianceId=aid; state.allianceContributed=0; save();
+  setupChatSub(aid); resetMyChatDoc(aid);
+  try{ await pushEmpire(true); }catch(e){ mpErr(e); }
+  recomputeBuff();
+  const a=mpAlliances.find(x=>x.id===aid);
+  toast('Joined '+(a?a.name:'the alliance')+'.');
+  renderMPTab();
+}
+async function mpLeave(){
+  const wasFounder=amIFounder(), oldId=myId;
+  state.allianceId=null; state.allianceContributed=0; save();
+  resetMyChatDoc(null);
+  if(wasFounder && db && oldId){                 // founder leaving disbands the alliance they own
+    try{ db.doc('alliances/'+oldId).delete(); }catch(e){}
+    try{ db.doc('mod/'+oldId).delete(); }catch(e){}
+  }
+  teardownChatSub();
+  try{ await pushEmpire(true); }catch(e){}
+  recomputeBuff(); toast('Left the alliance.'); renderMPTab();
+}
+function mpContribute(amt){
+  if(!state.allianceId){ toast('Join an alliance first.'); return; }
+  amt=Math.min(amt,state.res.ton);
+  if(!(amt>0)){ toast('Not enough LINK to contribute.'); return; }
+  checkSeason();
+  state.res.ton-=amt; state.allianceContributed+=amt; state.seasonContributed+=amt; save();
+  recomputeBuff(); pushEmpire(true);
+  toast(`Contributed ${fmtTon(amt)}🔗 to the treasury.`,'ton');
+  renderMPTab();
+}
+function mpErr(e){
+  if(e&&e.code==='invalid_argument'){ mpReadOnly=true; toast('You have view-only access — can\'t change shared data.'); }
+  else if(e&&e.code==='quota_exceeded'){ toast('Alliance roster is full right now.'); }
+  else toast('Network hiccup — try again.');
+}
+
+function renderMPTab(){
+  const el=$('#tab'); if(!el) return;
+  const keep = (document.activeElement&&document.activeElement.hasAttribute&&document.activeElement.hasAttribute('data-mpf'))?document.activeElement.id:null;
+
+  if(mpState==='loading'){
+    el.innerHTML=`<div class="panel"><div class="pane-head"><h2>Alliance</h2></div>
+      <div class="locked"><div class="big">🛰️</div><p>Connecting to the shared network…</p></div></div>`;
+    return;
+  }
+  if(mpState==='off'){
+    el.innerHTML=`<div class="panel"><div class="pane-head"><h2>Alliance &amp; Leaderboard</h2></div>
+      <div class="locked"><div class="big">🤝</div>
+      <p><b>Play with others.</b> Open this artifact while <b>signed in to claude.ai</b> to join alliances, pool a shared treasury for empire‑wide production buffs, and climb the global leaderboard.</p>
+      <p style="color:var(--dim);font-size:12.5px">Your solo empire keeps running regardless. Multiplayer needs a signed‑in viewer with access to this artifact.</p>
+      <button class="btn sm ghost" data-action="mp-retry">Retry connection</button></div></div>`;
+    return;
+  }
+
+  recomputeBuff();
+  const aid=state.allianceId;
+  const myNW=computeNetWorth();
+  const sorted=[...mpEmpires].sort((a,b)=>(b.netWorth||0)-(a.netWorth||0));
+  let rank = sorted.findIndex(e=>e.id===myId);
+  rank = rank>=0 ? rank+1 : (sorted.filter(e=>(e.netWorth||0)>myNW).length+1);
+  const tagMap={}; for(const a of mpAlliances) tagMap[a.id]=a.tag;
+
+  let html=`<div class="panel mp-status">
+    <div><div class="k">Your empire</div><div class="mp-name">${esc(state.name)}</div></div>
+    <div class="mp-figs">
+      <div><div class="k">Net worth</div><div class="v">${fmtRes(myNW)}</div></div>
+      <div><div class="k">Global rank</div><div class="v">#${rank}</div></div>
+      <div><div class="k">Alliance buff</div><div class="v ${mpBuff>1?'buffed':''}">+${Math.round((mpBuff-1)*100)}%</div></div>
+    </div></div>`;
+  if(mpReadOnly) html+=`<div class="mnote" style="border-color:var(--bad)">You have view‑only access to this artifact, so you can watch the leaderboard but can't join or contribute.</div>`;
+
+  const seaN=currentSeason(), claim=seasonClaim();
+  html+=`<div class="panel season-banner">
+    <div class="sb-main"><span class="sb-tag">SEASON ${seasonLabel(seaN)}</span>
+      <span class="sb-count">resets in <b id="season-countdown">${esc(fmtDur(seasonEnd(seaN)-Date.now()))}</b></span></div>
+    ${claim
+      ? `<button class="btn ton" data-action="mp-claim-season">Claim Season ${seasonLabel(claim.season)} reward · +${fmtTon(claim.amount)}🔗${claim.mvp?' 🏅MVP':''}</button>`
+      : `<span class="sb-note">Contribute to your alliance's treasury to climb the season standings.</span>`}
+  </div>`;
+
+  if(aid){
+    const al=mpAlliances.find(a=>a.id===aid);
+    const members=allianceMembers(aid).sort((a,b)=>(b.contributed||0)-(a.contributed||0));
+    const treasury=members.reduce((s,e)=>s+(+e.contributed||0),0);
+    const seasonTotal=(seasonStandings().find(x=>x.id===aid)||{}).total||0;
+    const tier=allianceTier(treasury), nxt=nextTier(treasury);
+    const pct=nxt?Math.min(100,treasury/nxt.min*100):100;
+    const goal=al?+al.goalTon:0;
+    const online=e=>(Date.now()-(+e.lastSeen||0))<120000;
+    const memHTML=members.map(e=>`<div class="member${e.id===myId?' me':''}">
+        <span class="dot ${online(e)?'on':''}" title="${online(e)?'active':'idle'}"></span>
+        <span class="mname">${esc(e.name||'Empire')}</span>${e.id===myId?'<span class="youtag">you</span>':''}${e.id===allianceFounderId()?'<span class="foundertag">founder</span>':''}
+        <span class="spacer"></span>
+        <span class="mstat">${fmtTon(e.contributed||0)}🔗</span>
+        <span class="mstat dim">NW ${fmtRes(e.netWorth||0)}</span>
+      </div>`).join('');
+
+    html+=`<div class="panel">
+      <div class="al-head">
+        <div class="al-id"><span class="al-tag">${esc(al?al.tag:'—')}</span><span class="al-nm">${esc(al?al.name:'Alliance')}</span></div>
+        <span class="tier t-${tier.name.toLowerCase()}">${tier.name}${tier.mult>1?` · +${Math.round((tier.mult-1)*100)}% prod`:''}</span>
+      </div>
+      ${(!al && mpAlliances.length>0)?`<div class="mnote" style="border-color:var(--bad)">The founder has disbanded this alliance. You can leave to join or found another.</div>`:''}
+      <div class="treasury">
+        <div class="trow"><span>Shared treasury</span><span class="num">${fmtTon(treasury)} / ${nxt?fmtTon(nxt.min):'MAX'} 🔗</span></div>
+        <div class="tbar"><i style="width:${pct}%"></i></div>
+        <div class="tnote">${nxt?`Reach <b>${fmtTon(nxt.min)}🔗</b> for <b>${nxt.name}</b> (+${Math.round((nxt.mult-1)*100)}% production for every member).`:`Maximum tier — the whole alliance produces +${Math.round((tier.mult-1)*100)}% faster.`}${goal?` · Founder's goal: ${fmtTon(goal)}🔗${treasury>=goal?' ✓':''}`:''}</div>
+      </div>
+      <div class="season-line">Season ${seasonLabel(seaN)}: <b>${fmtTon(seasonTotal)}🔗</b> contributed as an alliance · your share <b>${fmtTon(state.seasonContributed||0)}🔗</b></div>
+      <div class="pane-head" style="margin:14px 0 8px"><h2 style="font-size:15px">Contribute LINK</h2></div>
+      <div class="stake-form">
+        <input id="al-contrib" data-mpf type="number" min="0" step="1" inputmode="decimal" value="${esc(mpUI.contrib)}" aria-label="LINK to contribute">
+        <button class="btn ton" data-action="mp-contribute">Contribute</button>
+        <button class="btn sm ghost" data-action="mp-contribute" data-amt="10">+10</button>
+        <button class="btn sm ghost" data-action="mp-contribute" data-amt="50">+50</button>
+        <button class="btn sm ghost" data-action="mp-contribute" data-amt="max">All</button>
+      </div>
+      <div class="pane-head" style="margin:16px 0 4px"><h2 style="font-size:15px">Members · ${members.length}</h2>
+        <button class="btn sm danger ghost" data-action="mp-leave">Leave alliance</button></div>
+      <div class="memlist">${memHTML}</div>
+    </div>`;
+    html+=`<div class="panel chat-panel">
+      <div class="pane-head"><div><h2>Alliance Chat</h2><div class="sub">Members only · last ${CHAT_SHOW} messages${amIFounder()?' · as founder you can hide any message':''}</div></div></div>
+      <div class="chatlog" id="al-chatlog"></div>
+      <div class="chat-form">
+        <input id="al-chat" data-mpf maxlength="${CHAT_MAXLEN}" placeholder="Message your alliance…" value="${esc(mpUI.chat)}" aria-label="Chat message" autocomplete="off">
+        <button class="btn ton" data-action="mp-chat-send" ${mpReadOnly?'disabled':''}>Send</button>
+      </div>
+    </div>`;
+  } else {
+    const stats={}; for(const e of mpEmpires){ if(e.allianceId){ (stats[e.allianceId]=stats[e.allianceId]||{c:0,t:0}); stats[e.allianceId].c++; stats[e.allianceId].t+=(+e.contributed||0);} }
+    const list=mpAlliances.slice(0,40).map(a=>{
+      const s=stats[a.id]||{c:0,t:0}; const tier=allianceTier(s.t);
+      return `<div class="al-row">
+        <div class="al-id"><span class="al-tag">${esc(a.tag)}</span><span class="al-nm">${esc(a.name)}</span></div>
+        <span class="tier t-${tier.name.toLowerCase()}">${tier.name}</span>
+        <span class="mstat dim">${s.c} member${s.c===1?'':'s'}</span>
+        <span class="mstat">${fmtTon(s.t)}🔗</span>
+        <button class="btn sm primary" data-action="mp-join" data-aid="${esc(a.id)}" ${mpReadOnly?'disabled':''}>Join</button>
+      </div>`;
+    }).join('') || `<p style="color:var(--muted);font-size:13px">No alliances yet — found the first one.</p>`;
+
+    html+=`<div class="panel">
+      <div class="pane-head"><div><h2>Found an Alliance</h2><div class="sub">Pool a shared treasury with others for empire‑wide production buffs.</div></div></div>
+      <div class="create-form">
+        <input id="al-name" data-mpf maxlength="24" placeholder="Alliance name" value="${esc(mpUI.cname)}" aria-label="Alliance name">
+        <input id="al-tag" data-mpf maxlength="4" placeholder="TAG" class="tag-in" value="${esc(mpUI.ctag)}" aria-label="Tag">
+        <input id="al-goal" data-mpf type="number" min="50" step="50" placeholder="Goal 🔗" class="goal-in" value="${esc(mpUI.cgoal)}" aria-label="Treasury goal">
+        <button class="btn primary" data-action="mp-create" ${mpReadOnly?'disabled':''}>Create</button>
+      </div>
+    </div>
+    <div class="panel"><div class="pane-head"><div><h2>Join an Alliance</h2><div class="sub">${mpAlliances.length} active</div></div></div>
+      <div class="al-list">${list}</div></div>`;
+  }
+
+  // season standings — the recurring competition (treasury contributed this season)
+  const ss=seasonStandings().slice(0,15);
+  const medal=i=>i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+  const ssHTML=ss.map((a,i)=>`<div class="lb-row${a.id===state.allianceId?' me':''}">
+      <span class="lb-rank">${medal(i)||(i+1)}</span>
+      <span class="al-tag sm">${esc(a.tag||'—')}</span>
+      <span class="mname">${esc(a.name||'Alliance')}</span>
+      <span class="spacer"></span>
+      <span class="mstat pow">${fmtTon(a.total)}🔗</span>
+    </div>`).join('') || `<p style="color:var(--muted);font-size:13px">No treasury contributed yet this season — be the first to score.</p>`;
+  const mvp=currentMVP();
+  html+=`<div class="panel"><div class="pane-head"><div><h2>Season ${seasonLabel(seaN)} Standings</h2><div class="sub">Alliances by treasury contributed this season</div></div></div>
+    <div class="season-prizes">Season‑end prizes to every member: 🥇 +${fmtTon(SEASON_PRIZES[0])}🔗 · 🥈 +${fmtTon(SEASON_PRIZES[1])}🔗 · 🥉 +${fmtTon(SEASON_PRIZES[2])}🔗 · others +5🔗 · 🏅 top individual contributor +${fmtTon(MVP_PRIZE)}🔗 MVP</div>
+    <div class="mvp-line">🏅 MVP race: ${mvp?`<b>${esc(mvp.name||'Empire')}</b> — ${fmtTon(mvp.total)}🔗${mvp.id===myId?' <span class="youtag">you</span>':''}`:'no contributions yet this season'}</div>
+    <div class="lb">${ssHTML}</div></div>`;
+
+  // all-time alliance power
+  const ar=allianceRankings().slice(0,15);
+  const arHTML = ar.map((a,i)=>`<div class="lb-row${a.id===state.allianceId?' me':''}">
+      <span class="lb-rank">${i+1}</span>
+      <span class="al-tag sm">${esc(a.tag||'—')}</span>
+      <span class="mname">${esc(a.name||'Alliance')}</span>
+      <span class="tier t-${a.tier.name.toLowerCase()} mini">${a.tier.name}</span>
+      <span class="spacer"></span>
+      <span class="mstat dim">${a.count}👤</span>
+      <span class="mstat">${fmtTon(a.treasury)}🔗</span>
+      <span class="mstat pow">⚔ ${fmtRes(a.power)}</span>
+    </div>`).join('') || `<p style="color:var(--muted);font-size:13px">No alliances ranked yet — found one to open the standings.</p>`;
+  html+=`<div class="panel"><div class="pane-head"><div><h2>All‑Time Power</h2><div class="sub">Alliances by combined member net worth</div></div></div>
+    <div class="lb">${arHTML}</div></div>`;
+
+  // empire leaderboard
+  const lb=sorted.slice(0,25).map((e,i)=>`<div class="lb-row${e.id===myId?' me':''}">
+      <span class="lb-rank">${i+1}</span>
+      <span class="mname">${esc(e.name||'Empire')}</span>
+      ${e.allianceId&&tagMap[e.allianceId]?`<span class="al-tag sm">${esc(tagMap[e.allianceId])}</span>`:''}
+      <span class="spacer"></span>
+      <span class="mstat">NW ${fmtRes(e.netWorth||0)}</span>
+    </div>`).join('') || `<p style="color:var(--muted);font-size:13px">No empires on the board yet. Build and you'll appear here.</p>`;
+  html+=`<div class="panel"><div class="pane-head"><div><h2>Global Leaderboard</h2><div class="sub">Top empires by net worth</div></div></div>
+    <div class="lb">${lb}</div></div>`;
+
+  el.innerHTML=html;
+  if(state.allianceId) renderChatLog();
+  if(keep){ const k=$('#'+keep); if(k){ k.focus(); try{const v=k.value;k.setSelectionRange(v.length,v.length);}catch(_){} } }
+}
+
+/* ============ boot ============ */
+function startGame(){
+  $('#nameInput').value=state.name;
+  checkSeason();
+  bindStatic(); renderAll();
+  setInterval(tick,1000);
+  initMP();
+}
+function begin(hot){
+  if(hot&&hot.res){ state=normalize(hot); }
+  else { const s=load(); if(s){ state=normalize(s); applyOffline(); } else { state=fresh(); } }
+  startGame();
+}
+try{
+  if(window.claude&&window.claude.hot&&window.claude.hot.ready) window.claude.hot.ready(begin);
+  else begin(window.claude&&window.claude.hot?window.claude.hot.data:null);
+  if(window.claude&&window.claude.hot&&window.claude.hot.snapshot) window.claude.hot.snapshot(()=>state);
+}catch(e){ begin(null); }
+</script>
