@@ -24,6 +24,7 @@
   --wood:#6fc08a;
   --stone:#9fb0d4;
   --oregold:#f4b740;
+  --food:#d9b35a;
   --good:#44d896;
   --bad:#ff6b7d;
   --r:14px;
@@ -81,7 +82,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .chip .val{font-family:var(--mono);font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .chip.ton{border-color:rgba(90,125,255,.5);background:linear-gradient(160deg,rgba(90,125,255,.14),var(--card))}
 .chip.ton .val{color:var(--ton)}
-.chip.w .val{color:var(--wood)} .chip.s .val{color:var(--stone)} .chip.g .val{color:var(--oregold)}
+.chip.w .val{color:var(--wood)} .chip.s .val{color:var(--stone)} .chip.g .val{color:var(--oregold)} .chip.f .val{color:var(--food)}
 .capbar{height:3px;border-radius:2px;background:var(--line);margin-top:4px;overflow:hidden}
 .capbar>i{display:block;height:100%;border-radius:2px;transition:width .4s}
 
@@ -306,6 +307,65 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
   .al-row .al-id{flex:1 1 100%}
   .mp-figs{gap:16px}
 }
+
+/* ---- Age of Empires layer ---- */
+.age-banner{display:flex;gap:16px;align-items:stretch;justify-content:space-between;flex-wrap:wrap;
+  background:linear-gradient(140deg,rgba(244,183,64,.12),rgba(90,125,255,.08));border-color:var(--line)}
+.age-banner .ab-k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.age-banner .ab-now{display:flex;gap:12px;align-items:center;min-width:0}
+.age-banner .ab-ico{font-size:34px;line-height:1}
+.age-banner .ab-nm{font-family:var(--disp);font-weight:700;font-size:18px}
+.age-banner .ab-sub{font-family:var(--mono);font-size:12px;color:var(--gold)}
+.age-banner .ab-next{display:flex;flex-direction:column;gap:6px;align-items:flex-start;justify-content:center;
+  border-left:1px solid var(--line-soft);padding-left:16px}
+.age-banner .ab-next .cost{margin:2px 0}
+
+.popbar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:4px 0 14px}
+.popbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--ton),var(--gold));transition:width .4s}
+.pop-fig{font-family:var(--mono);font-weight:700;font-size:15px}
+.pop-fig .dim{color:var(--dim)}
+.town-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.town-stats .stat{flex:1 1 110px;padding:11px 13px}
+.town-stats .stat .v{font-size:19px}
+
+.vil-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line-soft)}
+.vil-row:first-of-type{border-top:none}
+.vr-ico{font-size:20px}
+.vr-meta{display:flex;flex-direction:column;flex:1;min-width:0}
+.vr-nm{font-family:var(--disp);font-weight:600;font-size:14px}
+.vr-sub{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.vr-ctl{display:flex;align-items:center;gap:8px}
+.vr-ctl .btn{min-width:34px;text-align:center;padding:5px 9px;font-size:15px;line-height:1}
+.vr-n{min-width:26px;text-align:center;font-weight:700;font-size:15px}
+
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:11px}
+.tcard,.ucard{background:var(--card);border:1px solid var(--line-soft);border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:8px}
+.tcard .top,.ucard .top{display:flex;gap:9px;align-items:center}
+.tcard .bico,.ucard .bico{font-size:22px}
+.tcard .bn,.ucard .bn{font-family:var(--disp);font-weight:600;font-size:14px}
+.tcard .bdesc,.ucard .bdesc{font-size:12px;color:var(--muted);flex:1}
+.tcard .tfoot{display:flex;flex-direction:column;gap:7px}
+.tcard.done{border-color:rgba(68,216,150,.5);background:linear-gradient(150deg,rgba(68,216,150,.1),var(--card))}
+.tcard.lock,.ucard.lock,.bcard.locked-card{opacity:.6}
+.ucard .upop{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.ucard .row{display:flex;gap:6px}
+.ucard .row .btn{flex:1}
+.lock-note{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+
+.rival-list{display:flex;flex-direction:column}
+.rival{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line-soft)}
+.rival:first-child{border-top:none}
+.rv-id{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.rv-ico{font-size:20px}
+.rv-nm{font-family:var(--disp);font-weight:600;font-size:13.5px}
+.rv-age{font-size:12px}
+.rv-sub{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.odds{font-family:var(--mono);font-size:12px;font-weight:700;flex:none;white-space:nowrap}
+.odds.good{color:var(--good)} .odds.mid{color:var(--gold)} .odds.bad{color:var(--bad)}
+@media(max-width:560px){
+  .age-banner .ab-next{border-left:none;padding-left:0;border-top:1px solid var(--line-soft);padding-top:12px;width:100%}
+  .rival{flex-wrap:wrap} .rv-id{flex:1 1 100%}
+}
 </style>
 
 <div class="wrap">
@@ -324,6 +384,8 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
 
   <nav class="tabs" id="tabs" role="tablist">
     <button class="tab" role="tab" data-action="tab" data-tab="empire">Empire</button>
+    <button class="tab" role="tab" data-action="tab" data-tab="town">Town</button>
+    <button class="tab" role="tab" data-action="tab" data-tab="war">War <span class="badge" id="warbadge" hidden>!</span></button>
     <button class="tab" role="tab" data-action="tab" data-tab="market">Market</button>
     <button class="tab" role="tab" data-action="tab" data-tab="stake">Staking</button>
     <button class="tab" role="tab" data-action="tab" data-tab="alliance">Alliance</button>
@@ -350,19 +412,23 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
 <script>
 "use strict";
 /* ============ config ============ */
-const ICO={wood:'🪵',stone:'🪨',gold:'🪙',ton:'🔗'};
+const ICO={wood:'🪵',stone:'🪨',gold:'🪙',food:'🌾',ton:'🔗'};
+const RES=['wood','stone','gold','food'];             // gatherable/tradeable resources (ton=LINK is separate)
 const B={
-  lumber:   {name:'Lumber Camp',  ico:'🪵', kind:'prod',   res:'wood',  rate:0.6,  cost:{stone:20},            desc:'Harvests timber from the forest.'},
-  quarry:   {name:'Quarry',       ico:'🪨', kind:'prod',   res:'stone', rate:0.45, cost:{wood:30},             desc:'Cuts stone from the bedrock.'},
-  mine:     {name:'Gold Mine',    ico:'🪙', kind:'prod',   res:'gold',  rate:0.2,  cost:{wood:40,stone:40},    desc:'Extracts gold ore from deep shafts.'},
-  warehouse:{name:'Warehouse',    ico:'🏬', kind:'cap',                 cost:{wood:50,stone:50},               desc:'Raises storage capacity for all resources.'},
-  market:   {name:'Marketplace',  ico:'🏛️', kind:'market',              cost:{wood:60,stone:40,gold:10},       desc:'Passive LINK trade income + better sell rates.'},
-  vault:    {name:'Staking Vault',ico:'🏦', kind:'vault',               cost:{gold:30,ton:2},                  desc:'Unlocks staking and raises your yield rate.'},
+  lumber:   {name:'Lumber Camp',  ico:'🪵', kind:'prod',   res:'wood',  rate:0.6,  cost:{stone:20},            age:0, desc:'Harvests timber from the forest.'},
+  quarry:   {name:'Quarry',       ico:'🪨', kind:'prod',   res:'stone', rate:0.45, cost:{wood:30},             age:0, desc:'Cuts stone from the bedrock.'},
+  farm:     {name:'Farm',         ico:'🌾', kind:'prod',   res:'food',  rate:0.55, cost:{wood:25},             age:0, desc:'Grows food to raise villagers and armies.'},
+  mine:     {name:'Gold Mine',    ico:'🪙', kind:'prod',   res:'gold',  rate:0.2,  cost:{wood:40,stone:40},    age:0, desc:'Extracts gold ore from deep shafts.'},
+  house:    {name:'House',        ico:'🏠', kind:'pop',                 cost:{wood:30,stone:15},               age:0, desc:'Raises your population cap for villagers and soldiers.'},
+  warehouse:{name:'Warehouse',    ico:'🏬', kind:'cap',                 cost:{wood:50,stone:50},               age:0, desc:'Raises storage capacity for all resources.'},
+  market:   {name:'Marketplace',  ico:'🏛️', kind:'market',              cost:{wood:60,stone:40,gold:10},       age:0, desc:'Passive LINK trade income + better sell rates.'},
+  barracks: {name:'Barracks',     ico:'⚔️', kind:'mil',                 cost:{wood:80,stone:40},               age:1, desc:'Trains soldiers and fortifies your defense.'},
+  vault:    {name:'Staking Vault',ico:'🏦', kind:'vault',               cost:{gold:30,ton:2},                  age:0, desc:'Unlocks staking and raises your yield rate.'},
 };
-const BASE_PRICE={wood:0.02,stone:0.03,gold:0.14};   // LINK per unit
-const LIQ={wood:1500,stone:1200,gold:500};
-const CAPBASE={wood:300,stone:300,gold:180};
-const WH_ADD={wood:300,stone:300,gold:180};
+const BASE_PRICE={wood:0.02,stone:0.03,gold:0.14,food:0.018};   // LINK per unit
+const LIQ={wood:1500,stone:1200,gold:500,food:1800};
+const CAPBASE={wood:300,stone:300,gold:180,food:300};
+const WH_ADD={wood:300,stone:300,gold:180,food:300};
 const START_PLOTS=6, LAND_BASE=2.5, LAND_GROWTH=1.3;
 const MARKET_PASSIVE=0.02;    // LINK/s per market level
 const VAULT_RATE=0.004;       // fraction per minute per vault level
@@ -378,6 +444,12 @@ const QUESTS=[
   {id:'q6',ico:'🌾',name:'Yield Farmer',  desc:'Stake at least 10 LINK.',       reward:{ton:3},            done:s=>s.staked>=10,                    prog:s=>[s.staked,10]},
   {id:'q7',ico:'🏗️',name:'Industrialist', desc:'Operate 8 buildings.',          reward:{ton:8,gold:50},    done:s=>s.buildings.length>=8,           prog:s=>[s.buildings.length,8]},
   {id:'q8',ico:'👑',name:'LINK Tycoon',   desc:'Hold 50 LINK at once.',         reward:{ton:25},           done:s=>s.peak.ton>=50,                  prog:s=>[s.peak.ton,50]},
+  {id:'q9',ico:'🌾',name:'Settlers',      desc:'Raise 5 villagers.',            reward:{food:120},         done:s=>vilCount()>=5,                   prog:s=>[vilCount(),5]},
+  {id:'q10',ico:'🏕️',name:'Feudal Age',   desc:'Advance to the Feudal Age.',    reward:{ton:6,wood:150},   done:s=>s.age>=1,                        prog:s=>[s.age,1]},
+  {id:'q11',ico:'⚔️',name:'Standing Army', desc:'Train 5 soldiers.',             reward:{gold:60},          done:s=>armyPop()>=5,                    prog:s=>[armyPop(),5]},
+  {id:'q12',ico:'🏆',name:'First Blood',   desc:'Win a battle.',                 reward:{ton:10},           done:s=>s.wins>=1,                       prog:s=>[s.wins,1]},
+  {id:'q13',ico:'🔬',name:'Researcher',    desc:'Research any technology.',      reward:{ton:8},            done:s=>Object.keys(s.tech).length>=1,   prog:s=>[Object.keys(s.tech).length,1]},
+  {id:'q14',ico:'👑',name:'Imperial Power',desc:'Reach the Imperial Age.',       reward:{ton:40},           done:s=>s.age>=3,                        prog:s=>[s.age,3]},
 ];
 const EVENTS=[
   {msg:'⛏️ A rich gold vein is struck — gold demand surges.',        fx:()=>bump('gold',0.45),  hl:1},
@@ -390,6 +462,45 @@ const EVENTS=[
   {msg:'🪙 Quiet trading day. Prices drift back toward fair value.',  fx:()=>{}},
 ];
 
+/* ============ Age of Empires layer: ages, villagers, tech, military ============ */
+// Ages gate buildings, units and tech, and grant an empire-wide production multiplier.
+const AGES=[
+  {name:'Dark Age',     ico:'🌑', mult:1.00, cost:null},
+  {name:'Feudal Age',   ico:'🏕️', mult:1.15, cost:{food:250, wood:150}},
+  {name:'Castle Age',   ico:'🏰', mult:1.35, cost:{food:600, stone:200, gold:150}},
+  {name:'Imperial Age', ico:'👑', mult:1.65, cost:{food:1400, gold:500, ton:15}},
+];
+// Population: each villager/soldier takes pop; houses raise the cap.
+const BASE_POP=6, POP_PER_HOUSE=4;
+const VIL_RATE={wood:0.35, stone:0.28, gold:0.14, food:0.4};   // per villager per second, before multipliers
+const VIL_BASECOST=40, VIL_COSTGROW=5;                         // food per villager, +grow each
+
+// Soldiers trained at a Barracks. power feeds matchmaking; atk/hp drive battle resolution.
+const UNITS={
+  militia: {name:'Militia',  ico:'🗡️', age:1, pop:1, atk:5,  hp:22, cost:{food:40, gold:12}},
+  archer:  {name:'Archer',   ico:'🏹', age:1, pop:1, atk:8,  hp:15, cost:{wood:30, gold:25}},
+  knight:  {name:'Knight',   ico:'🐎', age:2, pop:2, atk:15, hp:55, cost:{food:70, gold:55}},
+  cannon:  {name:'Cannon',   ico:'💣', age:3, pop:3, atk:42, hp:70, cost:{wood:80, gold:120, ton:1}},
+};
+const UNIT_KEYS=Object.keys(UNITS);
+
+// Tech tree — permanent bonuses, gated by age. fx tags are read by the bonus helpers.
+const TECH=[
+  {id:'forestry',  name:'Forestry',     ico:'🪓', age:1, cost:{wood:120, stone:60},  desc:'+30% wood gathering.',        fx:{gather:{wood:0.30}}},
+  {id:'masonry',   name:'Masonry',      ico:'🧱', age:1, cost:{wood:100, stone:80},  desc:'+30% stone gathering, +20% storage.', fx:{gather:{stone:0.30}, storage:0.20}},
+  {id:'irrigation',name:'Irrigation',   ico:'💧', age:1, cost:{wood:120, food:60},   desc:'+30% food gathering.',        fx:{gather:{food:0.30}}},
+  {id:'forging',   name:'Forging',      ico:'🔥', age:1, cost:{food:100, gold:60},   desc:'+25% army attack.',           fx:{atk:0.25}},
+  {id:'coinage',   name:'Coinage',      ico:'💰', age:2, cost:{food:150, stone:150}, desc:'+35% gold gathering.',        fx:{gather:{gold:0.35}}},
+  {id:'wheelbarrow',name:'Wheelbarrow', ico:'🛒', age:2, cost:{wood:200, gold:60},   desc:'+15% all gathering, villagers 25% cheaper.', fx:{gatherAll:0.15, vilDisc:0.25}},
+  {id:'plate',     name:'Plate Armor',  ico:'🛡️', age:2, cost:{food:200, gold:120},  desc:'+40% army hit points & defense.', fx:{hp:0.40}},
+  {id:'ballistics',name:'Ballistics',   ico:'🎯', age:3, cost:{wood:250, gold:200},  desc:'+30% army attack.',           fx:{atk:0.30}},
+  {id:'chemistry', name:'Chemistry',    ico:'⚗️', age:3, cost:{gold:300, ton:5},     desc:'+30% battle loot.',           fx:{loot:0.30}},
+  {id:'banking',   name:'Banking',      ico:'🏦', age:3, cost:{gold:250, ton:5},     desc:'+15% market sell prices.',    fx:{sell:0.15}},
+];
+
+const RIVAL_NAMES=['Rogue Validators','Fork Raiders','The 51% Horde','Orphan Block Clan','Mempool Marauders','Nonce Nomads','Sybil Legion','Gas Guzzlers','The Rug Pullers','Byzantine Host','Dust Bandits','Slippage Syndicate'];
+const SHIELD_MS=10*60*1000;   // protection window after being raided (PvP)
+
 /* ============ state ============ */
 const KEY='crypto-empire-v1';
 let state;
@@ -398,12 +509,17 @@ let armedReset=false, armedResetT=0;
 function fresh(){
   return {
     v:1, name:'New Dominion',
-    res:{wood:60,stone:40,gold:0,ton:6},
+    res:{wood:60,stone:40,gold:0,food:30,ton:6},
     plots:START_PLOTS, buildings:[],
-    market:{wood:{mult:1},stone:{mult:1},gold:{mult:1}},
+    market:{wood:{mult:1},stone:{mult:1},gold:{mult:1},food:{mult:1}},
     staked:0, stakePending:0,
     allianceId:null, allianceContributed:0,
     seasonId:null, seasonContributed:0, lastSeason:null, claimedSeason:-1,
+    age:0,
+    vil:{idle:0, wood:0, stone:0, gold:0, food:0},
+    army:{militia:0, archer:0, knight:0, cannon:0},
+    tech:{},
+    rivals:[], _rivalT:0, shieldUntil:0, raidsApplied:{}, battles:0, wins:0,
     peak:{gold:0,ton:3},
     claimed:{}, log:[],
     ui:{tab:'empire',stakeAmt:'10',pendingRemove:-1,build:false},
@@ -414,11 +530,18 @@ function fresh(){
 function normalize(s){
   const f=fresh(); s=Object.assign({},f,s||{});
   s.res=Object.assign({},f.res,s.res);
-  const m={}; for(const r of ['wood','stone','gold']){ const mm=s.market&&s.market[r]&&+s.market[r].mult; m[r]={mult:(isFinite(mm)&&mm>0)?clamp(mm,0.3,3):1}; }
+  const m={}; for(const r of RES){ const mm=s.market&&s.market[r]&&+s.market[r].mult; m[r]={mult:(isFinite(mm)&&mm>0)?clamp(mm,0.3,3):1}; }
   s.market=m;
   s.peak=Object.assign({},f.peak,s.peak);
   s.ui=Object.assign({},f.ui,s.ui); s.ui.pendingRemove=-1; s.ui.build=false;
-  if(!['empire','market','stake','alliance','quests'].includes(s.ui.tab)) s.ui.tab='empire';
+  if(!['empire','town','war','market','stake','alliance','quests'].includes(s.ui.tab)) s.ui.tab='empire';
+  s.age=clamp(s.age|0,0,AGES.length-1);
+  { const v=s.vil&&typeof s.vil==='object'?s.vil:{}; s.vil={idle:Math.max(0,v.idle|0),wood:Math.max(0,v.wood|0),stone:Math.max(0,v.stone|0),gold:Math.max(0,v.gold|0),food:Math.max(0,v.food|0)}; }
+  { const a=s.army&&typeof s.army==='object'?s.army:{}; const na={}; for(const k of UNIT_KEYS) na[k]=Math.max(0,a[k]|0); s.army=na; }
+  s.tech=(s.tech&&typeof s.tech==='object')?s.tech:{};
+  s.rivals=Array.isArray(s.rivals)?s.rivals:[]; s._rivalT=+s._rivalT||0;
+  s.shieldUntil=+s.shieldUntil||0; s.raidsApplied=(s.raidsApplied&&typeof s.raidsApplied==='object')?s.raidsApplied:{};
+  s.battles=Math.max(0,s.battles|0); s.wins=Math.max(0,s.wins|0);
   s.buildings=(Array.isArray(s.buildings)?s.buildings:[]).filter(b=>b&&B[b.type]).map(b=>({type:b.type,level:Math.max(1,b.level|0||1)}));
   s.plots=Math.max(START_PLOTS,Math.max(s.plots|0,s.buildings.length));
   s.staked=Math.max(0,+s.staked||0); s.stakePending=Math.max(0,+s.stakePending||0);
@@ -450,10 +573,36 @@ function fmtTon(n){ const a=abbr(n,2); if(a)return a; return (Math.round(n*100)/
 function fmtRate(n){ return n>=10?Math.round(n).toString():(Math.round(n*100)/100).toFixed(2); }
 function cnt(type){ return state.buildings.filter(b=>b.type===type).length; }
 function totalLevels(type){ return state.buildings.filter(b=>b.type===type).reduce((a,b)=>a+b.level,0); }
-function getCaps(){ const c={...CAPBASE}; for(const b of state.buildings) if(b.type==='warehouse'){c.wood+=WH_ADD.wood*b.level;c.stone+=WH_ADD.stone*b.level;c.gold+=WH_ADD.gold*b.level;} return c; }
-function sellBonus(){ return Math.min(0.5,0.05*totalLevels('market')); }
+function getCaps(){ const c={...CAPBASE}, sm=1+techVal('storage'); for(const b of state.buildings) if(b.type==='warehouse') for(const r of RES) c[r]+=WH_ADD[r]*b.level; for(const r of RES) c[r]=Math.round(c[r]*sm); return c; }
+function sellBonus(){ return Math.min(0.5,0.05*totalLevels('market'))+techVal('sell'); }
 function yieldPerMin(){ return VAULT_RATE*totalLevels('vault'); }
 function landCost(){ return Math.round(LAND_BASE*Math.pow(LAND_GROWTH,state.plots-START_PLOTS)*100)/100; }
+
+/* ---- AoE helpers: ages, population, villagers, tech, military ---- */
+function ageMult(){ return AGES[state.age].mult; }
+function techVal(tag,sub){   // summed bonus for a given fx tag across researched techs
+  let v=0; for(const t of TECH){ if(!state.tech[t.id]) continue; const fx=t.fx||{};
+    if(sub!=null){ if(fx[tag]&&typeof fx[tag]==='object' && fx[tag][sub]!=null) v+=fx[tag][sub]; }
+    else if(typeof fx[tag]==='number') v+=fx[tag]; }
+  return v;
+}
+function gatherMult(r){ return (1+techVal('gather',r)+techVal('gatherAll'))*ageMult()*mpBuff; }
+function popCap(){ return BASE_POP + POP_PER_HOUSE*totalLevels('house'); }
+function vilCount(){ const v=state.vil; return v.idle+v.wood+v.stone+v.gold+v.food; }
+function armyPop(){ let p=0; for(const k of UNIT_KEYS) p+=state.army[k]*UNITS[k].pop; return p; }
+function popUsed(){ return vilCount()+armyPop(); }
+function vilCost(){ return {food: Math.ceil((VIL_BASECOST+VIL_COSTGROW*vilCount())*(1-techVal('vilDisc'))) }; }
+function ageCost(){ const n=state.age+1; return n<AGES.length?AGES[n].cost:null; }
+function canAdvance(){ const c=ageCost(); return !!c && canAfford(c); }
+function unlockedUnits(){ return UNIT_KEYS.filter(k=>UNITS[k].age<=state.age); }
+function hasBarracks(){ return cnt('barracks')>0; }
+// Battle math: attack & hp pools lifted by tech; power is the single matchmaking number.
+function armyAtk(){ let a=0; for(const k of UNIT_KEYS) a+=state.army[k]*UNITS[k].atk; return Math.round(a*(1+techVal('atk'))); }
+function armyHp(){ let h=0; for(const k of UNIT_KEYS) h+=state.army[k]*UNITS[k].hp; return Math.round(h*(1+techVal('hp'))); }
+function armyPower(){ return Math.round(armyAtk()*2 + armyHp()*0.5); }
+// Defense adds Barracks fortification (levels) on top of the standing army.
+function defPower(){ return Math.round(armyPower()*0.9 + totalLevels('barracks')*40*(1+techVal('hp'))); }
+function lootMult(){ return 1+techVal('loot'); }
 function sellPrice(r){ return BASE_PRICE[r]*state.market[r].mult*(1+sellBonus()); }
 function buyPrice(r){ return BASE_PRICE[r]*state.market[r].mult*BUY_SPREAD; }
 
@@ -481,17 +630,18 @@ function costHTML(c){
 
 /* ============ sim ============ */
 function prod(dt){
-  const add={wood:0,stone:0,gold:0}; let ton=0;
+  const add={wood:0,stone:0,gold:0,food:0}; let ton=0;
   for(const b of state.buildings){
     const d=B[b.type];
-    if(d.kind==='prod') add[d.res]+=d.rate*b.level*dt*mpBuff;
+    if(d.kind==='prod') add[d.res]+=d.rate*b.level*dt*gatherMult(d.res);
     else if(d.kind==='market') ton+=MARKET_PASSIVE*b.level*dt;
   }
+  for(const r of RES) add[r]+=state.vil[r]*VIL_RATE[r]*dt*gatherMult(r);   // villagers gather on top of buildings
   const cap=getCaps();
-  for(const r of ['wood','stone','gold']) state.res[r]=Math.min(cap[r],state.res[r]+add[r]);
+  for(const r of RES) state.res[r]=Math.min(cap[r],state.res[r]+add[r]);
   state.res.ton+=ton;
   state.stakePending+=state.staked*yieldPerMin()*(dt/60);
-  for(const r of ['wood','stone','gold']){ const m=state.market[r]; m.mult=1+(m.mult-1)*Math.pow(0.97,dt); }
+  for(const r of RES){ const m=state.market[r]; m.mult=1+(m.mult-1)*Math.pow(0.97,dt); }
   return {add,ton};
 }
 function updatePeaks(){ state.peak.gold=Math.max(state.peak.gold,state.res.gold); state.peak.ton=Math.max(state.peak.ton,state.res.ton); }
@@ -500,6 +650,8 @@ function addLog(msg,hl){ state.log.unshift({t:Date.now(),msg,hl:!!hl}); if(state
 
 /* ============ actions ============ */
 function doBuild(type){
+  if(!B[type]) return;
+  if((B[type].age||0)>state.age){ toast(`Unlocks in the ${AGES[B[type].age].name}.`); return; }
   if(state.buildings.length>=state.plots){ toast('No empty plots — buy land first.'); return; }
   const c=getBuildCost(type);
   if(!canAfford(c)){ toast('Not enough resources for that.'); return; }
@@ -568,6 +720,92 @@ function doClaimQuest(id){
   addLog(`✅ Contract complete: ${q.name}.`,1); save(); renderTab(); updateBadge();
   toast(`Contract reward: ${Object.keys(q.reward).map(k=>(k==='ton'?fmtTon(q.reward[k]):fmtRes(q.reward[k]))+ICO[k]).join(' ')}`);
 }
+function lootStr(o){ return Object.keys(o).filter(k=>o[k]>0).map(k=>(k==='ton'?fmtTon(o[k]):fmtRes(o[k]))+ICO[k]).join(' '); }
+
+/* ---- AoE actions: ages, villagers, tech, military ---- */
+function advanceAge(){
+  const c=ageCost(); if(!c) return;
+  if(!canAfford(c)){ toast('Not enough resources to advance the age.'); return; }
+  pay(c); state.age++; const a=AGES[state.age];
+  addLog(`${a.ico} Advanced to the ${a.name}! Empire production +${Math.round((a.mult-1)*100)}%.`,1);
+  toast(`Welcome to the ${a.name}!`,'ton'); save(); renderAll();
+}
+function trainVillager(n){
+  n=n||1; let made=0;
+  for(let i=0;i<n;i++){ if(popUsed()>=popCap()) break; const c=vilCost(); if(!canAfford(c)) break; pay(c); state.vil.idle++; made++; }
+  if(made===0){ toast(popUsed()>=popCap()?'Population cap reached — build Houses.':'Not enough food to raise a villager.'); return; }
+  save(); renderTab();
+}
+function assignVil(res,delta){
+  delta=+delta;
+  if(delta>0){ const n=Math.min(delta,state.vil.idle); if(n<=0){ toast('No idle villagers to assign.'); return; } state.vil.idle-=n; state.vil[res]+=n; }
+  else { const n=Math.min(-delta,state.vil[res]); if(n<=0) return; state.vil[res]-=n; state.vil.idle+=n; }
+  save(); renderTab();
+}
+function researchTech(id){
+  const t=TECH.find(x=>x.id===id); if(!t||state.tech[id]) return;
+  if(state.age<t.age){ toast(`Reach the ${AGES[t.age].name} first.`); return; }
+  if(!canAfford(t.cost)){ toast(`Not enough resources to research ${t.name}.`); return; }
+  pay(t.cost); state.tech[id]=true;
+  addLog(`${t.ico} Researched ${t.name} — ${t.desc}`,1); toast(`Researched ${t.name}.`); save(); renderAll();
+}
+function trainUnit(key,qty){
+  const u=UNITS[key]; if(!u) return;
+  if(!hasBarracks()){ toast('Build a Barracks first.'); return; }
+  if(state.age<u.age){ toast(`Reach the ${AGES[u.age].name} to train ${u.name}.`); return; }
+  qty=qty||1; let made=0;
+  for(let i=0;i<qty;i++){ if(popUsed()+u.pop>popCap()) break; if(!canAfford(u.cost)) break; pay(u.cost); state.army[key]++; made++; }
+  if(made===0){ toast(popUsed()+u.pop>popCap()?'Population cap reached — build Houses.':`Not enough resources for a ${u.name}.`); return; }
+  save(); renderTab();
+}
+
+/* ---- combat core ---- */
+function battleOutcome(myPow,enemyPow){
+  const ratio=enemyPow/(myPow+enemyPow+1);
+  const win=Math.random()<(myPow+1)/(myPow+enemyPow+2);
+  let frac=win ? 0.1+ratio*0.4 : 0.38+ratio*0.45;
+  frac=clamp(frac+(Math.random()-0.5)*0.12,0.03,0.95);
+  return {win,frac};
+}
+function applyCasualties(frac){
+  let lost=0;
+  for(const k of UNIT_KEYS){ const n=state.army[k]; if(!n) continue; const l=Math.min(n,Math.round(n*frac)); state.army[k]-=l; lost+=l; }
+  return lost;
+}
+function scoutRivals(){
+  const base=Math.max(50, armyPower()*0.6 + state.age*130 + 70);
+  const n=3+Math.floor(Math.random()*2), rivals=[];
+  for(let i=0;i<n;i++){
+    const diff=0.45+Math.random()*1.15;
+    const power=Math.round(base*diff+Math.random()*40);
+    const scale=power/80, loot={gold:Math.round((18+scale*24)*(0.7+Math.random()*0.6))};
+    if(Math.random()<0.75) loot.food=Math.round((28+scale*30)*(0.6+Math.random()*0.8));
+    if(Math.random()<0.55) loot.wood=Math.round((28+scale*34)*(0.6+Math.random()*0.8));
+    if(Math.random()<0.4)  loot.stone=Math.round((20+scale*28)*(0.6+Math.random()*0.8));
+    if(Math.random()<0.22) loot.ton=Math.round(scale*0.55*100)/100;
+    rivals.push({name:RIVAL_NAMES[Math.floor(Math.random()*RIVAL_NAMES.length)], power, loot});
+  }
+  state.rivals=rivals; state._rivalT=0;
+}
+function ensureRivals(){ if(!state.rivals.length) scoutRivals(); }
+function attackRival(idx){
+  const r=state.rivals[idx]; if(!r) return;
+  if(armyPower()<=0){ toast('Train soldiers at the Barracks first.'); return; }
+  const {win,frac}=battleOutcome(armyPower(),r.power);
+  const lost=applyCasualties(frac); state.battles++;
+  if(win){
+    state.wins++; const loot={}; for(const k in r.loot) loot[k]=Math.round((r.loot[k]*lootMult())*100)/100;
+    grant(loot); state.rivals.splice(idx,1);
+    addLog(`⚔️ Victory over ${r.name}! Looted ${lootStr(loot)||'nothing of value'}. Lost ${lost} unit${lost===1?'':'s'}.`,1);
+    toast(`Victory! Looted ${lootStr(loot)||'—'}`,'ton');
+  } else {
+    r.power=Math.round(r.power*0.88);
+    addLog(`🏳️ ${r.name} repelled your assault — ${lost} unit${lost===1?'':'s'} lost, no loot.`);
+    toast(`Your army was beaten back by ${r.name}.`);
+  }
+  save(); renderTab();
+}
+
 function doReset(){
   if(!armedReset){ armedReset=true; armedResetT=Date.now(); const b=$('#resetBtn'); b.textContent='Confirm wipe?'; b.style.color='var(--bad)';
     clearTimeout(doReset._t); doReset._t=setTimeout(()=>{armedReset=false; const bb=$('#resetBtn'); if(bb){bb.textContent='Reset'; bb.style.color='';}},3500); return; }
@@ -592,20 +830,29 @@ function updateLedger(){
     </div></div>`;
   };
   $('#ledger').innerHTML =
-    bar('wood','w')+bar('stone','s')+bar('gold','g')+
+    bar('wood','w')+bar('stone','s')+bar('gold','g')+bar('food','f')+
     `<div class="chip ton"><span class="ico">🔗</span><div class="meta"><span class="lbl">LINK balance</span><span class="val">${fmtTon(state.res.ton)}</span></div></div>`+
-    `<div class="chip"><span class="ico">🏦</span><div class="meta"><span class="lbl">Staked</span><span class="val">${fmtTon(state.staked)}</span></div></div>`+
+    `<div class="chip"><span class="ico">${AGES[state.age].ico}</span><div class="meta"><span class="lbl">Age</span><span class="val">${AGES[state.age].name}</span></div></div>`+
+    `<div class="chip"><span class="ico">👥</span><div class="meta"><span class="lbl">Population</span><span class="val">${popUsed()} / ${popCap()}</span></div></div>`+
     `<div class="chip"><span class="ico">🗺️</span><div class="meta"><span class="lbl">Plots</span><span class="val">${state.buildings.length} / ${state.plots}</span></div></div>`;
 }
 function updateTabs(){ document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===state.ui.tab)); }
 function updateBadge(){
   const n=QUESTS.filter(q=>q.done(state)&&!state.claimed[q.id]).length;
-  const b=$('#qbadge'); if(!b)return; if(n>0){b.hidden=false;b.textContent=n;} else b.hidden=true;
+  const b=$('#qbadge'); if(b){ if(n>0){b.hidden=false;b.textContent=n;} else b.hidden=true; }
+  // war badge: an easy AI win is available right now
+  const wb=$('#warbadge'); if(wb){
+    const myPow=armyPower();
+    const winnable=myPow>0 && state.rivals.some(r=>(myPow+1)/(myPow+r.power+2)>=0.6);
+    if(winnable){ wb.hidden=false; } else wb.hidden=true;
+  }
 }
 
 function renderTab(){
   const t=state.ui.tab, el=$('#tab');
   if(t==='empire') el.innerHTML=renderEmpire();
+  else if(t==='town') el.innerHTML=renderTown();
+  else if(t==='war') el.innerHTML=renderWar();
   else if(t==='market') el.innerHTML=renderMarket();
   else if(t==='stake') el.innerHTML=renderStake();
   else if(t==='alliance'){ renderMPTab(); return; }
@@ -627,13 +874,29 @@ function renderEmpire(){
       <button class="btn sm primary" data-action="dismissintro">Got it — let's build</button>
     </div>`;
   }
-  const add={wood:0,stone:0,gold:0}; let tps=0;
-  for(const b of state.buildings){ const d=B[b.type]; if(d.kind==='prod')add[d.res]+=d.rate*b.level; else if(d.kind==='market')tps+=MARKET_PASSIVE*b.level; }
+  const add={wood:0,stone:0,gold:0,food:0}; let tps=0;
+  for(const b of state.buildings){ const d=B[b.type]; if(d.kind==='prod')add[d.res]+=d.rate*b.level*gatherMult(d.res); else if(d.kind==='market')tps+=MARKET_PASSIVE*b.level; }
+  for(const r of RES) add[r]+=state.vil[r]*VIL_RATE[r]*gatherMult(r);
   const prodbar=`<div class="prodbar">
     <div class="p">🪵 <b>+${fmtRate(add.wood)}</b>/s</div>
     <div class="p">🪨 <b>+${fmtRate(add.stone)}</b>/s</div>
     <div class="p">🪙 <b>+${fmtRate(add.gold)}</b>/s</div>
+    <div class="p">🌾 <b>+${fmtRate(add.food)}</b>/s</div>
     <div class="p">🔗 <b>+${fmtRate(tps)}</b>/s <span style="color:var(--dim)">trade</span></div>
+  </div>`;
+
+  const nextAge=state.age<AGES.length-1?AGES[state.age+1]:null, aCost=ageCost();
+  const ageBanner=`<div class="panel age-banner">
+    <div class="ab-now"><span class="ab-ico">${AGES[state.age].ico}</span>
+      <div><div class="ab-k">Current era</div><div class="ab-nm">${AGES[state.age].name}</div>
+        <div class="ab-sub">Empire production ×${ageMult().toFixed(2)}</div></div></div>
+    ${nextAge
+      ? `<div class="ab-next">
+          <div class="ab-k">Advance to</div><div class="ab-nm">${nextAge.ico} ${nextAge.name}</div>
+          <div class="cost">${costHTML(aCost)}</div>
+          <button class="btn ${canAdvance()?'primary':''}" data-action="advance-age" ${canAdvance()?'':'disabled'}>Advance Age</button>
+        </div>`
+      : `<div class="ab-next"><div class="ab-nm" style="color:var(--gold)">👑 Imperial — the final age</div></div>`}
   </div>`;
 
   let cells='';
@@ -645,6 +908,8 @@ function renderEmpire(){
     else if(d.kind==='cap'){ const c=WH_ADD; detail=`<div class="out">+${fmtRes(c.wood*b.level)}${ICO.wood} +${fmtRes(c.stone*b.level)}${ICO.stone} +${fmtRes(c.gold*b.level)}${ICO.gold} cap</div>`; }
     else if(d.kind==='market') detail=`<div class="out">+${fmtRate(MARKET_PASSIVE*b.level)}🔗/s · +${Math.round(5*b.level)}% sell</div>`;
     else if(d.kind==='vault') detail=`<div class="out">Yield +${(VAULT_RATE*b.level*100).toFixed(1)}%/min</div>`;
+    else if(d.kind==='pop') detail=`<div class="out">+${POP_PER_HOUSE*b.level} 👥 population cap</div>`;
+    else if(d.kind==='mil') detail=`<div class="out">Trains soldiers · +${Math.round(40*b.level*(1+techVal('hp')))} 🛡️ defense</div>`;
 
     let footer;
     if(state.ui.pendingRemove===i){
@@ -664,7 +929,7 @@ function renderEmpire(){
   for(let i=0;i<empties;i++) cells+=`<div class="plot empty" data-action="openbuild"><div class="plus">+</div><div>Empty plot<br>Build here</div></div>`;
 
   const lc=landCost(), canLand=state.res.ton>=lc-1e-9;
-  return `${intro}<div class="panel">
+  return `${intro}${ageBanner}<div class="panel">
     <div class="pane-head"><div><h2>Your Empire</h2><div class="sub">${state.buildings.length} buildings across ${state.plots} plots</div></div>
       <button class="btn ${canLand?'ton':''}" data-action="buyland" ${canLand?'':'disabled'}>🗺️ Buy Land — ${fmtTon(lc)}🔗</button></div>
     ${prodbar}
@@ -672,8 +937,154 @@ function renderEmpire(){
   </div>`;
 }
 
+/* ============ Town: population, villagers, technology ============ */
+function renderTown(){
+  const used=popUsed(), cap=popCap(), vc=vilCost();
+  const canTrain=used<cap && canAfford(vc);
+  // villager assignment steppers
+  const assignRow=r=>{
+    const n=state.vil[r], rate=VIL_RATE[r]*gatherMult(r);
+    return `<div class="vil-row">
+      <span class="vr-ico">${ICO[r]}</span>
+      <div class="vr-meta"><span class="vr-nm">${r[0].toUpperCase()+r.slice(1)}</span>
+        <span class="vr-sub">${n} assigned · +${fmtRate(n*rate)}/s</span></div>
+      <div class="vr-ctl">
+        <button class="btn sm ghost" data-action="vil-unassign" data-r="${r}" ${n>0?'':'disabled'}>−</button>
+        <span class="vr-n num">${n}</span>
+        <button class="btn sm ghost" data-action="vil-assign" data-r="${r}" ${state.vil.idle>0?'':'disabled'}>+</button>
+      </div>
+    </div>`;
+  };
+  const pop=`<div class="panel">
+    <div class="pane-head"><div><h2>Population</h2><div class="sub">Villagers &amp; soldiers share your population cap — build Houses to raise it.</div></div>
+      <div class="pop-fig"><span class="num">${used}</span><span class="dim"> / ${cap}</span> 👥</div></div>
+    <div class="popbar"><i style="width:${Math.min(100,used/cap*100)}%"></i></div>
+    <div class="town-stats">
+      <div class="stat"><div class="k">Idle villagers</div><div class="v">${state.vil.idle}</div></div>
+      <div class="stat"><div class="k">Gatherers</div><div class="v">${state.vil.wood+state.vil.stone+state.vil.gold+state.vil.food}</div></div>
+      <div class="stat"><div class="k">Soldiers (pop)</div><div class="v">${armyPop()}</div></div>
+    </div>
+    <div class="stake-form" style="margin-top:4px">
+      <button class="btn ${canTrain?'primary':''}" data-action="train-vil" ${canTrain?'':'disabled'}>Raise Villager · ${lootStr(vc)}</button>
+      <button class="btn sm ghost" data-action="train-vil" data-n="5" ${canTrain?'':'disabled'}>+5</button>
+      <span class="sub" style="align-self:center">${used>=cap?'<b style="color:var(--bad)">Population full</b>':'Idle villagers do nothing — assign them below.'}</span>
+    </div>
+  </div>`;
+  const assign=`<div class="panel">
+    <div class="pane-head"><div><h2>Assign Villagers</h2><div class="sub">Gatherers add to production on top of your buildings.</div></div></div>
+    ${RES.map(assignRow).join('')}
+  </div>`;
+  // technology
+  const techCards=TECH.map(t=>{
+    const done=!!state.tech[t.id], locked=state.age<t.age, can=!done&&!locked&&canAfford(t.cost);
+    let foot;
+    if(done) foot=`<span class="done-tag">Researched ✓</span>`;
+    else if(locked) foot=`<span class="lock-note">🔒 ${AGES[t.age].name}</span>`;
+    else foot=`<div class="cost">${costHTML(t.cost)}</div><button class="btn sm ${can?'primary':''}" data-action="research" data-id="${t.id}" ${can?'':'disabled'}>Research</button>`;
+    return `<div class="tcard${done?' done':''}${locked?' lock':''}">
+      <div class="top"><span class="bico">${t.ico}</span><span class="bn">${t.name}</span></div>
+      <div class="bdesc">${t.desc}</div>
+      <div class="tfoot">${foot}</div>
+    </div>`;
+  }).join('');
+  const tech=`<div class="panel">
+    <div class="pane-head"><div><h2>Technology</h2><div class="sub">Permanent upgrades, unlocked as your empire ages.</div></div></div>
+    <div class="tgrid">${techCards}</div>
+  </div>`;
+  return pop+assign+tech;
+}
+
+/* ============ War: army, AI rivals, PvP raids ============ */
+function renderWar(){
+  ensureRivals();
+  const myPow=armyPower();
+  const army=`<div class="panel">
+    <div class="pane-head"><div><h2>Your Army</h2><div class="sub">Trained at the Barracks. Soldiers take population.</div></div>
+      <div class="pop-fig"><span class="num">${myPow}</span> ⚔ power</div></div>
+    <div class="town-stats">
+      <div class="stat accent"><div class="k">Attack</div><div class="v">${armyAtk()}</div></div>
+      <div class="stat"><div class="k">Hit points</div><div class="v">${armyHp()}</div></div>
+      <div class="stat yield"><div class="k">Defense</div><div class="v">${defPower()}</div></div>
+    </div>
+    ${(state.battles>0)?`<div class="mnote">Battles fought: <b>${state.battles}</b> · Victories: <b>${state.wins}</b> (${Math.round(state.wins/state.battles*100)}% win rate)</div>`:''}
+  </div>`;
+
+  if(!hasBarracks()){
+    return army+`<div class="panel"><div class="locked"><div class="big">⚔️</div>
+      <p>Build a <b>Barracks</b> on an empty plot ${state.age<1?`(reach the <b>Feudal Age</b> first)`:''} to train soldiers and wage war.</p></div></div>`;
+  }
+
+  const unitCards=unlockedUnits().map(k=>{
+    const u=UNITS[k], can=popUsed()+u.pop<=popCap()&&canAfford(u.cost);
+    return `<div class="ucard">
+      <div class="top"><span class="bico">${u.ico}</span><span class="bn">${u.name}</span><span class="upop">${u.pop}👥</span></div>
+      <div class="bdesc">⚔ ${u.atk} atk · ❤ ${u.hp} hp · <b class="num">${state.army[k]}</b> trained</div>
+      <div class="cost">${costHTML(u.cost)}</div>
+      <div class="row">
+        <button class="btn sm ${can?'primary':''}" data-action="train-unit" data-k="${k}" ${can?'':'disabled'}>Train</button>
+        <button class="btn sm ghost" data-action="train-unit" data-k="${k}" data-n="5" ${can?'':'disabled'}>×5</button>
+      </div>
+    </div>`;
+  }).join('');
+  const locked=UNIT_KEYS.filter(k=>UNITS[k].age>state.age).map(k=>{
+    const u=UNITS[k]; return `<div class="ucard lock"><div class="top"><span class="bico">${u.ico}</span><span class="bn">${u.name}</span></div><div class="lock-note">🔒 ${AGES[u.age].name}</div></div>`;
+  }).join('');
+  const train=`<div class="panel">
+    <div class="pane-head"><div><h2>Train Soldiers</h2><div class="sub">Population ${popUsed()} / ${popCap()}</div></div></div>
+    <div class="tgrid">${unitCards}${locked}</div>
+  </div>`;
+
+  // AI rivals
+  const rivalRows=state.rivals.map((r,i)=>{
+    const odds=Math.round((myPow+1)/(myPow+r.power+2)*100);
+    const oc=odds>=60?'good':odds>=35?'mid':'bad';
+    return `<div class="rival">
+      <div class="rv-id"><span class="rv-ico">🏴‍☠️</span><div><div class="rv-nm">${esc(r.name)}</div>
+        <div class="rv-sub">⚔ ${r.power} power · loot ${lootStr(r.loot)||'—'}</div></div></div>
+      <span class="odds ${oc}">${odds}% win</span>
+      <button class="btn sm primary" data-action="attack-rival" data-i="${i}" ${myPow>0?'':'disabled'}>Attack</button>
+    </div>`;
+  }).join('') || `<p style="color:var(--muted);font-size:13px">No targets scouted — send out a scout.</p>`;
+  const rivals=`<div class="panel">
+    <div class="pane-head"><div><h2>Raid Rivals</h2><div class="sub">AI war-bands. Win to loot resources; lose and your army takes casualties.</div></div>
+      <button class="btn sm" data-action="scout">🔭 Scout new targets</button></div>
+    <div class="rival-list">${rivalRows}</div>
+  </div>`;
+
+  return army+train+rivals+renderPvP(myPow);
+}
+
+// PvP section depends on the multiplayer runtime; degrades to a notice when offline.
+function renderPvP(myPow){
+  if(mpState!=='ready'){
+    return `<div class="panel"><div class="pane-head"><h2>PvP Raids</h2></div>
+      <div class="locked"><div class="big">🛰️</div><p>Open this artifact <b>signed in to claude.ai</b> to raid other players' empires for LINK.</p></div></div>`;
+  }
+  const now=Date.now();
+  const targets=mpEmpires
+    .filter(e=>e.id&&e.id!==myId)
+    .filter(e=>!(state.allianceId&&e.allianceId===state.allianceId))   // don't raid allies
+    .sort((a,b)=>(b.netWorth||0)-(a.netWorth||0)).slice(0,20);
+  const rows=targets.map(e=>{
+    const dp=+e.defPower||Math.round((+e.netWorth||0)*0.4);
+    const shielded=(+e.shieldUntil||0)>now;
+    const odds=Math.round((myPow+1)/(myPow+dp+2)*100);
+    const oc=odds>=60?'good':odds>=35?'mid':'bad';
+    const online=(now-(+e.lastSeen||0))<120000;
+    return `<div class="rival">
+      <div class="rv-id"><span class="dot ${online?'on':''}"></span><div><div class="rv-nm">${esc(e.name||'Empire')}${e.age!=null?` <span class="rv-age">${AGES[clamp(e.age|0,0,AGES.length-1)].ico}</span>`:''}</div>
+        <div class="rv-sub">🛡️ ${dp} def · 💰 ${fmtTon(e.ton||0)}🔗</div></div></div>
+      ${shielded?`<span class="odds mid">🛡️ shielded</span>`
+        :`<span class="odds ${oc}">${odds}% win</span>`}
+      <button class="btn sm primary" data-action="raid" data-id="${esc(e.id)}" ${(myPow>0&&!shielded&&!mpReadOnly)?'':'disabled'}>Raid</button>
+    </div>`;
+  }).join('') || `<p style="color:var(--muted);font-size:13px">No rival empires in range yet — check back as more players join.</p>`;
+  return `<div class="panel"><div class="pane-head"><div><h2>PvP Raids</h2><div class="sub">Raid real empires for a cut of their LINK. Winners take loot; a raid shields the target for 10 min.</div></div></div>
+    <div class="rival-list">${rows}</div></div>`;
+}
+
 function renderMarket(){
-  const rows=['wood','stone','gold'].map(r=>{
+  const rows=RES.map(r=>{
     const m=state.market[r].mult, pct=(m-1)*100;
     const tcls=pct>1?'up':pct<-1?'dn':'flat', arrow=pct>1?'▲':pct<-1?'▼':'—';
     const held=Math.floor(state.res[r]);
@@ -771,7 +1182,13 @@ function updateStakeLive(){
 function openModal(){
   const avail=state.plots-state.buildings.length;
   const cards=Object.keys(B).map(type=>{
-    const d=B[type], c=getBuildCost(type), can=canAfford(c)&&avail>0;
+    const d=B[type], locked=(d.age||0)>state.age;
+    if(locked) return `<div class="bcard locked-card">
+      <div class="top"><span class="bico">${d.ico}</span><span class="bn">${d.name}</span></div>
+      <div class="bdesc">${d.desc}</div>
+      <div class="lock-note">🔒 Unlocks in the ${AGES[d.age].name}</div>
+    </div>`;
+    const c=getBuildCost(type), can=canAfford(c)&&avail>0;
     return `<div class="bcard">
       <div class="top"><span class="bico">${d.ico}</span><span class="bn">${d.name}</span></div>
       <div class="bdesc">${d.desc}</div>
@@ -804,6 +1221,15 @@ function onClick(e){
     case 'remove-yes': doRemove(+t.dataset.i); break;
     case 'remove-no': state.ui.pendingRemove=-1; renderTab(); break;
     case 'buyland': buyLand(); break;
+    case 'advance-age': advanceAge(); break;
+    case 'train-vil': trainVillager(t.dataset.n?+t.dataset.n:1); break;
+    case 'vil-assign': assignVil(t.dataset.r, +1); break;
+    case 'vil-unassign': assignVil(t.dataset.r, -1); break;
+    case 'research': researchTech(t.dataset.id); break;
+    case 'train-unit': trainUnit(t.dataset.k, t.dataset.n?+t.dataset.n:1); break;
+    case 'scout': scoutRivals(); renderTab(); break;
+    case 'attack-rival': attackRival(+t.dataset.i); break;
+    case 'raid': raidPlayer(t.dataset.id); break;
     case 'sell': doSell(t.dataset.r, t.dataset.q==='all'?'all':+t.dataset.q); break;
     case 'buy': doBuy(t.dataset.r, +t.dataset.q); break;
     case 'stake-input': { const v=parseFloat($('#stakeInput').value); doStake(isFinite(v)?v:0); break; }
@@ -862,12 +1288,12 @@ function tick(){
 function applyOffline(){
   const elapsed=clamp((Date.now()-state.lastSave)/1000,0,OFFLINE_MAX);
   if(elapsed<60) { state._lastTick=Date.now(); return; }
-  const before={wood:state.res.wood,stone:state.res.stone,gold:state.res.gold,ton:state.res.ton,pend:state.stakePending};
+  const before={wood:state.res.wood,stone:state.res.stone,gold:state.res.gold,food:state.res.food,ton:state.res.ton,pend:state.stakePending};
   prod(elapsed); updatePeaks(); state._lastTick=Date.now();
-  const dW=state.res.wood-before.wood, dS=state.res.stone-before.stone, dG=state.res.gold-before.gold;
+  const dW=state.res.wood-before.wood, dS=state.res.stone-before.stone, dG=state.res.gold-before.gold, dF=state.res.food-before.food;
   const dT=state.res.ton-before.ton, dY=state.stakePending-before.pend;
   const h=Math.floor(elapsed/3600), m=Math.floor(elapsed%3600/60);
-  const parts=[]; if(dW>1)parts.push(`+${fmtRes(dW)}🪵`); if(dS>1)parts.push(`+${fmtRes(dS)}🪨`); if(dG>1)parts.push(`+${fmtRes(dG)}🪙`);
+  const parts=[]; if(dW>1)parts.push(`+${fmtRes(dW)}🪵`); if(dS>1)parts.push(`+${fmtRes(dS)}🪨`); if(dG>1)parts.push(`+${fmtRes(dG)}🪙`); if(dF>1)parts.push(`+${fmtRes(dF)}🌾`);
   if(dT>0.01)parts.push(`+${fmtTon(dT)}🔗`); if(dY>0.01)parts.push(`+${fmtTon(dY)}🔗 yield`);
   addLog(`🌙 Away ${h>0?h+'h ':''}${m}m — ${parts.length?parts.join('  '):'quiet while you were gone'}.`,1);
   setTimeout(()=>toast(`While you were away (${h>0?h+'h ':''}${m}m): ${parts.length?parts.join('  '):'all quiet'}`,'ton'),400);
@@ -879,7 +1305,7 @@ let mpState='loading';          // loading | ready | off
 let mpReadOnly=false;           // viewer may read shared data but not write
 let mpEmpires=[], mpAlliances=[];
 let mpBuff=1;                   // alliance production multiplier (1 = none)
-let mpUnsub1=null, mpUnsub2=null, mpSyncTimer=null;
+let mpUnsub1=null, mpUnsub2=null, mpUnsubRaids=null, mpSyncTimer=null;
 let mpPushing=false, mpPushQueued=false, lastPushNW=-999;
 const mpUI={cname:'',ctag:'',cgoal:'100',contrib:'10',chat:''};
 let mpChat=[], myMsgs=[], mpUnsubChat=null, chatAid=null;
@@ -908,9 +1334,10 @@ function nextTier(t){ for(const x of TIERS) if(x.min>t) return x; return null; }
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function computeNetWorth(){
-  const rv=state.res.wood*BASE_PRICE.wood+state.res.stone*BASE_PRICE.stone+state.res.gold*BASE_PRICE.gold;
+  let rv=0; for(const r of RES) rv+=state.res[r]*BASE_PRICE[r];
   let bv=0; for(const b of state.buildings) bv+=b.level*4;
-  return Math.round((state.res.ton+state.staked+rv+bv+state.plots*3)*100)/100;
+  const army=armyPower()*0.05, vil=vilCount()*1.5, age=state.age*15;
+  return Math.round((state.res.ton+state.staked+rv+bv+state.plots*3+army+vil+age)*100)/100;
 }
 
 async function initMP(){
@@ -937,7 +1364,7 @@ function mpSubscribe(){
   try{
     if(mpUnsub1) mpUnsub1();
     mpUnsub1 = db.collection('empires').orderBy('netWorth','desc').limit(200).onSnapshot(
-      snap=>{ mpEmpires=snap.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()})); recomputeBuff(); if(state.ui.tab==='alliance') renderMPTab(); },
+      snap=>{ mpEmpires=snap.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()})); recomputeBuff(); if(state.ui.tab==='alliance') renderMPTab(); else if(state.ui.tab==='war') renderTab(); },
       _e=>{});
   }catch(e){}
   try{
@@ -946,6 +1373,66 @@ function mpSubscribe(){
       snap=>{ mpAlliances=snap.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()})); if(state.ui.tab==='alliance') renderMPTab(); },
       _e=>{});
   }catch(e){}
+  try{
+    if(mpUnsubRaids) mpUnsubRaids();
+    mpUnsubRaids = db.collection('raids').limit(200).onSnapshot(
+      snap=>{ applyIncomingRaids(snap.docs); },
+      _e=>{});
+  }catch(e){}
+}
+
+// Apply any raids launched against me that I haven't processed yet (works across sessions).
+function applyIncomingRaids(docs){
+  if(!myId||!Array.isArray(docs)) return;
+  let changed=false, totalLost=0, lastBy='a rival';
+  for(const d of docs){
+    if(!d.exists) continue; const data=d.data()||{}; const arr=Array.isArray(data.raids)?data.raids:[];
+    for(const r of arr){
+      if(!r||r.targetId!==myId||!r.id||state.raidsApplied[r.id]) continue;
+      state.raidsApplied[r.id]=1;
+      if(r.win && +r.lootTon>0){ const loss=Math.min(state.res.ton,+r.lootTon||0); state.res.ton-=loss; totalLost+=loss; lastBy=r.by||lastBy; }
+      state.shieldUntil=Math.max(state.shieldUntil||0,(+r.ts||Date.now())+SHIELD_MS);
+      changed=true;
+    }
+  }
+  if(changed){
+    const keys=Object.keys(state.raidsApplied); if(keys.length>400){ for(const k of keys.slice(0,keys.length-400)) delete state.raidsApplied[k]; }
+    if(totalLost>0){ addLog(`🛡️ Raided by ${esc(lastBy)} — lost ${fmtTon(totalLost)}🔗. Shield up for 10 min.`,1); try{toast(`Raided! Lost ${fmtTon(totalLost)}🔗`,'ton');}catch(_){} }
+    save(); pushEmpire(true); updateLedger(); if(state.ui.tab==='war') renderTab();
+  }
+}
+
+// Launch a raid on another player's empire. Loot credits me now; the target's loss
+// and a protective shield are recorded in raids/<my id> for their client to apply.
+async function raidPlayer(targetId){
+  if(mpState!=='ready'||!db||!myId){ toast('PvP unavailable right now.'); return; }
+  if(mpReadOnly){ toast('View-only access — can\'t raid.'); return; }
+  if(!targetId||targetId===myId) return;
+  const tgt=mpEmpires.find(e=>e.id===targetId); if(!tgt){ toast('Target not found.'); return; }
+  const now=Date.now();
+  if((+tgt.shieldUntil||0)>now){ toast('That empire is shielded right now.'); return; }
+  const myPow=armyPower(); if(myPow<=0){ toast('Train soldiers before raiding.'); return; }
+  const dp=+tgt.defPower||Math.round((+tgt.netWorth||0)*0.4);
+  const {win,frac}=battleOutcome(myPow,dp);
+  const lost=applyCasualties(frac); state.battles++;
+  let lootTon=0;
+  if(win){
+    state.wins++;
+    lootTon=Math.max(0,Math.round(Math.min((+tgt.ton||0)*0.15, myPow*0.2+5)*lootMult()*100)/100);
+    if(lootTon>0) state.res.ton+=lootTon;
+    addLog(`⚔️ Raided ${esc(tgt.name||'an empire')} and seized ${fmtTon(lootTon)}🔗! Lost ${lost} unit${lost===1?'':'s'}.`,1);
+    toast(`Raid won! +${fmtTon(lootTon)}🔗`,'ton');
+  } else {
+    addLog(`🏳️ Raid on ${esc(tgt.name||'an empire')} failed — ${lost} unit${lost===1?'':'s'} lost.`);
+    toast(`Your raid was repelled by ${esc(tgt.name||'their garrison')}.`);
+  }
+  try{
+    const ref=db.doc('raids/'+myId); const snap=await ref.get(); const body=(snap.exists&&snap.data())||{};
+    const list=Array.isArray(body.raids)?body.raids:[];
+    list.push({id:myId+'_'+now.toString(36)+Math.floor(Math.random()*1e4).toString(36), targetId, by:String(state.name||'Empire').slice(0,32), ts:now, lootTon:win?lootTon:0, win});
+    await ref.set({ownerId:myId, raids:list.slice(-20)});
+  }catch(e){ mpErr(e); }
+  save(); pushEmpire(true); renderTab();
 }
 
 /* Each member owns ONE document, chatmsgs/<their id>, holding their own messages.
@@ -1192,6 +1679,7 @@ async function pushEmpire(force){
       seasonId:(state.seasonId==null?currentSeason():state.seasonId),
       seasonContributed:Math.round((state.seasonContributed||0)*100)/100,
       lastSeason:state.lastSeason||null,
+      age:state.age, armyPower:armyPower(), defPower:defPower(), shieldUntil:state.shieldUntil||0,
       lastSeen:Date.now(),
     });
     mpReadOnly=false;
