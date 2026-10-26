@@ -10,10 +10,20 @@ resources, trade on a live market, stake and compete — solo or with others.
 
 ## Gameplay
 
-- **Resource chains** — Lumber Camps feed Quarries feed Gold Mines; production ticks every
-  second and is capped by Warehouses you build and upgrade.
-- **Land & buildings** — start on a few plots, buy more with LINK, and place six building types
-  with their own upgrade paths.
+- **Resource chains** — Lumber Camps, Quarries, Farms and Gold Mines produce wood, stone, food
+  and gold; production ticks every second and is capped by Warehouses you build and upgrade.
+- **Land & buildings** — start on a few plots, buy more with LINK, and place buildings (resource
+  camps, Houses, Warehouses, Marketplaces, a Barracks and a Staking Vault) with their own upgrade paths.
+- **Ages** — advance your empire from the Dark Age through Feudal, Castle and Imperial. Each age
+  costs resources, unlocks new buildings, units and technologies, and buffs all production.
+- **Villagers & population** — raise villagers with food and assign them to gather wood, stone,
+  gold or food on top of your buildings. Houses raise the population cap that villagers and
+  soldiers share.
+- **Technology** — a research tree of permanent bonuses (gathering, storage, army attack/defense,
+  battle loot, trade), unlocked age by age.
+- **Military & war** — train Militia, Archers, Knights and Cannons at the Barracks, then **raid AI
+  war-bands** for loot or launch **PvP raids** against other real empires for a cut of their LINK.
+  Losing a battle costs you casualties; being raided triggers a 10-minute defensive shield.
 - **Dynamic market** — buy and sell wood, stone and gold for LINK at prices that move with
   supply and demand; big sells push the price down before it drifts back.
 - **Staking** — build a Vault and stake LINK for live yield.
