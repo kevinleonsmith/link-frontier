@@ -48,6 +48,30 @@ player identity. Outside that runtime those APIs simply aren't present, so the g
 their absence and runs as a fully playable **single-player** experience — no errors, just no
 shared world.
 
+> **Enabling multiplayer on claude.ai.** The `db` and `user` capabilities are granted at
+> **publish time**, not in the HTML — so publishing `index.html` as-is leaves them undeclared and
+> the game silently runs solo. Publish it with these capabilities (everyone reads, each player
+> writes only their own `{self}` documents):
+>
+> ```json
+> {
+>   "db": { "rules": [
+>     { "path": "empires",        "read": "view", "write": "owner" }, { "path": "empires/{self}",   "write": "interact" },
+>     { "path": "alliances",      "read": "view", "write": "owner" }, { "path": "alliances/{self}", "write": "interact" },
+>     { "path": "chatmsgs",       "read": "view", "write": "owner" }, { "path": "chatmsgs/{self}",  "write": "interact" },
+>     { "path": "mod",            "read": "view", "write": "owner" }, { "path": "mod/{self}",       "write": "interact" },
+>     { "path": "raids",          "read": "view", "write": "owner" }, { "path": "raids/{self}",     "write": "interact" }
+>   ] },
+>   "user": {}
+> }
+> ```
+>
+> Writing shared data also needs the viewer to be a **Contributor or above**: the owner and
+> email-invited editors always can, and on a Team/Enterprise plan so can org members who can open
+> the artifact. View-only visitors (and, on a personal plan, public-link strangers) can watch the
+> leaderboards but can't join alliances, contribute, or raid — so cross-account PvP needs a shared
+> org or explicit editor access.
+
 ### Run locally
 
 Open `index.html` in any modern browser (double-click it, or serve the folder):
