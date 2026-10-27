@@ -10,6 +10,17 @@ resources, trade on a live market, stake and compete — solo or with others.
 
 ## Gameplay
 
+- **Villagers & population** — train villagers at the Town Center and assign them to food, wood,
+  stone or gold. Farms, Lumber Camps, Quarries and Mines double as drop sites that speed up the
+  villagers working that resource. Houses raise the population cap.
+- **Four ages** — advance from the Dark Age through the Feudal and Castle Ages to the Imperial Age.
+  Each age unlocks new buildings, units and technologies (Wheelbarrow, Loom, Forging, Masonry…).
+- **Armies with counters** — Barracks, Archery Range and Stable train six unit types in a
+  rock-paper-scissors system: spears beat cavalry, archers beat infantry, cavalry runs down archers.
+- **Raids & campaign** — from the Feudal Age, raiders attack your town (Watch Towers help defend).
+  You can also march on enemy camps for spoils. Raids only advance while the game is open, and
+  there's a Peaceful mode toggle.
+- **Wonder** — in the Imperial Age, raise a Wonder as the crowning monument.
 - **Resource chains** — Lumber Camps feed Quarries feed Gold Mines; production ticks every
   second and is capped by Warehouses you build and upgrade.
 - **Land & buildings** — start on a few plots, buy more with LINK, and place six building types

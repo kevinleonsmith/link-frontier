@@ -4,28 +4,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-/* Layout: a strategic command-console — sticky ledger bar over a dark navy field,
-   tabbed working panes (Empire grid / Market / Staking / Contracts), event ticker below.
-   Single committed dark theme (crypto terminal). */
+/* Layout: a frontier command post with a sticky ledger, tabbed working panes, and a dispatch log. */
 :root{
   color-scheme: dark;
-  --bg:#0a0e1e;
-  --bg-glow:#131a38;
-  --panel:#111830;
-  --card:#162143;
-  --card-2:#1b2a54;
-  --line:#28376b;
-  --line-soft:#1e2a52;
-  --fg:#eaeefc;
-  --muted:#8792c2;
-  --dim:#5e6aa0;
-  --gold:#f4b740;      /* empire / resources accent */
-  --ton:#5a7dff;       /* LINK currency accent (Chainlink-blue) */
-  --wood:#6fc08a;
-  --stone:#9fb0d4;
-  --oregold:#f4b740;
-  --good:#44d896;
-  --bad:#ff6b7d;
+  --bg:#101813;
+  --bg-glow:#19271d;
+  --panel:#18241c;
+  --card:#202f25;
+  --card-2:#293c2e;
+  --line:#405743;
+  --line-soft:#2d4032;
+  --fg:#edf2e8;
+  --muted:#a6b3a0;
+  --dim:#82917d;
+  --gold:#e7b45b;      /* empire / resources accent */
+  --ton:#78c6d1;       /* LINK currency accent */
+  --food:#e0c56e;
+  --wood:#91c58e;
+  --stone:#b9c5b2;
+  --oregold:#e7b45b;
+  --good:#78d39b;
+  --bad:#f07872;
   --r:14px;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   --disp:'Chakra Petch',system-ui,sans-serif;
@@ -35,8 +34,8 @@
 html,body{margin:0}
 body{
   background:
-    radial-gradient(1100px 620px at 78% -8%, rgba(90,125,255,.12), transparent 60%),
-    radial-gradient(900px 560px at 8% 2%, rgba(244,183,64,.08), transparent 55%),
+    radial-gradient(1000px 640px at 85% -12%, rgba(120,198,209,.11), transparent 62%),
+    radial-gradient(900px 580px at 6% 0%, rgba(231,180,91,.09), transparent 56%),
     var(--bg);
   color:var(--fg);
   font-family:var(--body);
@@ -79,7 +78,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .chip .meta{display:flex;flex-direction:column;min-width:0}
 .chip .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600}
 .chip .val{font-family:var(--mono);font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.chip.ton{border-color:rgba(90,125,255,.5);background:linear-gradient(160deg,rgba(90,125,255,.14),var(--card))}
+.chip.ton{border-color:rgba(120,198,209,.4);background:linear-gradient(160deg,rgba(120,198,209,.12),var(--card))}
 .chip.ton .val{color:var(--ton)}
 .chip.w .val{color:var(--wood)} .chip.s .val{color:var(--stone)} .chip.g .val{color:var(--oregold)}
 .capbar{height:3px;border-radius:2px;background:var(--line);margin-top:4px;overflow:hidden}
@@ -106,7 +105,7 @@ nav.tabs{display:flex;gap:6px;margin:14px 0 16px;flex-wrap:wrap}
 .btn:active:not(:disabled){transform:translateY(0)}
 .btn:disabled{opacity:.38;cursor:not-allowed}
 .btn.primary{background:var(--gold);color:#201604;border-color:var(--gold)}
-.btn.ton{background:linear-gradient(160deg,#5a7dff,#375bd2);color:#f3f6ff;border-color:var(--ton)}
+.btn.ton{background:linear-gradient(145deg,#79cbd5,#4f9eaa);color:#10201e;border-color:var(--ton)}
 .btn.ghost{background:transparent}
 .btn.sm{padding:6px 10px;font-size:12px}
 .btn.danger:hover:not(:disabled){border-color:var(--bad);color:var(--bad)}
@@ -181,7 +180,7 @@ nav.tabs{display:flex;gap:6px;margin:14px 0 16px;flex-wrap:wrap}
 .done-tag{font-family:var(--mono);font-size:12px;color:var(--good);font-weight:700}
 
 /* ---- intro ---- */
-.intro{background:linear-gradient(150deg,rgba(90,125,255,.14),rgba(244,183,64,.08));border:1px solid var(--line);
+.intro{background:linear-gradient(120deg,rgba(120,198,209,.1),rgba(231,180,91,.08));border:1px solid var(--line);
   border-radius:var(--r);padding:16px 18px;margin-bottom:14px;position:relative}
 .intro h3{font-family:var(--disp);margin:0 0 6px;font-size:16px}
 .intro ol{margin:8px 0 10px;padding-left:20px;font-size:13px;color:var(--muted)}
@@ -237,7 +236,7 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
 .tier.t-bronze{color:#d98a4b;border-color:#8a5a33}
 .tier.t-silver{color:#c6d0e6;border-color:#6d7aa0}
 .tier.t-gold{color:var(--gold);border-color:#9a7a26;background:rgba(244,183,64,.08)}
-.tier.t-diamond{color:#49d6ff;border-color:#2b7fa0;background:rgba(90,125,255,.1)}
+.tier.t-diamond{color:var(--ton);border-color:rgba(120,198,209,.55);background:rgba(120,198,209,.08)}
 .tier.mini{font-size:9px;padding:2px 7px;flex:none}
 .mstat.pow{color:var(--gold);font-weight:700}
 .treasury .trow{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px}
@@ -269,7 +268,7 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
 .create-form input:focus{outline:none;border-color:var(--ton)}
 .chatlog{display:flex;flex-direction:column;gap:7px;max-height:300px;overflow-y:auto;padding:4px 2px 2px;margin-bottom:12px}
 .cmsg{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px;font-size:13px;line-height:1.45;background:var(--card);border:1px solid var(--line-soft);border-radius:10px;padding:8px 11px}
-.cmsg.me{background:linear-gradient(90deg,rgba(90,125,255,.1),var(--card));border-color:rgba(90,125,255,.35)}
+.cmsg.me{background:linear-gradient(90deg,rgba(120,198,209,.1),var(--card));border-color:rgba(120,198,209,.35)}
 .cwho{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--gold)}
 .cmsg.me .cwho{color:var(--ton)}
 .ctext{color:var(--fg);min-width:0;overflow-wrap:anywhere;flex:1}
@@ -282,8 +281,8 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
 .cmsg.modhidden{opacity:.5}
 .cmsg.modhidden .ctext{text-decoration:line-through}
 .cmsg.modhidden::after{content:"hidden";font-family:var(--mono);font-size:9px;color:var(--bad);letter-spacing:.08em;flex:none}
-.foundertag{font-family:var(--mono);font-size:10px;color:var(--ton);background:rgba(90,125,255,.12);border-radius:5px;padding:1px 5px;flex:none}
-.season-banner{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(244,183,64,.12),rgba(90,125,255,.1));border-color:var(--line)}
+.foundertag{font-family:var(--mono);font-size:10px;color:var(--ton);background:rgba(120,198,209,.12);border-radius:5px;padding:1px 5px;flex:none}
+.season-banner{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(231,180,91,.12),rgba(120,198,209,.08));border-color:var(--line)}
 .sb-main{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 .sb-tag{font-family:var(--disp);font-weight:700;letter-spacing:.1em;font-size:14px;color:var(--gold)}
 .sb-count{font-size:13px;color:var(--muted)}
@@ -306,12 +305,103 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
   .al-row .al-id{flex:1 1 100%}
   .mp-figs{gap:16px}
 }
+
+/* Frontier theme refinements */
+.wrap{max-width:1180px}
+header{padding-block:28px 18px;border-bottom:1px solid var(--line-soft)}
+.eyebrow{color:var(--gold)}
+#nameInput{letter-spacing:.025em}
+.ledger{
+  background:rgba(18,29,21,.9);
+  border-color:var(--line);
+  box-shadow:0 12px 32px rgba(0,0,0,.2);
+}
+.chip{background:linear-gradient(145deg,rgba(255,255,255,.035),transparent 72%),var(--card)}
+.tab{border-color:var(--line);border-radius:999px;padding-inline:18px}
+.tab[aria-selected="true"]{box-shadow:0 4px 16px rgba(231,180,91,.18)}
+.panel{
+  background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 50%),var(--panel);
+  border-color:var(--line-soft);
+  box-shadow:0 14px 36px rgba(0,0,0,.14);
+}
+.plot,.stat,.bcard{
+  background:linear-gradient(145deg,rgba(255,255,255,.035),transparent 70%),var(--card);
+  border-color:var(--line-soft);
+}
+.plot:not(.empty){transition:transform .18s,border-color .18s,box-shadow .18s}
+.plot:not(.empty):hover{transform:translateY(-2px);border-color:var(--line);box-shadow:0 10px 24px rgba(0,0,0,.16)}
+.btn{border-color:var(--line);background:var(--card-2)}
+.mnote b,.stat.accent .v{color:var(--ton)}
+.log{padding:16px;border:1px solid var(--line-soft);border-radius:var(--r);background:rgba(24,36,28,.65)}
+.modal{box-shadow:0 24px 70px rgba(0,0,0,.38)}
+.toast{box-shadow:0 12px 34px rgba(0,0,0,.32)}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--ton);
+  outline-offset:3px;
+}
+/* ---- town / army (age-of-empires layer) ---- */
+.chip.f .val{color:var(--food)}
+.chip.raid{border-color:var(--bad);background:linear-gradient(160deg,rgba(240,120,114,.16),var(--card))}
+.chip.raid .val{color:var(--bad)}
+.age-tag{color:var(--muted);letter-spacing:.14em}
+.rbar{height:7px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:8px}
+.rbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--good));border-radius:4px;transition:width .4s}
+.vrow{display:grid;grid-template-columns:1.4fr 1fr auto;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line-soft)}
+.vrow:first-of-type{border-top:none}
+.vrow .nm{font-family:var(--disp);font-weight:600;font-size:14px}
+.vrow .sub{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.vrow .cnt{font-family:var(--mono);font-weight:700;font-size:18px;text-align:center;min-width:34px}
+.vctl{display:flex;gap:6px;align-items:center;justify-content:flex-end}
+.rally{border:1px solid var(--line);background:transparent;color:var(--dim);border-radius:8px;padding:4px 8px;cursor:pointer;font-size:12px;font-family:var(--disp)}
+.rally.on{color:var(--gold);border-color:var(--gold);background:rgba(231,180,91,.1)}
+.queue{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;min-height:34px;align-items:center}
+.qitem{position:relative;border:1px solid var(--line);background:var(--card);border-radius:9px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:19px;cursor:pointer;overflow:hidden;padding:0;color:var(--fg)}
+.qitem:hover{border-color:var(--bad)}
+.qitem i{position:absolute;left:0;bottom:0;height:3px;background:var(--good)}
+.qitem.held{border-color:var(--bad)}
+.qnote{font-size:12px;color:var(--dim)}
+.qnote.bad{color:var(--bad)}
+.units{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:11px}
+.ucard{background:linear-gradient(145deg,rgba(255,255,255,.035),transparent 70%),var(--card);border:1px solid var(--line-soft);border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:7px}
+.ucard.locked{opacity:.55}
+.ucard .top{display:flex;gap:9px;align-items:center}
+.ucard .bico{font-size:22px}
+.ucard .bn{font-family:var(--disp);font-weight:600;font-size:14px;flex:1}
+.ucard .have{font-family:var(--mono);font-weight:700;color:var(--gold)}
+.ucard .st{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.ucard .vs{font-size:12px;color:var(--good)}
+.ucard .why{font-size:11.5px;color:var(--bad)}
+.armyline{display:flex;gap:8px;flex-wrap:wrap}
+.armyline .p{font-family:var(--mono);font-size:12.5px;background:var(--card);border:1px solid var(--line-soft);border-radius:9px;padding:6px 10px}
+.camp{display:grid;grid-template-columns:1.5fr 1fr auto;gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--line-soft)}
+.camp:first-of-type{border-top:none}
+.camp .nm{font-family:var(--disp);font-weight:600;font-size:14px}
+.camp .foes{font-size:12.5px;color:var(--muted)}
+.camp .rew{font-family:var(--mono);font-size:11.5px;color:var(--gold)}
+.pow{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.pow b{color:var(--fg)}
+.report h3{font-family:var(--disp);margin:0 0 4px;font-size:22px}
+.report h3.win{color:var(--good)} .report h3.loss{color:var(--bad)}
+.report table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+.report th{text-align:left;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:4px 0}
+.report td{padding:5px 0;border-top:1px solid var(--line-soft);font-family:var(--mono)}
+.report td.lost{color:var(--bad)}
+.report .spoils{font-family:var(--mono);font-size:13px;color:var(--gold)}
+@media (max-width:520px){
+  .vrow,.camp{grid-template-columns:1fr auto}
+  .vrow .vctl,.camp .cact{grid-column:1 / -1;justify-content:flex-start}
+}
+@media (max-width:600px){
+  header{padding-block:20px 14px}
+  .tab{flex:1 1 auto;padding-inline:12px}
+  .panel{padding:14px}
+}
 </style>
 
 <div class="wrap">
   <header>
     <div class="brand">
-      <span class="eyebrow">Link Frontier</span>
+      <span class="eyebrow">Link Frontier · <span class="age-tag" id="ageTag">Dark Age</span></span>
       <input id="nameInput" maxlength="28" spellcheck="false" aria-label="Empire name" value="New Dominion">
     </div>
     <div class="hdr-right">
@@ -324,6 +414,8 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
 
   <nav class="tabs" id="tabs" role="tablist">
     <button class="tab" role="tab" data-action="tab" data-tab="empire">Empire</button>
+    <button class="tab" role="tab" data-action="tab" data-tab="town">Town Center</button>
+    <button class="tab" role="tab" data-action="tab" data-tab="army">Army <span class="badge" id="rbadge" hidden>!</span></button>
     <button class="tab" role="tab" data-action="tab" data-tab="market">Market</button>
     <button class="tab" role="tab" data-action="tab" data-tab="stake">Staking</button>
     <button class="tab" role="tab" data-action="tab" data-tab="alliance">Alliance</button>
@@ -350,20 +442,77 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
 <script>
 "use strict";
 /* ============ config ============ */
-const ICO={wood:'🪵',stone:'🪨',gold:'🪙',ton:'🔗'};
+const ICO={food:'🌾',wood:'🪵',stone:'🪨',gold:'🪙',ton:'🔗'};
+const RES=['food','wood','stone','gold'];
+// `age` gates construction (0 Dark · 1 Feudal · 2 Castle · 3 Imperial).
 const B={
-  lumber:   {name:'Lumber Camp',  ico:'🪵', kind:'prod',   res:'wood',  rate:0.5,  cost:{stone:20},            desc:'Harvests timber from the forest.'},
-  quarry:   {name:'Quarry',       ico:'🪨', kind:'prod',   res:'stone', rate:0.35, cost:{wood:30},             desc:'Cuts stone from the bedrock.'},
-  mine:     {name:'Gold Mine',    ico:'🪙', kind:'prod',   res:'gold',  rate:0.16, cost:{wood:40,stone:40},    desc:'Extracts gold ore from deep shafts.'},
-  warehouse:{name:'Warehouse',    ico:'🏬', kind:'cap',                 cost:{wood:50,stone:50},               desc:'Raises storage capacity for all resources.'},
-  market:   {name:'Marketplace',  ico:'🏛️', kind:'market',              cost:{wood:60,stone:40,gold:10},       desc:'Passive LINK trade income + better sell rates.'},
-  vault:    {name:'Staking Vault',ico:'🏦', kind:'vault',               cost:{gold:30,ton:2},                  desc:'Unlocks staking and raises your yield rate.'},
+  farm:     {name:'Farm',         ico:'🌾', kind:'prod',   res:'food',  rate:0.45, cost:{wood:40},             age:0, desc:'Grows food. Each level speeds up farmer villagers.'},
+  lumber:   {name:'Lumber Camp',  ico:'🪵', kind:'prod',   res:'wood',  rate:0.5,  cost:{stone:20},            age:0, desc:'Harvests timber. Each level speeds up woodcutters.'},
+  quarry:   {name:'Quarry',       ico:'🪨', kind:'prod',   res:'stone', rate:0.35, cost:{wood:30},             age:0, desc:'Cuts stone. Each level speeds up stone miners.'},
+  mine:     {name:'Gold Mine',    ico:'🪙', kind:'prod',   res:'gold',  rate:0.16, cost:{wood:40,stone:40},    age:0, desc:'Extracts gold. Each level speeds up gold miners.'},
+  house:    {name:'House',        ico:'🏠', kind:'house',                 cost:{wood:25},                      age:0, desc:'+5 population capacity per level.'},
+  warehouse:{name:'Warehouse',    ico:'🏬', kind:'cap',                 cost:{wood:50,stone:50},               age:0, desc:'Raises storage capacity for all resources.'},
+  barracks: {name:'Barracks',     ico:'⚔️', kind:'mil',                 cost:{wood:90},                        age:0, desc:'Trains infantry. Each level trains faster.'},
+  range:    {name:'Archery Range',ico:'🎯', kind:'mil',                 cost:{wood:100,stone:20},              age:1, desc:'Trains archers. Each level trains faster.'},
+  stable:   {name:'Stable',       ico:'🐎', kind:'mil',                 cost:{wood:100,stone:30},              age:1, desc:'Trains cavalry. Each level trains faster.'},
+  tower:    {name:'Watch Tower',  ico:'🗼', kind:'def',                 cost:{wood:25,stone:80},               age:1, desc:'Fights off raiders that attack your town.'},
+  market:   {name:'Marketplace',  ico:'🏛️', kind:'market',              cost:{wood:60,stone:40,gold:10},       age:1, desc:'Passive LINK trade income + better sell rates.'},
+  vault:    {name:'Staking Vault',ico:'🏦', kind:'vault',               cost:{gold:30,ton:2},                  age:1, desc:'Unlocks staking and raises your yield rate.'},
+  wonder:   {name:'Wonder',       ico:'🕌', kind:'wonder',              cost:{wood:800,stone:800,gold:500,ton:40}, age:3, max:1, noUp:true, desc:'A monument for the ages. +0.25🔗/s and +10% production.'},
 };
-const BASE_PRICE={wood:0.02,stone:0.03,gold:0.11};   // LINK per unit
-const LIQ={wood:1500,stone:1200,gold:500};
-const CAPBASE={wood:250,stone:250,gold:150};
-const WH_ADD={wood:300,stone:300,gold:180};
-const START_PLOTS=6, LAND_BASE=3, LAND_GROWTH=1.35;
+const BASE_PRICE={food:0.015,wood:0.02,stone:0.03,gold:0.11};   // LINK per unit
+const LIQ={food:1800,wood:1500,stone:1200,gold:500};
+const CAPBASE={food:300,wood:250,stone:250,gold:150};
+const WH_ADD={food:300,wood:300,stone:300,gold:180};
+const START_PLOTS=8, LAND_BASE=3, LAND_GROWTH=1.35;
+const WONDER_TON=0.25;
+
+/* ---- ages, villagers, techs, military ---- */
+const AGES=[
+  {name:'Dark Age',    ico:'🛖'},
+  {name:'Feudal Age',  ico:'🏰', cost:{food:200,wood:60},        time:40,  req:()=>state.buildings.length>=3,                 reqTxt:'3 buildings'},
+  {name:'Castle Age',  ico:'🏯', cost:{food:400,gold:120},       time:70,  req:()=>cnt('market')>=1&&cnt('range')+cnt('stable')>=1, reqTxt:'a Marketplace and an Archery Range or Stable'},
+  {name:'Imperial Age',ico:'👑', cost:{food:700,gold:320,ton:10}, time:100, req:()=>state.buildings.length>=12,                reqTxt:'12 buildings'},
+];
+const VILL={name:'Villager',ico:'👷',cost:{food:50},time:12};
+const VGATHER={food:0.32,wood:0.28,stone:0.2,gold:0.18};       // per villager per second
+const DROP={food:'farm',wood:'lumber',stone:'quarry',gold:'mine'};
+const BASE_POP=5, HOUSE_POP=5, MAX_POP=200;
+const TECHS={
+  loom:        {name:'Loom',          ico:'🧵', age:0, cost:{gold:25},             time:15, desc:'Villagers are hardy — none are lost when raiders break through.'},
+  wheelbarrow: {name:'Wheelbarrow',   ico:'🛒', age:1, cost:{food:120,wood:60},    time:30, desc:'All villagers gather 15% faster.'},
+  horsecollar: {name:'Horse Collar',  ico:'🐴', age:1, cost:{food:80,wood:80},     time:25, desc:'+25% food gathering.'},
+  doublebit:   {name:'Double-Bit Axe',ico:'🪓', age:1, cost:{food:80,wood:40},     time:25, desc:'+25% wood gathering.'},
+  stonemining: {name:'Stone Mining',  ico:'⛏️', age:1, cost:{food:80,wood:60},     time:25, desc:'+25% stone gathering.'},
+  goldmining:  {name:'Gold Mining',   ico:'✨', age:1, cost:{food:100,wood:60},    time:25, desc:'+25% gold gathering.'},
+  forging:     {name:'Forging',       ico:'⚒️', age:1, cost:{food:120,gold:40},    time:35, desc:'+15% attack for all military units.'},
+  scalemail:   {name:'Scale Mail',    ico:'🛡️', age:1, cost:{food:100,gold:40},    time:35, desc:'+15% hit points for all military units.'},
+  handcart:    {name:'Hand Cart',     ico:'🛻', age:2, cost:{food:250,wood:120},   time:45, req:'wheelbarrow', desc:'All villagers gather another 15% faster.'},
+  masonry:     {name:'Masonry',       ico:'🧱', age:2, cost:{wood:100,stone:150},  time:40, desc:'Watch Towers get +50% attack and hit points.'},
+  conscription:{name:'Conscription',  ico:'📯', age:3, cost:{food:300,gold:200},   time:50, desc:'Military buildings train 33% faster.'},
+};
+const RES_TECH={food:'horsecollar',wood:'doublebit',stone:'stonemining',gold:'goldmining'};
+// cls drives the counter system (VS): spears beat cavalry, archers beat foot, cavalry run down archers.
+const U={
+  militia: {name:'Militia',      ico:'🪖', cls:'inf',   from:'barracks', age:0, hp:40,  atk:4,  cost:{food:40,gold:15}, time:14},
+  spearman:{name:'Spearman',     ico:'🔱', cls:'spear', from:'barracks', age:1, hp:45,  atk:3,  cost:{food:35,wood:25}, time:12},
+  archer:  {name:'Archer',       ico:'🏹', cls:'arch',  from:'range',    age:1, hp:30,  atk:4,  cost:{wood:25,gold:35}, time:16},
+  scout:   {name:'Scout Cavalry',ico:'🐴', cls:'cav',   from:'stable',   age:1, hp:45,  atk:3,  cost:{food:70},         time:15},
+  knight:  {name:'Knight',       ico:'🏇', cls:'cav',   from:'stable',   age:2, hp:100, atk:10, cost:{food:60,gold:70}, time:24},
+  champion:{name:'Champion',     ico:'🗡️', cls:'inf',   from:'barracks', age:3, hp:70,  atk:13, cost:{food:60,gold:30}, time:18},
+};
+const CLS={inf:'Infantry',spear:'Spear',arch:'Archer',cav:'Cavalry',tower:'Tower'};
+const VS={spear:{cav:3},arch:{inf:1.5,spear:1.5},cav:{arch:2},inf:{spear:1.4}};
+const TOWER={name:'Watch Tower',ico:'🗼',cls:'tower',hp:150,atk:6};
+const PRODUCERS=['tc','barracks','range','stable'];
+const QUEUE_MAX=10;
+const RAID_FIRST=180, RAID_GAP=[240,360], RAID_WARN=60;
+const CAMPS=[
+  {id:'bandit', name:'Bandit Camp',     ico:'⛺', age:0, foes:{militia:4},                                    towers:0, reward:{food:100,gold:40,ton:2},           cd:300},
+  {id:'outpost',name:'Rival Outpost',   ico:'🛖', age:1, foes:{militia:6,archer:4,scout:3},                   towers:1, reward:{wood:200,stone:120,gold:80,ton:6},  cd:480},
+  {id:'fort',   name:'Hill Fort',       ico:'🏯', age:2, foes:{spearman:8,archer:10,knight:6},                towers:3, reward:{stone:250,gold:220,ton:14},         cd:720},
+  {id:'citadel',name:'Imperial Citadel',ico:'🏰', age:3, foes:{champion:14,archer:14,knight:12,spearman:8},   towers:6, reward:{gold:500,ton:35},                   cd:1200},
+];
 const MARKET_PASSIVE=0.012;   // ton/s per market level
 const VAULT_RATE=0.004;       // fraction per minute per vault level
 const OFFLINE_MAX=8*3600;
@@ -378,6 +527,14 @@ const QUESTS=[
   {id:'q6',ico:'🌾',name:'Yield Farmer',  desc:'Stake at least 10 LINK.',       reward:{ton:3},            done:s=>s.staked>=10,                    prog:s=>[s.staked,10]},
   {id:'q7',ico:'🏗️',name:'Industrialist', desc:'Operate 8 buildings.',          reward:{ton:8,gold:50},    done:s=>s.buildings.length>=8,           prog:s=>[s.buildings.length,8]},
   {id:'q8',ico:'👑',name:'LINK Tycoon',   desc:'Hold 50 LINK at once.',         reward:{ton:25},           done:s=>s.peak.ton>=50,                  prog:s=>[s.peak.ton,50]},
+  {id:'q9', ico:'🏰',name:'Feudal Lord',      desc:'Advance to the Feudal Age.',   reward:{gold:40,ton:3},   done:s=>s.age>=1,                 prog:s=>[s.age,1]},
+  {id:'q10',ico:'👷',name:'Growing Town',     desc:'Have 12 villagers.',           reward:{food:150,ton:3},  done:s=>villTotal()>=12,          prog:s=>[villTotal(),12]},
+  {id:'q11',ico:'🪖',name:'Standing Army',    desc:'Field 10 military units.',     reward:{gold:60,ton:4},   done:s=>armyTotal()>=10,          prog:s=>[armyTotal(),10]},
+  {id:'q12',ico:'🗼',name:'Hold the Line',    desc:'Repel a raid on your town.',   reward:{ton:6},           done:s=>s.stats.raidsWon>=1,      prog:s=>[s.stats.raidsWon,1]},
+  {id:'q13',ico:'🔥',name:'Conqueror',        desc:'Sack an enemy camp.',          reward:{gold:50,ton:5},   done:s=>s.stats.campsWon>=1,      prog:s=>[s.stats.campsWon,1]},
+  {id:'q14',ico:'🏯',name:'Castle Age',       desc:'Advance to the Castle Age.',   reward:{ton:10},          done:s=>s.age>=2,                 prog:s=>[s.age,2]},
+  {id:'q15',ico:'👑',name:'Imperial Age',     desc:'Advance to the Imperial Age.', reward:{gold:100,ton:20}, done:s=>s.age>=3,                 prog:s=>[s.age,3]},
+  {id:'q16',ico:'🕌',name:'Wonder of the World',desc:'Build a Wonder.',            reward:{ton:50},          done:s=>cnt('wonder')>=1,         prog:s=>[cnt('wonder'),1]},
 ];
 const EVENTS=[
   {msg:'⛏️ A rich gold vein is struck — gold demand surges.',        fx:()=>bump('gold',0.45),  hl:1},
@@ -387,6 +544,8 @@ const EVENTS=[
   {msg:'📉 A market correction cools prices across the board.',       fx:()=>{bump('wood',-.15);bump('stone',-.15);bump('gold',-.18)}},
   {msg:'🤝 A trade alliance opens fresh buyers for gold.',           fx:()=>bump('gold',0.3), hl:1},
   {msg:'🌧️ Storms slow the quarries — stone grows scarce and dear.', fx:()=>bump('stone',0.35)},
+  {msg:'🌾 A bountiful harvest gluts the market — food prices sink.', fx:()=>bump('food',-0.3)},
+  {msg:'🐀 Blight in the granaries — food is scarce and dear.',       fx:()=>bump('food',0.4),   hl:1},
   {msg:'🪙 Quiet trading day. Prices drift back toward fair value.',  fx:()=>{}},
 ];
 
@@ -397,10 +556,15 @@ let armedReset=false, armedResetT=0;
 
 function fresh(){
   return {
-    v:1, name:'New Dominion',
-    res:{wood:60,stone:40,gold:0,ton:3},
+    v:2, name:'New Dominion',
+    res:{food:100,wood:60,stone:40,gold:0,ton:3},
     plots:START_PLOTS, buildings:[],
-    market:{wood:{mult:1},stone:{mult:1},gold:{mult:1}},
+    market:{food:{mult:1},wood:{mult:1},stone:{mult:1},gold:{mult:1}},
+    age:0, vills:{food:2,wood:1,stone:0,gold:0,idle:0}, rally:'food',
+    army:{}, queues:{tc:[],barracks:[],range:[],stable:[]},
+    research:null, techs:{},
+    raid:{t:null,n:0,warned:false}, peaceful:false,
+    camps:{}, stats:{raidsWon:0,raidsLost:0,campsWon:0}, lastBattle:null,
     staked:0, stakePending:0,
     allianceId:null, allianceContributed:0,
     seasonId:null, seasonContributed:0, lastSeason:null, claimedSeason:-1,
@@ -414,11 +578,30 @@ function fresh(){
 function normalize(s){
   const f=fresh(); s=Object.assign({},f,s||{});
   s.res=Object.assign({},f.res,s.res);
-  const m={}; for(const r of ['wood','stone','gold']){ const mm=s.market&&s.market[r]&&+s.market[r].mult; m[r]={mult:(isFinite(mm)&&mm>0)?clamp(mm,0.3,3):1}; }
+  const m={}; for(const r of RES){ const mm=s.market&&s.market[r]&&+s.market[r].mult; m[r]={mult:(isFinite(mm)&&mm>0)?clamp(mm,0.3,3):1}; }
   s.market=m;
   s.peak=Object.assign({},f.peak,s.peak);
   s.ui=Object.assign({},f.ui,s.ui); s.ui.pendingRemove=-1; s.ui.build=false;
-  if(!['empire','market','stake','alliance','quests'].includes(s.ui.tab)) s.ui.tab='empire';
+  if(!['empire','town','army','market','stake','alliance','quests'].includes(s.ui.tab)) s.ui.tab='empire';
+  // age-of-empires layer (v1 saves arrive without any of this and get the fresh defaults)
+  s.age=clamp(s.age|0,0,AGES.length-1);
+  const v=Object.assign({},f.vills,s.vills); for(const k in f.vills) v[k]=Math.max(0,v[k]|0); s.vills=v;
+  if(!RES.includes(s.rally)) s.rally='food';
+  const army={}; if(s.army&&typeof s.army==='object') for(const k in U){ const n=s.army[k]|0; if(n>0) army[k]=n; } s.army=army;
+  const qs={}; for(const p of PRODUCERS){ const q=s.queues&&Array.isArray(s.queues[p])?s.queues[p]:[];
+    qs[p]=q.filter(it=>it&&(it.u==='vill'?p==='tc':U[it.u]&&U[it.u].from===p)).map(it=>({u:it.u,t:Math.max(0,+it.t||0)})).slice(0,QUEUE_MAX); }
+  s.queues=qs;
+  const techs={}; if(s.techs&&typeof s.techs==='object') for(const k in TECHS) if(s.techs[k]) techs[k]=true; s.techs=techs;
+  const rs=s.research;
+  s.research=(rs&&typeof rs==='object'&&((rs.id==='age'&&s.age<AGES.length-1)||(TECHS[rs.id]&&!techs[rs.id]))&&isFinite(+rs.t))?{id:rs.id,t:+rs.t,total:+rs.total||+rs.t}:null;
+  const rd=s.raid&&typeof s.raid==='object'?s.raid:{};
+  s.raid={t:(typeof rd.t==='number'&&isFinite(rd.t))?rd.t:null,n:Math.max(0,rd.n|0),warned:!!rd.warned};
+  s.peaceful=!!s.peaceful;
+  const camps={}; if(s.camps&&typeof s.camps==='object') for(const c of CAMPS){ const t=+s.camps[c.id]; if(t>0) camps[c.id]=t; } s.camps=camps;
+  const st=s.stats&&typeof s.stats==='object'?s.stats:{};
+  s.stats={raidsWon:Math.max(0,st.raidsWon|0),raidsLost:Math.max(0,st.raidsLost|0),campsWon:Math.max(0,st.campsWon|0)};
+  s.lastBattle=(s.lastBattle&&typeof s.lastBattle==='object'&&Array.isArray(s.lastBattle.mine))?s.lastBattle:null;
+  s.v=2;
   s.buildings=(Array.isArray(s.buildings)?s.buildings:[]).filter(b=>b&&B[b.type]).map(b=>({type:b.type,level:Math.max(1,b.level|0||1)}));
   s.plots=Math.max(START_PLOTS,Math.max(s.plots|0,s.buildings.length));
   s.staked=Math.max(0,+s.staked||0); s.stakePending=Math.max(0,+s.stakePending||0);
@@ -450,7 +633,46 @@ function fmtTon(n){ const a=abbr(n,2); if(a)return a; return (Math.round(n*100)/
 function fmtRate(n){ return n>=10?Math.round(n).toString():(Math.round(n*100)/100).toFixed(2); }
 function cnt(type){ return state.buildings.filter(b=>b.type===type).length; }
 function totalLevels(type){ return state.buildings.filter(b=>b.type===type).reduce((a,b)=>a+b.level,0); }
-function getCaps(){ const c={...CAPBASE}; for(const b of state.buildings) if(b.type==='warehouse'){c.wood+=WH_ADD.wood*b.level;c.stone+=WH_ADD.stone*b.level;c.gold+=WH_ADD.gold*b.level;} return c; }
+function getCaps(){ const c={...CAPBASE}; for(const b of state.buildings) if(b.type==='warehouse') for(const r of RES) c[r]+=WH_ADD[r]*b.level; return c; }
+
+/* ---- population / villagers / military helpers ---- */
+function villTotal(){ let n=0; for(const k in state.vills) n+=state.vills[k]; return n; }
+function armyTotal(){ let n=0; for(const k in state.army) n+=state.army[k]; return n; }
+function popUsed(){ return villTotal()+armyTotal(); }
+function popCap(){ return Math.min(MAX_POP, BASE_POP+HOUSE_POP*totalLevels('house')); }
+function prodMult(){ return mpBuff*(cnt('wonder')?1.1:1); }
+function villRate(r){
+  let m=1+Math.min(1,0.1*totalLevels(DROP[r]));          // drop-site levels: up to +100%
+  if(state.techs.wheelbarrow) m*=1.15;
+  if(state.techs.handcart) m*=1.15;
+  if(state.techs[RES_TECH[r]]) m*=1.25;
+  return VGATHER[r]*m;
+}
+function rates(){
+  const add={food:0,wood:0,stone:0,gold:0}; let ton=0;
+  for(const b of state.buildings){
+    const d=B[b.type];
+    if(d.kind==='prod') add[d.res]+=d.rate*b.level;
+    else if(d.kind==='market') ton+=MARKET_PASSIVE*b.level;
+    else if(d.kind==='wonder') ton+=WONDER_TON;
+  }
+  for(const r of RES) add[r]+=state.vills[r]*villRate(r);
+  const pm=prodMult(); for(const r of RES) add[r]*=pm;
+  return {add,ton};
+}
+function atkMul(age,own){ return (1+0.1*age)*(own&&state.techs.forging?1.15:1); }
+function hpMul(age,own){ return (1+0.1*age)*(own&&state.techs.scalemail?1.15:1); }
+function unitGroups(comp,age,towers,own){
+  const g=[], am=atkMul(age,own), hm=hpMul(age,own);
+  for(const k in U){ const n=comp[k]|0; if(n>0) g.push({k,ico:U[k].ico,name:U[k].name,cls:U[k].cls,atk:U[k].atk*am,hp:U[k].hp*hm,n}); }
+  if(towers>0){ const tm=own&&state.techs.masonry?1.5:1; g.push({k:'tower',ico:TOWER.ico,name:TOWER.name,cls:'tower',atk:TOWER.atk*tm*(1+0.1*age),hp:TOWER.hp*tm*(1+0.1*age),n:towers}); }
+  return g;
+}
+function powerOf(groups){ return Math.round(groups.reduce((s,g)=>s+g.n*Math.sqrt(g.atk*g.hp),0)); }
+function strongVs(cls){ const v=VS[cls]; return v?Object.keys(v).map(c=>CLS[c]).join(', '):''; }
+function compHTML(comp){ return Object.keys(comp).filter(k=>comp[k]>0).map(k=>`${comp[k]}${U[k].ico}`).join(' '); }
+function rewardHTML(r){ return Object.keys(r).map(k=>(k==='ton'?fmtTon(r[k]):fmtRes(r[k]))+ICO[k]).join(' '); }
+function fmtClock(s){ s=Math.max(0,Math.ceil(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 function sellBonus(){ return Math.min(0.4,0.04*totalLevels('market')); }
 function yieldPerMin(){ return VAULT_RATE*totalLevels('vault'); }
 function landCost(){ return Math.round(LAND_BASE*Math.pow(LAND_GROWTH,state.plots-START_PLOTS)*100)/100; }
@@ -481,18 +703,125 @@ function costHTML(c){
 
 /* ============ sim ============ */
 function prod(dt){
-  const add={wood:0,stone:0,gold:0}; let ton=0;
-  for(const b of state.buildings){
-    const d=B[b.type];
-    if(d.kind==='prod') add[d.res]+=d.rate*b.level*dt*mpBuff;
-    else if(d.kind==='market') ton+=MARKET_PASSIVE*b.level*dt;
-  }
+  const {add,ton}=rates();
   const cap=getCaps();
-  for(const r of ['wood','stone','gold']) state.res[r]=Math.min(cap[r],state.res[r]+add[r]);
-  state.res.ton+=ton;
+  for(const r of RES) state.res[r]=Math.min(cap[r],state.res[r]+add[r]*dt);
+  state.res.ton+=ton*dt;
   state.stakePending+=state.staked*yieldPerMin()*(dt/60);
-  for(const r of ['wood','stone','gold']){ const m=state.market[r]; m.mult=1+(m.mult-1)*Math.pow(0.97,dt); }
-  return {add,ton};
+  for(const r of RES){ const m=state.market[r]; m.mult=1+(m.mult-1)*Math.pow(0.97,dt); }
+}
+
+// Training queues (Town Center + military buildings) and the single research slot.
+function queueSpeed(p){
+  if(p==='tc') return 1;
+  return totalLevels(p)*(state.techs.conscription?1.33:1);
+}
+function advanceQueues(dt){
+  for(const p of PRODUCERS){
+    const q=state.queues[p]; if(!q.length) continue;
+    let left=dt*queueSpeed(p);
+    while(q.length && left>0){
+      const it=q[0], use=Math.min(left,it.t); it.t-=use; left-=use;
+      if(it.t>1e-9) break;
+      it.t=0;
+      if(popUsed()>=popCap()) break;            // housed: waits at the head of the queue
+      q.shift();
+      if(it.u==='vill') state.vills[state.rally]++;
+      else state.army[it.u]=(state.army[it.u]||0)+1;
+    }
+  }
+  const r=state.research;
+  if(r){ r.t-=dt; if(r.t<=0) finishResearch(); }
+}
+function finishResearch(){
+  const r=state.research; state.research=null; if(!r) return;
+  if(r.id==='age'){
+    state.age=Math.min(AGES.length-1,state.age+1);
+    const a=AGES[state.age];
+    addLog(`${a.ico} Your people have entered the ${a.name}!`,1); toast(`${a.ico} Welcome to the ${a.name}!`);
+  }else{
+    state.techs[r.id]=true;
+    addLog(`${TECHS[r.id].ico} Researched ${TECHS[r.id].name}.`);
+  }
+  save();
+}
+
+/* ---- combat: simultaneous-volley rounds, damage spread across enemy groups, counter multipliers ---- */
+function fight(A,Bs){
+  const alive=g=>g.pool>0?Math.ceil(g.pool/g.hp-1e-9):0;
+  const volley=(S,T)=>{
+    const out=T.map(()=>0), tot=T.reduce((s,g)=>s+alive(g),0); if(!tot) return out;
+    for(const g of S){ const n=alive(g); if(!n) continue;
+      T.forEach((t,i)=>{ const tn=alive(t); if(tn) out[i]+=n*g.atk*((VS[g.cls]&&VS[g.cls][t.cls])||1)*tn/tot; }); }
+    return out;
+  };
+  for(const g of A.concat(Bs)){ g.pool=g.n*g.hp; }
+  let rounds=0;
+  while(rounds<60 && A.some(alive) && Bs.some(alive)){
+    const dA=volley(A,Bs), dB=volley(Bs,A);
+    Bs.forEach((g,i)=>g.pool=Math.max(0,g.pool-dA[i]));
+    A.forEach((g,i)=>g.pool=Math.max(0,g.pool-dB[i]));
+    rounds++;
+  }
+  for(const g of A.concat(Bs)) g.left=alive(g);
+  return {aAlive:A.some(g=>g.left>0), bAlive:Bs.some(g=>g.left>0)};
+}
+function applyLosses(mine){ for(const g of mine){ if(g.k==='tower') continue; if(g.left>0) state.army[g.k]=g.left; else delete state.army[g.k]; } }
+function reportRows(groups){ return groups.map(g=>({ico:g.ico,name:g.name,start:g.n,left:g.left})); }
+
+function raidTick(dt){
+  const r=state.raid;
+  if(state.peaceful||state.age<1){ r.t=null; r.warned=false; return; }
+  if(r.t==null){ r.t=RAID_FIRST; r.warned=false; return; }
+  r.t-=Math.min(dt,2);                              // raids only advance while the game is open and visible
+  if(!r.warned && r.t<=RAID_WARN){
+    r.warned=true;
+    addLog(`🚩 Raiders sighted on the horizon — they strike in ${Math.ceil(r.t)}s. Ready your army!`,1);
+    toast('🚩 Raiders approaching! Check the Army tab.');
+  }
+  if(r.t<=0) resolveRaid();
+}
+function raidComp(){
+  const n=Math.min(60,3+2*state.raid.n+3*state.age);
+  const pool=Object.keys(U).filter(k=>U[k].age<=state.age), comp={};
+  for(let i=0;i<n;i++){ const k=pool[Math.floor(Math.random()*pool.length)]; comp[k]=(comp[k]||0)+1; }
+  return {comp,n};
+}
+function resolveRaid(){
+  const {comp,n}=raidComp();
+  const mine=unitGroups(state.army,state.age,totalLevels('tower'),true), foes=unitGroups(comp,state.age,0,false);
+  const res=fight(mine,foes);
+  const win=!res.bAlive || res.aAlive;               // the defender holds if raiders can't wipe it out
+  applyLosses(mine);
+  const loot={}, lost={};
+  if(win){
+    loot.gold=8*n; loot.ton=Math.round(0.4*n*100)/100; grant(loot); state.stats.raidsWon++;
+  }else{
+    for(const r of RES){ const l=Math.floor(state.res[r]*0.25); if(l>0){ state.res[r]-=l; lost[r]=l; } }
+    if(!state.techs.loom){
+      let k=Math.min(2,villTotal()-1);
+      while(k-->0){ const from=state.vills.idle>0?'idle':RES.reduce((a,b)=>state.vills[a]>=state.vills[b]?a:b); state.vills[from]--; lost.vill=(lost.vill||0)+1; }
+    }
+    state.stats.raidsLost++;
+  }
+  state.raid.n++; state.raid.t=RAID_GAP[0]+Math.random()*(RAID_GAP[1]-RAID_GAP[0]); state.raid.warned=false;
+  state.lastBattle={kind:'raid',title:`Raid #${state.raid.n}`,win,mine:reportRows(mine),foes:reportRows(foes),loot,lost,t:Date.now()};
+  addLog(win?`🛡️ Raid #${state.raid.n} repelled! Spoils: ${rewardHTML(loot)}.`:`🔥 Raiders broke through and plundered the town${lost.vill?` — ${lost.vill} villager${lost.vill>1?'s':''} lost`:''}.`,1);
+  toast(win?'🛡️ Raid repelled!':'🔥 Raiders plundered your town.',win?'ton':'');
+  save();
+}
+function attackCamp(id){
+  const c=CAMPS.find(x=>x.id===id); if(!c) return;
+  if((state.camps[id]||0)>Date.now()){ toast('That camp is still rebuilding.'); return; }
+  if(armyTotal()<=0){ toast('Train some soldiers first.'); return; }
+  const mine=unitGroups(state.army,state.age,0,true), foes=unitGroups(c.foes,c.age,c.towers,false);
+  const res=fight(mine,foes);
+  const win=!res.bAlive && res.aAlive;
+  applyLosses(mine);
+  if(win){ grant(c.reward); state.camps[id]=Date.now()+c.cd*1000; state.stats.campsWon++; }
+  state.lastBattle={kind:'camp',title:`${c.ico} ${c.name}`,win,mine:reportRows(mine),foes:reportRows(foes),loot:win?c.reward:{},lost:{},t:Date.now()};
+  addLog(win?`🔥 Sacked the ${c.name}! Spoils: ${rewardHTML(c.reward)}.`:`💀 Your assault on the ${c.name} was thrown back.`,1);
+  save(); renderTab(); updateBadge(); openReport();
 }
 function updatePeaks(){ state.peak.gold=Math.max(state.peak.gold,state.res.gold); state.peak.ton=Math.max(state.peak.ton,state.res.ton); }
 function fireEvent(){ const e=EVENTS[Math.floor(Math.random()*EVENTS.length)]; e.fx(); addLog(e.msg,e.hl); }
@@ -501,6 +830,7 @@ function addLog(msg,hl){ state.log.unshift({t:Date.now(),msg,hl:!!hl}); if(state
 /* ============ actions ============ */
 function doBuild(type){
   if(state.buildings.length>=state.plots){ toast('No empty plots — buy land first.'); return; }
+  const lock=buildLock(type); if(lock){ toast(lock); return; }
   const c=getBuildCost(type);
   if(!canAfford(c)){ toast('Not enough resources for that.'); return; }
   pay(c); state.buildings.push({type,level:1});
@@ -508,7 +838,7 @@ function doBuild(type){
   state.ui.build=false; closeModal(); save(); renderTab();
 }
 function doUpgrade(i){
-  const b=state.buildings[i]; if(!b) return;
+  const b=state.buildings[i]; if(!b||B[b.type].noUp) return;
   const c=getUpgradeCost(b);
   if(!canAfford(c)){ toast('Not enough resources to upgrade.'); return; }
   pay(c); b.level++; save(); renderTab();
@@ -519,6 +849,56 @@ function doRemove(i){
   for(const k in base) ref[k]=Math.floor(base[k]*0.4);
   state.buildings.splice(i,1); grant(ref); state.ui.pendingRemove=-1;
   addLog(`${B[b.type].ico} Demolished a ${B[b.type].name}.`); save(); renderTab();
+}
+function buildLock(type){
+  const d=B[type];
+  if(d.age>state.age) return `Requires the ${AGES[d.age].name}.`;
+  if(d.max&&cnt(type)>=d.max) return `Only ${d.max} allowed.`;
+  return '';
+}
+function trainLock(u){
+  if(u==='vill') return '';
+  const d=U[u];
+  if(d.age>state.age) return `Requires the ${AGES[d.age].name}`;
+  if(!cnt(d.from)) return `Build a ${B[d.from].name}`;
+  return '';
+}
+function doTrain(u){
+  const d=u==='vill'?VILL:U[u]; if(!d) return;
+  const lock=trainLock(u); if(lock){ toast(lock+'.'); return; }
+  const p=u==='vill'?'tc':d.from, q=state.queues[p];
+  if(q.length>=QUEUE_MAX){ toast('That queue is full.'); return; }
+  if(!canAfford(d.cost)){ toast('Not enough resources to train that.'); return; }
+  pay(d.cost); q.push({u,t:d.time}); save(); renderTab();
+}
+function doCancel(p,i){
+  const q=state.queues[p], it=q&&q[i]; if(!it) return;
+  q.splice(i,1); grant((it.u==='vill'?VILL:U[it.u]).cost); save(); renderTab();
+}
+function researchLock(id){
+  if(id==='age'){
+    const nx=AGES[state.age+1]; if(!nx) return 'Final age reached';
+    if(!nx.req()) return `Needs ${nx.reqTxt}`;
+  }else{
+    const t=TECHS[id];
+    if(state.techs[id]) return 'Researched';
+    if(t.age>state.age) return `Requires the ${AGES[t.age].name}`;
+    if(t.req&&!state.techs[t.req]) return `Needs ${TECHS[t.req].name}`;
+  }
+  return state.research?'Already researching':'';
+}
+function doResearch(id){
+  const lock=researchLock(id); if(lock){ toast(lock+'.'); return; }
+  const d=id==='age'?AGES[state.age+1]:TECHS[id];
+  if(!canAfford(d.cost)){ toast('Not enough resources.'); return; }
+  pay(d.cost); state.research={id,t:d.time,total:d.time};
+  if(id==='age') addLog(`${d.ico} Advancing to the ${d.name}…`);
+  save(); renderTab();
+}
+function moveVill(r,dir){
+  const from=dir>0?'idle':r, to=dir>0?r:'idle';
+  if(state.vills[from]<=0) return;
+  state.vills[from]--; state.vills[to]++; renderTab();
 }
 function buyLand(){
   const c=landCost();
@@ -591,11 +971,17 @@ function updateLedger(){
       <span class="capbar"><i style="width:${pct}%;background:${col}"></i></span>
     </div></div>`;
   };
+  const pu=popUsed(), pc=popCap();
+  const raid=state.raid.warned&&state.raid.t!=null
+    ? `<div class="chip raid"><span class="ico">🚩</span><div class="meta"><span class="lbl">Raid incoming</span><span class="val">${fmtClock(state.raid.t)}</span></div></div>` : '';
   $('#ledger').innerHTML =
-    bar('wood','w')+bar('stone','s')+bar('gold','g')+
+    raid+bar('food','f')+bar('wood','w')+bar('stone','s')+bar('gold','g')+
     `<div class="chip ton"><span class="ico">🔗</span><div class="meta"><span class="lbl">LINK balance</span><span class="val">${fmtTon(state.res.ton)}</span></div></div>`+
+    `<div class="chip"><span class="ico">👥</span><div class="meta"><span class="lbl">Population</span><span class="val" style="${pu>=pc?'color:var(--bad)':''}">${pu} / ${pc}</span></div></div>`+
     `<div class="chip"><span class="ico">🏦</span><div class="meta"><span class="lbl">Staked</span><span class="val">${fmtTon(state.staked)}</span></div></div>`+
     `<div class="chip"><span class="ico">🗺️</span><div class="meta"><span class="lbl">Plots</span><span class="val">${state.buildings.length} / ${state.plots}</span></div></div>`;
+  const at=$('#ageTag'); if(at) at.textContent=AGES[state.age].ico+' '+AGES[state.age].name;
+  const rb=$('#rbadge'); if(rb) rb.hidden=!state.raid.warned;
 }
 function updateTabs(){ document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===state.ui.tab)); }
 function updateBadge(){
@@ -606,6 +992,8 @@ function updateBadge(){
 function renderTab(){
   const t=state.ui.tab, el=$('#tab');
   if(t==='empire') el.innerHTML=renderEmpire();
+  else if(t==='town') el.innerHTML=renderTown();
+  else if(t==='army') el.innerHTML=renderArmy();
   else if(t==='market') el.innerHTML=renderMarket();
   else if(t==='stake') el.innerHTML=renderStake();
   else if(t==='alliance'){ renderMPTab(); return; }
@@ -618,18 +1006,19 @@ function renderEmpire(){
   if(!state.seenIntro){
     intro=`<div class="intro">
       <h3>Welcome, sovereign.</h3>
-      <p style="font-size:13px;color:var(--muted);margin:0">Grow a blockchain frontier from one plot of land.</p>
+      <p style="font-size:13px;color:var(--muted);margin:0">Grow a frontier town from the Dark Age to the Imperial Age.</p>
       <ol>
-        <li>Each <b>plot</b> holds one building. Start with a <b>Lumber Camp</b> and <b>Quarry</b> — they feed each other.</li>
-        <li>Build a <b>Gold Mine</b>, then sell gold on the <b>Market</b> for 🔗 LINK.</li>
-        <li>Spend LINK on <b>new land</b>, upgrades, and a <b>Staking Vault</b> for passive yield. Clear <b>Contracts</b> for bonuses.</li>
+        <li>Each <b>plot</b> holds one building. Start with a <b>Farm</b>, <b>Lumber Camp</b> and a <b>House</b> for more population.</li>
+        <li>At the <b>Town Center</b>, train <b>villagers</b> and put them to work gathering — then advance through the <b>Ages</b>.</li>
+        <li>Raiders come once you reach the Feudal Age. Raise an <b>Army</b> (spears beat cavalry, archers beat infantry, cavalry beats archers) and sack enemy camps for loot.</li>
+        <li>Sell surplus on the <b>Market</b> for 🔗 LINK to buy land and stake. Clear <b>Contracts</b> for bonuses.</li>
       </ol>
       <button class="btn sm primary" data-action="dismissintro">Got it — let's build</button>
     </div>`;
   }
-  const add={wood:0,stone:0,gold:0}; let tps=0;
-  for(const b of state.buildings){ const d=B[b.type]; if(d.kind==='prod')add[d.res]+=d.rate*b.level; else if(d.kind==='market')tps+=MARKET_PASSIVE*b.level; }
+  const {add,ton:tps}=rates();
   const prodbar=`<div class="prodbar">
+    <div class="p">🌾 <b>+${fmtRate(add.food)}</b>/s</div>
     <div class="p">🪵 <b>+${fmtRate(add.wood)}</b>/s</div>
     <div class="p">🪨 <b>+${fmtRate(add.stone)}</b>/s</div>
     <div class="p">🪙 <b>+${fmtRate(add.gold)}</b>/s</div>
@@ -645,10 +1034,16 @@ function renderEmpire(){
     else if(d.kind==='cap'){ const c=WH_ADD; detail=`<div class="out">+${fmtRes(c.wood*b.level)}${ICO.wood} +${fmtRes(c.stone*b.level)}${ICO.stone} +${fmtRes(c.gold*b.level)}${ICO.gold} cap</div>`; }
     else if(d.kind==='market') detail=`<div class="out">+${fmtRate(MARKET_PASSIVE*b.level)}🔗/s · +${Math.round(4*b.level)}% sell</div>`;
     else if(d.kind==='vault') detail=`<div class="out">Yield +${(VAULT_RATE*b.level*100).toFixed(1)}%/min</div>`;
+    else if(d.kind==='house') detail=`<div class="out">+${HOUSE_POP*b.level}👥 population</div>`;
+    else if(d.kind==='mil') detail=`<div class="out">Trains ${Object.keys(U).filter(k=>U[k].from===b.type).map(k=>U[k].ico).join('')} · ${b.level}× speed</div>`;
+    else if(d.kind==='def') detail=`<div class="out">${b.level}× ${TOWER.ico} on raid defense</div>`;
+    else if(d.kind==='wonder') detail=`<div class="out">+${fmtRate(WONDER_TON)}🔗/s · +10% production</div>`;
 
     let footer;
     if(state.ui.pendingRemove===i){
       footer=`<div class="confirm-rm">Demolish this ${d.name}? <div class="row"><button class="btn sm danger" data-action="remove-yes" data-i="${i}">Demolish</button><button class="btn sm ghost" data-action="remove-no">Keep</button></div></div>`;
+    }else if(d.noUp){
+      footer=`<div class="row"><span class="qnote" style="flex:1">Complete</span><button class="xbtn" data-action="remove" data-i="${i}" title="Demolish">✕</button></div>`;
     }else{
       footer=`<div class="row">
         <button class="btn sm up ${can?'primary':''}" data-action="upgrade" data-i="${i}" ${can?'':'disabled'}>Upgrade → L${b.level+1}</button>
@@ -673,7 +1068,7 @@ function renderEmpire(){
 }
 
 function renderMarket(){
-  const rows=['wood','stone','gold'].map(r=>{
+  const rows=RES.map(r=>{
     const m=state.market[r].mult, pct=(m-1)*100;
     const tcls=pct>1?'up':pct<-1?'dn':'flat', arrow=pct>1?'▲':pct<-1?'▼':'—';
     const held=Math.floor(state.res[r]);
@@ -753,6 +1148,157 @@ function renderQuests(){
   return `<div class="panel"><div class="pane-head"><div><h2>Contracts</h2><div class="sub">${open} open · one‑time rewards for milestones</div></div></div>${rows}</div>`;
 }
 
+function queueHTML(p){
+  const q=state.queues[p], speed=queueSpeed(p);
+  if(!q.length) return `<div class="queue"><span class="qnote">Queue empty</span></div>`;
+  const housed=q[0].t<=0&&popUsed()>=popCap();
+  const items=q.map((it,i)=>{
+    const d=it.u==='vill'?VILL:U[it.u], pct=i===0?Math.round((1-it.t/d.time)*100):0;
+    return `<button class="qitem${i===0&&housed?' held':''}" data-action="cancelq" data-p="${p}" data-i="${i}" title="Cancel ${d.name} (full refund)" aria-label="Cancel ${d.name}">${d.ico}${i===0?`<i style="width:${pct}%"></i>`:''}</button>`;
+  }).join('');
+  const note=housed?`<span class="qnote bad">🏠 Housed — build or upgrade Houses</span>`
+    : !speed?`<span class="qnote bad">Paused — no ${B[p]?B[p].name:'building'}</span>`
+    : `<span class="qnote">${fmtClock(q[0].t/speed)} · click to cancel</span>`;
+  return `<div class="queue">${items}${note}</div>`;
+}
+function researchHTML(){
+  const r=state.research; if(!r) return '';
+  const d=r.id==='age'?AGES[state.age+1]:TECHS[r.id];
+  const pct=Math.min(100,(1-r.t/r.total)*100);
+  return `<div class="mnote" style="margin:0 0 12px">${d.ico} Researching <b style="color:var(--gold)">${r.id==='age'?'the '+d.name:d.name}</b> · ${fmtClock(r.t)} left<div class="rbar"><i style="width:${pct}%"></i></div></div>`;
+}
+
+function renderTown(){
+  const a=AGES[state.age], nx=AGES[state.age+1];
+  let agePanel;
+  if(nx){
+    const lock=researchLock('age'), can=!lock&&canAfford(nx.cost);
+    agePanel=`<div class="pane-head" style="margin:0"><div><h2>${a.ico} ${a.name}</h2>
+        <div class="sub">Next: ${nx.ico} <b>${nx.name}</b> · needs ${nx.reqTxt} ${nx.req()?'✓':''}</div>
+        <div class="cost" style="margin-top:4px">${costHTML(nx.cost)} <span class="ok">· ${nx.time}s</span></div></div>
+      <button class="btn ${can?'primary':''}" data-action="research" data-id="age" ${can?'':'disabled'}>Advance to ${nx.name}</button></div>`;
+  }else agePanel=`<div class="pane-head" style="margin:0"><div><h2>${a.ico} ${a.name}</h2><div class="sub">Your civilization stands at its height.${cnt('wonder')?'':' Raise a <b>Wonder</b> to prove it.'}</div></div></div>`;
+
+  const vlock=trainLock('vill'), vcan=canAfford(VILL.cost)&&state.queues.tc.length<QUEUE_MAX;
+  const vrows=RES.map(r=>{
+    const n=state.vills[r], rate=villRate(r)*prodMult();
+    return `<div class="vrow">
+      <div><div class="nm">${ICO[r]} ${r[0].toUpperCase()+r.slice(1)}</div><div class="sub">${fmtRate(rate)}/s each · +${fmtRate(rate*n)}/s total</div></div>
+      <div class="cnt">${n}</div>
+      <div class="vctl">
+        <button class="rally${state.rally===r?' on':''}" data-action="rally" data-r="${r}" title="New villagers go here">⚑ rally</button>
+        <button class="btn sm ghost" data-action="vsub" data-r="${r}" ${n>0?'':'disabled'} aria-label="Unassign a ${r} villager">−</button>
+        <button class="btn sm" data-action="vadd" data-r="${r}" ${state.vills.idle>0?'':'disabled'} aria-label="Assign an idle villager to ${r}">+</button>
+      </div></div>`;
+  }).join('');
+  const idle=state.vills.idle;
+
+  const techCards=Object.keys(TECHS).filter(k=>!state.techs[k]).map(k=>{
+    const t=TECHS[k], lock=researchLock(k), hardLock=t.age>state.age||(t.req&&!state.techs[t.req]);
+    const can=!lock&&canAfford(t.cost);
+    return `<div class="ucard${hardLock?' locked':''}">
+      <div class="top"><span class="bico">${t.ico}</span><span class="bn">${t.name}</span></div>
+      <div class="bdesc" style="font-size:12px;color:var(--muted)">${t.desc}</div>
+      <div class="cost">${costHTML(t.cost)} <span class="ok">· ${t.time}s</span></div>
+      <button class="btn sm ${can?'primary':''}" data-action="research" data-id="${k}" ${can?'':'disabled'}>${hardLock?'🔒 '+lock:'Research'}</button>
+    </div>`;
+  }).join('');
+  const done=Object.keys(state.techs).map(k=>TECHS[k].ico+' '+TECHS[k].name).join(' · ');
+
+  return `<div class="panel">${researchHTML()}${agePanel}</div>
+    <div class="panel">
+      <div class="pane-head"><div><h2>👷 Villagers · ${villTotal()}</h2><div class="sub">Population ${popUsed()} / ${popCap()} · drop-site buildings and techs boost gathering</div></div>
+        <div style="text-align:right"><button class="btn ${vcan?'primary':''}" data-action="train" data-u="vill" ${vcan&&!vlock?'':'disabled'}>Train Villager</button>
+        <div class="cost" style="margin-top:4px;justify-content:flex-end">${costHTML(VILL.cost)} <span class="ok">· ${VILL.time}s</span></div></div></div>
+      ${queueHTML('tc')}
+      ${idle>0?`<div class="mnote" style="margin:10px 0 0;border-color:var(--gold)">⚠️ <b style="color:var(--gold)">${idle} idle villager${idle>1?'s':''}</b> — assign them with <b>+</b> or they gather nothing.</div>`:''}
+      <div style="margin-top:6px">${vrows}</div>
+    </div>
+    <div class="panel">
+      <div class="pane-head"><div><h2>Technologies</h2><div class="sub">One research at a time, shared with advancing the age${done?` · done: ${done}`:''}</div></div></div>
+      ${techCards?`<div class="units">${techCards}</div>`:`<p class="qnote">Every technology researched.</p>`}
+    </div>`;
+}
+
+function renderArmy(){
+  const mine=unitGroups(state.army,state.age,0,true), towers=totalLevels('tower');
+  const myPow=powerOf(mine), defPow=powerOf(unitGroups(state.army,state.age,towers,true));
+  const line=mine.length?mine.map(g=>`<div class="p">${g.ico} ${g.n} ${g.name}</div>`).join(''):`<span class="qnote">No soldiers yet.</span>`;
+
+  const ucards=Object.keys(U).map(k=>{
+    const d=U[k], lock=trainLock(k), can=!lock&&canAfford(d.cost)&&state.queues[d.from].length<QUEUE_MAX;
+    const sv=strongVs(d.cls);
+    return `<div class="ucard${lock?' locked':''}">
+      <div class="top"><span class="bico">${d.ico}</span><span class="bn">${d.name}</span><span class="have">${state.army[k]||0}</span></div>
+      <div class="st">${CLS[d.cls]} · ⚔ ${fmtRate(d.atk*atkMul(state.age,true))} · ❤ ${Math.round(d.hp*hpMul(state.age,true))} · ${B[d.from].ico}</div>
+      ${sv?`<div class="vs">Strong vs ${sv}</div>`:''}
+      <div class="cost">${costHTML(d.cost)} <span class="ok">· ${d.time}s</span></div>
+      ${lock?`<div class="why">🔒 ${lock}</div>`:''}
+      <button class="btn sm ${can?'primary':''}" data-action="train" data-u="${k}" ${can?'':'disabled'}>Train</button>
+    </div>`;
+  }).join('');
+  const queues=['barracks','range','stable'].filter(p=>cnt(p)||state.queues[p].length).map(p=>
+    `<div style="margin-top:10px"><div class="qnote">${B[p].ico} ${B[p].name}</div>${queueHTML(p)}</div>`).join('');
+
+  let raidTxt;
+  if(state.peaceful) raidTxt=`🕊️ Peaceful mode — no raids will come.`;
+  else if(state.age<1) raidTxt=`Raiders ignore Dark Age hamlets. They will come once you reach the <b>Feudal Age</b>.`;
+  else if(state.raid.t==null) raidTxt=`Scouts are watching the roads…`;
+  else raidTxt=state.raid.warned
+    ? `<b style="color:var(--bad)">🚩 Raid #${state.raid.n+1} arrives in ${fmtClock(state.raid.t)}</b> — expect around ${Math.min(60,3+2*state.raid.n+3*state.age)} raiders.`
+    : `Next raid expected in about ${fmtClock(state.raid.t)} (~${Math.min(60,3+2*state.raid.n+3*state.age)} raiders). Raids only advance while the game is open.`;
+
+  const now=Date.now();
+  const camps=CAMPS.map(c=>{
+    const fp=powerOf(unitGroups(c.foes,c.age,c.towers,false)), ready=(state.camps[c.id]||0)<=now;
+    return `<div class="camp">
+      <div><div class="nm">${c.ico} ${c.name} <span class="qnote">· ${AGES[c.age].name}</span></div>
+        <div class="foes">${compHTML(c.foes)}${c.towers?` ${c.towers}${TOWER.ico}`:''}</div>
+        <div class="rew">Spoils: ${rewardHTML(c.reward)}</div></div>
+      <div class="pow">Enemy ⚔ <b>${fp}</b><br>Yours ⚔ <b style="color:${myPow>=fp?'var(--good)':'var(--bad)'}">${myPow}</b></div>
+      <div class="cact">${ready
+        ? `<button class="btn sm ${myPow>0?'primary':''}" data-action="attack" data-id="${c.id}" ${myPow>0?'':'disabled'}>Attack</button>`
+        : `<span class="qnote">Rebuilding · ${fmtClock((state.camps[c.id]-now)/1000)}</span>`}</div>
+    </div>`;
+  }).join('');
+
+  const lb=state.lastBattle;
+  return `<div class="panel">
+      <div class="pane-head"><div><h2>Your Army · ${armyTotal()}</h2><div class="sub">Attack ⚔ ${myPow} · with ${towers} tower level${towers===1?'':'s'}, defense ⚔ ${defPow} · population ${popUsed()} / ${popCap()}</div></div>
+        ${lb?`<button class="btn sm ghost" data-action="report">Last battle report</button>`:''}</div>
+      <div class="armyline">${line}</div>
+    </div>
+    <div class="panel">
+      <div class="pane-head"><div><h2>Town Defense</h2><div class="sub">${raidTxt}</div></div>
+        <button class="btn sm ghost" data-action="peaceful">${state.peaceful?'Enable raids':'Peaceful mode'}</button></div>
+      <div class="mnote" style="margin:0">Raiders fight your whole army plus your Watch Towers. Lose, and they carry off a quarter of your stockpiles${state.techs.loom?'':' and kill villagers (research <b>Loom</b> to protect them)'}. Win, and you keep their gold.</div>
+    </div>
+    <div class="panel">
+      <div class="pane-head"><div><h2>Train Units</h2><div class="sub">Spears beat cavalry · archers beat infantry &amp; spears · cavalry runs down archers · infantry beats spears</div></div></div>
+      <div class="units">${ucards}</div>
+      ${queues}
+    </div>
+    <div class="panel">
+      <div class="pane-head"><div><h2>Campaign</h2><div class="sub">Send your whole army against an enemy camp. Survivors come home; sacked camps rebuild over time.</div></div></div>
+      ${camps}
+    </div>`;
+}
+
+function openReport(){
+  const r=state.lastBattle; if(!r) return;
+  const rows=list=>list.map(g=>`<tr><td>${g.ico} ${esc(g.name)}</td><td>${g.start}</td><td class="${g.left<g.start?'lost':''}">${g.left}</td></tr>`).join('')||`<tr><td colspan="3">—</td></tr>`;
+  const lost=Object.keys(r.lost||{}).map(k=>k==='vill'?`${r.lost[k]}👷`:fmtRes(r.lost[k])+ICO[k]).join(' ');
+  const loot=Object.keys(r.loot||{}).length?rewardHTML(r.loot):'';
+  $('#modalRoot').innerHTML=`<div class="overlay" data-action="closebuild"><div class="modal report" data-stop>
+    <div class="modal-head"><h2>${esc(r.title)}</h2><button class="xbtn" data-action="closebuild">✕</button></div>
+    <h3 class="${r.win?'win':'loss'}">${r.win?'Victory':'Defeat'}</h3>
+    <table><tr><th>Your forces</th><th>Sent</th><th>Survived</th></tr>${rows(r.mine)}</table>
+    <table><tr><th>Enemy</th><th>Fielded</th><th>Survived</th></tr>${rows(r.foes)}</table>
+    ${loot?`<div class="spoils">Spoils: ${loot}</div>`:''}
+    ${lost?`<div class="spoils" style="color:var(--bad)">Plundered: ${lost}</div>`:''}
+  </div></div>`;
+}
+
 function renderLog(){
   const now=Date.now();
   $('#logList').innerHTML = state.log.length? state.log.map(e=>{
@@ -771,12 +1317,12 @@ function updateStakeLive(){
 function openModal(){
   const avail=state.plots-state.buildings.length;
   const cards=Object.keys(B).map(type=>{
-    const d=B[type], c=getBuildCost(type), can=canAfford(c)&&avail>0;
-    return `<div class="bcard">
+    const d=B[type], c=getBuildCost(type), lock=buildLock(type), can=!lock&&canAfford(c)&&avail>0;
+    return `<div class="bcard"${lock?' style="opacity:.55"':''}>
       <div class="top"><span class="bico">${d.ico}</span><span class="bn">${d.name}</span></div>
       <div class="bdesc">${d.desc}</div>
       <div class="cost">${costHTML(c)}</div>
-      <button class="btn sm ${can?'primary':''}" data-action="build" data-type="${type}" ${can?'':'disabled'}>Build</button>
+      <button class="btn sm ${can?'primary':''}" data-action="build" data-type="${type}" ${can?'':'disabled'}>${lock?(d.age>state.age?'🔒 '+AGES[d.age].name:lock):'Build'}</button>
     </div>`;
   }).join('');
   $('#modalRoot').innerHTML=`<div class="overlay" data-action="closebuild"><div class="modal" data-stop><div class="modal-head"><h2>Choose a building</h2><button class="xbtn" data-action="closebuild">✕</button></div><div class="blist">${cards}</div></div></div>`;
@@ -811,6 +1357,15 @@ function onClick(e){
     case 'unstake': doUnstake(); break;
     case 'claim': doClaimYield(); break;
     case 'claimquest': doClaimQuest(t.dataset.id); break;
+    case 'train': doTrain(t.dataset.u); break;
+    case 'cancelq': doCancel(t.dataset.p,+t.dataset.i); break;
+    case 'research': doResearch(t.dataset.id); break;
+    case 'vadd': moveVill(t.dataset.r,1); break;
+    case 'vsub': moveVill(t.dataset.r,-1); break;
+    case 'rally': state.rally=t.dataset.r; renderTab(); break;
+    case 'attack': attackCamp(t.dataset.id); break;
+    case 'report': openReport(); break;
+    case 'peaceful': state.peaceful=!state.peaceful; addLog(state.peaceful?'🕊️ Peaceful mode — the raiders stay away.':'⚔️ Raids enabled. Guard your town.'); save(); renderTab(); break;
     case 'mp-create': mpCreate($('#al-name')?$('#al-name').value:'', $('#al-tag')?$('#al-tag').value:'', $('#al-goal')?$('#al-goal').value:'100'); break;
     case 'mp-join': mpJoin(t.dataset.aid); break;
     case 'mp-leave': mpLeave(); break;
@@ -846,7 +1401,7 @@ function tick(){
   const now=Date.now();
   let dt=(now-state._lastTick)/1000; state._lastTick=now;
   if(!(dt>0)) dt=0; if(dt>OFFLINE_MAX) dt=OFFLINE_MAX;
-  prod(dt); updatePeaks();
+  prod(dt); advanceQueues(dt); raidTick(dt); updatePeaks();
   state._eventTimer-=dt;
   if(state._eventTimer<=0){ fireEvent(); state._eventTimer=24+Math.random()*26; }
   state._saveT+=dt; if(state._saveT>=5){ save(); state._saveT=0; }
@@ -862,12 +1417,12 @@ function tick(){
 function applyOffline(){
   const elapsed=clamp((Date.now()-state.lastSave)/1000,0,OFFLINE_MAX);
   if(elapsed<60) { state._lastTick=Date.now(); return; }
-  const before={wood:state.res.wood,stone:state.res.stone,gold:state.res.gold,ton:state.res.ton,pend:state.stakePending};
-  prod(elapsed); updatePeaks(); state._lastTick=Date.now();
-  const dW=state.res.wood-before.wood, dS=state.res.stone-before.stone, dG=state.res.gold-before.gold;
+  const before={food:state.res.food,wood:state.res.wood,stone:state.res.stone,gold:state.res.gold,ton:state.res.ton,pend:state.stakePending};
+  prod(elapsed); advanceQueues(elapsed); updatePeaks(); state._lastTick=Date.now();
+  const dF=state.res.food-before.food, dW=state.res.wood-before.wood, dS=state.res.stone-before.stone, dG=state.res.gold-before.gold;
   const dT=state.res.ton-before.ton, dY=state.stakePending-before.pend;
   const h=Math.floor(elapsed/3600), m=Math.floor(elapsed%3600/60);
-  const parts=[]; if(dW>1)parts.push(`+${fmtRes(dW)}🪵`); if(dS>1)parts.push(`+${fmtRes(dS)}🪨`); if(dG>1)parts.push(`+${fmtRes(dG)}🪙`);
+  const parts=[]; if(dF>1)parts.push(`+${fmtRes(dF)}🌾`); if(dW>1)parts.push(`+${fmtRes(dW)}🪵`); if(dS>1)parts.push(`+${fmtRes(dS)}🪨`); if(dG>1)parts.push(`+${fmtRes(dG)}🪙`);
   if(dT>0.01)parts.push(`+${fmtTon(dT)}🔗`); if(dY>0.01)parts.push(`+${fmtTon(dY)}🔗 yield`);
   addLog(`🌙 Away ${h>0?h+'h ':''}${m}m — ${parts.length?parts.join('  '):'quiet while you were gone'}.`,1);
   setTimeout(()=>toast(`While you were away (${h>0?h+'h ':''}${m}m): ${parts.length?parts.join('  '):'all quiet'}`,'ton'),400);
@@ -908,9 +1463,10 @@ function nextTier(t){ for(const x of TIERS) if(x.min>t) return x; return null; }
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function computeNetWorth(){
-  const rv=state.res.wood*BASE_PRICE.wood+state.res.stone*BASE_PRICE.stone+state.res.gold*BASE_PRICE.gold;
+  let rv=0; for(const r of RES) rv+=state.res[r]*BASE_PRICE[r];
   let bv=0; for(const b of state.buildings) bv+=b.level*4;
-  return Math.round((state.res.ton+state.staked+rv+bv+state.plots*3)*100)/100;
+  const civ=villTotal()*0.5+armyTotal()*1.5+state.age*15;
+  return Math.round((state.res.ton+state.staked+rv+bv+civ+state.plots*3)*100)/100;
 }
 
 async function initMP(){
