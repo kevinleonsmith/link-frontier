@@ -220,6 +220,57 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
   font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:tin .3s ease;max-width:100%}
 .toast.ton{border-color:var(--ton)}
 @keyframes tin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---- living-world animations ---- */
+.plot{position:relative;overflow:hidden}
+.plot .bico{display:inline-block;transform-origin:50% 85%;will-change:transform,filter}
+.plot.b-lumber    .bico{animation:fx-sway 3.4s ease-in-out infinite}
+.plot.b-farm      .bico{animation:fx-sway 4s ease-in-out infinite}
+.plot.b-quarry    .bico{animation:fx-nudge 2.8s ease-in-out infinite}
+.plot.b-warehouse .bico{animation:fx-nudge 3.6s ease-in-out infinite}
+.plot.b-house     .bico{animation:fx-bob 3s ease-in-out infinite}
+.plot.b-mine      .bico{animation:fx-shine 2.6s ease-in-out infinite}
+.plot.b-vault     .bico{animation:fx-glow 3.2s ease-in-out infinite}
+.plot.b-market    .bico{animation:fx-flip 5s ease-in-out infinite}
+.plot.b-barracks  .bico{animation:fx-clink 2.4s ease-in-out infinite}
+.plot:hover .bico{animation-duration:1.1s}
+/* rising resource spark for producers */
+.plot.prod::before{content:'';position:absolute;top:30px;left:30px;width:5px;height:5px;border-radius:50%;
+  background:var(--acc,var(--gold));box-shadow:0 0 7px var(--acc,var(--gold));opacity:0;
+  animation:fx-rise 2.9s ease-in infinite;animation-delay:var(--pd,0s);pointer-events:none}
+@keyframes fx-sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes fx-nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes fx-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px) scale(1.04)}}
+@keyframes fx-shine{0%,100%{filter:none;transform:scale(1)}50%{filter:brightness(1.5) drop-shadow(0 0 7px var(--oregold));transform:scale(1.08)}}
+@keyframes fx-glow{0%,100%{filter:none}50%{filter:brightness(1.3) drop-shadow(0 0 8px var(--ton))}}
+@keyframes fx-flip{0%,70%,100%{transform:rotateY(0)}85%{transform:rotateY(180deg)}}
+@keyframes fx-clink{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-16deg)}85%{transform:rotate(16deg)}}
+@keyframes fx-rise{0%{opacity:0;transform:translateY(8px) scale(.5)}20%{opacity:.95}100%{opacity:0;transform:translateY(-30px) scale(1.15)}}
+
+/* ---- floating resource gains ---- */
+#fxLayer{position:fixed;inset:0;z-index:50;pointer-events:none;overflow:hidden}
+.floatnum{position:absolute;font-family:var(--mono);font-weight:700;font-size:13px;
+  text-shadow:0 1px 4px rgba(0,0,0,.6);animation:fx-float 1.25s ease-out forwards;white-space:nowrap}
+@keyframes fx-float{0%{opacity:0;transform:translate(-50%,2px) scale(.8)}18%{opacity:1}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}
+
+/* ---- battle fx overlay ---- */
+#battleFx{position:fixed;inset:0;z-index:70;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.bf-arena{position:relative;width:min(340px,80vw);height:150px;display:flex;align-items:center;justify-content:center}
+.bf-side{position:absolute;font-size:46px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.55))}
+.bf-me{left:0;animation:bf-chargeR .55s cubic-bezier(.4,1.4,.6,1) forwards}
+.bf-foe{right:0;animation:bf-chargeL .55s cubic-bezier(.4,1.4,.6,1) forwards}
+.bf-clash{position:absolute;font-size:60px;opacity:0;animation:bf-clash .5s ease-out .5s forwards}
+.bf-result{position:absolute;top:50%;left:50%;font-family:var(--disp);font-weight:700;font-size:30px;opacity:0;
+  white-space:nowrap;animation:bf-result .7s ease-out .95s forwards;padding:8px 20px;border-radius:12px;
+  background:rgba(10,14,30,.82);border:1px solid var(--line)}
+.bf-win{color:var(--good);border-color:var(--good)!important;text-shadow:0 0 16px rgba(68,216,150,.5)}
+.bf-lose{color:var(--bad);border-color:var(--bad)!important}
+@keyframes bf-chargeR{from{transform:translateX(-40px) scale(.8);opacity:0}60%{opacity:1}to{transform:translateX(90px) scale(1)}}
+@keyframes bf-chargeL{from{transform:translateX(40px) scaleX(-1) scale(.8);opacity:0}60%{opacity:1}to{transform:translateX(-90px) scaleX(-1) scale(1)}}
+@keyframes bf-clash{0%{opacity:0;transform:scale(.3) rotate(-20deg)}40%{opacity:1;transform:scale(1.5) rotate(10deg)}100%{opacity:0;transform:scale(2.2) rotate(0)}}
+@keyframes bf-result{from{opacity:0;transform:translate(-50%,-50%) scale(.6)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes bf-shake{0%,100%{transform:translate(0)}20%{transform:translate(-8px,4px)}40%{transform:translate(8px,-3px)}60%{transform:translate(-6px,-4px)}80%{transform:translate(5px,3px)}}
+.bf-shake{animation:bf-shake .4s ease .5s}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- multiplayer / alliance ---- */
@@ -408,6 +459,8 @@ footer{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;border-
 </div>
 
 <div id="modalRoot"></div>
+<div id="fxLayer"></div>
+<div id="battleFx"></div>
 <div id="toast" aria-live="polite"></div>
 
 <script>
@@ -804,6 +857,7 @@ function attackRival(idx){
     addLog(`🏳️ ${r.name} repelled your assault — ${lost} unit${lost===1?'':'s'} lost, no loot.`);
     toast(`Your army was beaten back by ${r.name}.`);
   }
+  playBattleFx(win);
   save(); renderTab();
 }
 
@@ -824,7 +878,7 @@ function updateLedger(){
   const bar=(r,cls)=>{
     const pct=Math.min(100,state.res[r]/cap[r]*100);
     const col=pct>=99?'var(--bad)':pct>80?'var(--gold)':`var(--${r==='gold'?'oregold':r})`;
-    return `<div class="chip ${cls}"><span class="ico">${ICO[r]}</span><div class="meta">
+    return `<div class="chip ${cls}" data-res="${r}"><span class="ico">${ICO[r]}</span><div class="meta">
       <span class="lbl">${r}</span>
       <span class="val">${fmtRes(state.res[r])} <small style="color:var(--dim);font-weight:500">/ ${fmtRes(cap[r])}</small></span>
       <span class="capbar"><i style="width:${pct}%;background:${col}"></i></span>
@@ -832,7 +886,7 @@ function updateLedger(){
   };
   $('#ledger').innerHTML =
     bar('wood','w')+bar('stone','s')+bar('gold','g')+bar('food','f')+
-    `<div class="chip ton"><span class="ico">🔗</span><div class="meta"><span class="lbl">LINK balance</span><span class="val">${fmtTon(state.res.ton)}</span></div></div>`+
+    `<div class="chip ton" data-res="ton"><span class="ico">🔗</span><div class="meta"><span class="lbl">LINK balance</span><span class="val">${fmtTon(state.res.ton)}</span></div></div>`+
     `<div class="chip"><span class="ico">${AGES[state.age].ico}</span><div class="meta"><span class="lbl">Age</span><span class="val">${AGES[state.age].name}</span></div></div>`+
     `<div class="chip"><span class="ico">👥</span><div class="meta"><span class="lbl">Population</span><span class="val">${popUsed()} / ${popCap()}</span></div></div>`+
     `<div class="chip"><span class="ico">🗺️</span><div class="meta"><span class="lbl">Plots</span><span class="val">${state.buildings.length} / ${state.plots}</span></div></div>`;
@@ -849,15 +903,38 @@ function updateBadge(){
   }
 }
 
+// The game loop re-renders the active tab every second. On the Empire tab we keep the
+// plot DOM alive between structural changes so the buildings' ambient animations run
+// continuously (an innerHTML rebuild would restart them each tick) — on a plain tick we
+// only refresh the affordability of the live controls in place.
+let renderedTab=null, empGridSig=null;
+function empireSig(){
+  return state.age+'|'+state.plots+'|'+state.ui.pendingRemove+'|'+(state.seenIntro?1:0)+'|'+state.buildings.map(b=>b.type+b.level).join(',');
+}
+function refreshEmpireLive(el){
+  state.buildings.forEach((b,i)=>{
+    const btn=el.querySelector('[data-action="upgrade"][data-i="'+i+'"]');
+    if(btn){ const can=canAfford(getUpgradeCost(b)); btn.disabled=!can; btn.classList.toggle('primary',can); }
+  });
+  const lb=el.querySelector('[data-action="buyland"]');
+  if(lb){ const can=state.res.ton>=landCost()-1e-9; lb.disabled=!can; lb.classList.toggle('ton',can); }
+  const ab=el.querySelector('[data-action="advance-age"]');
+  if(ab){ const can=canAdvance(); ab.disabled=!can; ab.classList.toggle('primary',can); }
+}
 function renderTab(){
   const t=state.ui.tab, el=$('#tab');
-  if(t==='empire') el.innerHTML=renderEmpire();
-  else if(t==='town') el.innerHTML=renderTown();
-  else if(t==='war') el.innerHTML=renderWar();
-  else if(t==='market') el.innerHTML=renderMarket();
-  else if(t==='stake') el.innerHTML=renderStake();
-  else if(t==='alliance'){ renderMPTab(); return; }
-  else el.innerHTML=renderQuests();
+  if(t==='empire'){
+    const sig=empireSig();
+    if(renderedTab==='empire' && sig===empGridSig && el.querySelector('.grid')) refreshEmpireLive(el);
+    else { el.innerHTML=renderEmpire(); empGridSig=sig; }
+    renderedTab='empire';
+  }
+  else if(t==='town'){ el.innerHTML=renderTown(); renderedTab='town'; }
+  else if(t==='war'){ el.innerHTML=renderWar(); renderedTab='war'; }
+  else if(t==='market'){ el.innerHTML=renderMarket(); renderedTab='market'; }
+  else if(t==='stake'){ el.innerHTML=renderStake(); renderedTab='stake'; }
+  else if(t==='alliance'){ renderMPTab(); renderedTab='alliance'; return; }
+  else { el.innerHTML=renderQuests(); renderedTab='quests'; }
   updateLedger(); updateBadge();
 }
 
@@ -921,8 +998,11 @@ function renderEmpire(){
         <button class="xbtn" data-action="remove" data-i="${i}" title="Demolish">✕</button>
       </div><div class="cost" style="justify-content:center">${costHTML(uc)}</div>`;
     }
-    cells+=`<div class="plot">
-      <div class="top"><span class="bico">${d.ico}</span><div><div class="bname">${d.name}</div><div class="lv">Level ${b.level}</div></div></div>
+    const accMap={wood:'wood',stone:'stone',food:'food',gold:'oregold'};
+    const isProd=d.kind==='prod';
+    const pStyle=isProd?` style="--acc:var(--${accMap[d.res]});--pd:${(i%4)*0.6}s"`:'';
+    cells+=`<div class="plot b-${b.type}${isProd?' prod':''}"${pStyle}>
+      <div class="top"><span class="bico" style="animation-delay:${((i%5)*-0.4).toFixed(1)}s">${d.ico}</span><div><div class="bname">${d.name}</div><div class="lv">Level ${b.level}</div></div></div>
       ${detail}<div class="spacer"></div>${footer}
     </div>`;
   });
@@ -1208,6 +1288,47 @@ function toast(msg,cls){
   setTimeout(()=>{ el.style.transition='opacity .4s'; el.style.opacity='0'; setTimeout(()=>el.remove(),400); },2600);
 }
 
+/* ============ visual flair ============ */
+function prefersReduced(){ try{ return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } }
+
+// Float "+N" numbers up from each ledger chip as resources tick in. Fractional gains are
+// accumulated across ticks so slow faucets still surface a satisfying whole number.
+const fxAcc={wood:0,stone:0,gold:0,food:0,ton:0};
+function showGains(g){
+  if(!g || prefersReduced()) return;
+  const layer=$('#fxLayer'); if(!layer) return;
+  const inc={wood:g.add.wood,stone:g.add.stone,gold:g.add.gold,food:g.add.food,ton:g.ton};
+  for(const r in inc){
+    fxAcc[r]+=inc[r]||0;
+    const whole = r==='ton' ? (fxAcc[r]>=0.01?fxAcc[r]:0) : Math.floor(fxAcc[r]);
+    if(whole<=0) continue;
+    fxAcc[r]-=whole;
+    const chip=document.querySelector('#ledger [data-res="'+r+'"]');
+    if(!chip) continue;
+    const rect=chip.getBoundingClientRect();
+    const f=document.createElement('div'); f.className='floatnum';
+    f.style.color = r==='ton'?'var(--ton)':r==='gold'?'var(--oregold)':'var(--'+r+')';
+    f.style.left=(rect.left+rect.width*0.5)+'px';
+    f.style.top=(rect.top+4)+'px';
+    f.textContent='+'+(r==='ton'?fmtTon(whole):fmtRes(whole))+ICO[r];
+    layer.appendChild(f);
+    setTimeout(()=>f.remove(),1300);
+  }
+}
+
+// A quick clash animation when you attack a rival or raid a player.
+function playBattleFx(win){
+  if(prefersReduced()) return;
+  const root=$('#battleFx'); if(!root) return;
+  root.innerHTML='<div class="bf-arena bf-shake">'
+    +'<span class="bf-side bf-me">🗡️</span>'
+    +'<span class="bf-side bf-foe">🛡️</span>'
+    +'<span class="bf-clash">💥</span>'
+    +'<div class="bf-result '+(win?'bf-win':'bf-lose')+'">'+(win?'⚔️ VICTORY':'🏳️ REPELLED')+'</div>'
+    +'</div>';
+  setTimeout(()=>{ if(root) root.innerHTML=''; },1800);
+}
+
 /* ============ events / loop ============ */
 function onClick(e){
   const t=e.target.closest('[data-action]'); if(!t) return;
@@ -1273,12 +1394,13 @@ function tick(){
   const now=Date.now();
   let dt=(now-state._lastTick)/1000; state._lastTick=now;
   if(!(dt>0)) dt=0; if(dt>OFFLINE_MAX) dt=OFFLINE_MAX;
-  prod(dt); updatePeaks();
+  const gained=prod(dt); updatePeaks();
   state._eventTimer-=dt;
   if(state._eventTimer<=0){ fireEvent(); state._eventTimer=24+Math.random()*26; }
   state._saveT+=dt; if(state._saveT>=5){ save(); state._saveT=0; }
   const rolled=checkSeason();
   updateLedger();
+  showGains(gained);
   if(state.ui.tab==='stake') updateStakeLive();
   else if(state.ui.tab==='alliance'){ if(rolled) renderMPTab(); else updateSeasonCountdown(); }
   else renderTab();
@@ -1427,6 +1549,7 @@ async function raidPlayer(targetId){
     addLog(`🏳️ Raid on ${esc(tgt.name||'an empire')} failed — ${lost} unit${lost===1?'':'s'} lost.`);
     toast(`Your raid was repelled by ${esc(tgt.name||'their garrison')}.`);
   }
+  playBattleFx(win);
   try{
     const ref=db.doc('raids/'+myId); const snap=await ref.get(); const body=(snap.exists&&snap.data())||{};
     const list=Array.isArray(body.raids)?body.raids:[];
